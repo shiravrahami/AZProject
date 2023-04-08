@@ -10,7 +10,6 @@ function App() {
       {/* <header className="App-header"> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/Ester" element={<SignInScreen />} />
           <Route path="/Noam" element={<SignInScreen />} />
           <Route path="/" element={<SignInScreen />} />
           <Route path="/home" element={<FCHome />} />
