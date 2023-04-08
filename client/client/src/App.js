@@ -11,6 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/Ester" element={<SignInScreen />} />
+          <Route path="/Noam" element={<SignInScreen />} />
           <Route path="/" element={<SignInScreen />} />
           <Route path="/home" element={<FCHome />} />
           <Route path="/profile" element={<FCProfile />} />
