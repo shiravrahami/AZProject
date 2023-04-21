@@ -10,8 +10,11 @@ function HomeScreen(props) {
 
   const{user}=useContext(UserContext);
 
-  const location = useLocation();
-  const [setName] = useState('');
+  const {state} = useLocation();
+  let userDetails = state;
+  
+  console.log('home: '+userDetails.EmployeeName);
+
   //const user=props.route.params.email;
   // const user = location.state && location.state.user;
 
@@ -88,13 +91,11 @@ function HomeScreen(props) {
   }
   return (
     <div>
-      <img height={'350px'} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br />
-
-      <Button onClick={GoToSignIn}> התנתק </Button>
+      {/* <img height={'350px'} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br /> */}
       <Container>
         <Row>
           <Col xs={12} md={6}>
-            <h2>Hello,{user}</h2>
+            <h2>Hello, {userDetails.EmployeeName}</h2>
             
           </Col>
         </Row>

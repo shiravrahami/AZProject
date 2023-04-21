@@ -8,7 +8,7 @@ export default function FCLayout({children}) {
         <div>
             <FCHeader />
             <div className="content">
-                <FCMenu />
+                {/* <FCMenu /> */}
                 <div className="main">
                      {children}
                 </div>

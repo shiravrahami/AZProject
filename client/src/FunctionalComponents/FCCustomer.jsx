@@ -9,11 +9,11 @@ import Form from 'react-bootstrap/Form';
 export default function FCCustomer() {
     return (
         <div className='fccust'>
-            <Row>
+            {/* <Row>
                 <Col className='imgLogo' style={{ display: 'flex', justifyContent: 'center' }}>
                     <img style={{ width: '20%' }} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br />
                 </Col>
-            </Row>
+            </Row> */}
             {/* <Row>
                 <Col className='projclass' style={{ borderRadius: '30px ', margin: '20px', padding: '20px' }}>
                     <Row className="align-items-center">

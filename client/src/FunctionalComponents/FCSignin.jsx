@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 //import { Link } from 'react-router-dom';
 import UserContext from './UserContext';
-
+import { useNavigate } from 'react-router-dom';
 
 function SignInScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const { setUser } = useContext(UserContext);
+
+const navigate = useNavigate();
 
     const user = {
         Email: email,
@@ -22,36 +24,48 @@ function SignInScreen() {
 
     const handleSubmit = () => {
         fetch('http://194.90.158.74/cgroup95/prod/api/signin', {
-            method: 'POST',
-            body: JSON.stringify(user),
-            headers: new Headers({
-                'Accept': 'application/json; charset=UTF-8',
-                'Content-type': 'application/json; charset=UTF-8'
-            })
+          method: 'POST',
+          body: JSON.stringify(user),
+          headers: new Headers({
+            'Accept': 'application/json; charset=UTF-8',
+            'Content-type': 'application/json; charset=UTF-8'
+          })
         })
-            .then(res => {
-                console.log('res=', res);
-                console.log(res.status);
-                if (res.status === 200) {
-                    setUser("user");
-                    console.log("good");
-                    window.location.href = '/home';
-                }
-                else {
-                    setErrorMessage("אחד מהפרטים אינו נכון");
-                }
-            })
-            .then(
-                (result) => {
-                    console.log("fetch POST= ", result);
-                    
-                },
-                (error) => {
-                    console.log("err post=", error);
-                });
-    }
+        .then(res => {
+          console.log('res=', res);
+          console.log(res.status);
+          if (res.status === 200) {
+            return res.json(); // Parse response body as JSON
+          }
+          else {
+            setErrorMessage("אחד מהפרטים אינו נכון");
+            throw new Error("Server returned status " + res.status);
+          }
+        })
+        .then(data => {
+          // Create a new object with the response data
+          const userDetails = {
+            EmployeeID:data.EmployeeID,
+            EmployeeName: data.EmployeeName,
+            EmployeeEmail: data.EmployeeEmail,
+            EmployeePhone: data.EmployeePhone,
+            EmployeeTitle: data.EmployeeTitle,
+            EmployeePassword: data.EmployeePassword,
+            EmployeePhoto: data.EmployeePhoto
+            // Add more properties as needed
+          };
+          console.log("newUser =", userDetails);
+          setUser(userDetails); // Set the user object in context
+          navigate('/home',{state:userDetails}); // Navigate to the home screen
+        })
+        .catch(error => {
+          console.log("Error fetching user data: ", error);
+        });
+      };
+      
     return (
         <div className='main'>
+                <img height={'250px'} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br />
             <Form >
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     {/* <Form.Label className='labelemail' style={{textAlign: 'right'}}> Email כתובת</Form.Label> */}
