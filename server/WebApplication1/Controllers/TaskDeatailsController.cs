@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
         
-        //פרטי משימה
+        //פרטי משימה 
         [HttpGet]
         [Route("api/TaskDeatails/{id}")]
         public IHttpActionResult GetTask(int id)
