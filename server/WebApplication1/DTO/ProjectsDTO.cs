@@ -22,5 +22,6 @@ namespace WebApplication1.DTO
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
         public List<TasksDTO> Tasks { get; internal set; }
+        //public List<TasksDTO> Tasks { get; internal set; }
     }
 }

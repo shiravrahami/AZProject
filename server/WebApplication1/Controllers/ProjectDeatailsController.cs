@@ -44,8 +44,46 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //עדכון פרויקט קוד חדש
+        [HttpPut]
+        [Route("api/ProjectUpdate/{projectId}")]
+        public IHttpActionResult UpdateProject(int projectId, [FromBody] ProjectsDTO updatedProject)
+        {
+            try
+            {
+                // מציאת הפרויקט לפי מזהה הפרויקט שהתקבל
+                var project = db.Projects.FirstOrDefault(pro => pro.ProjectID == projectId);
 
-        //עדכון פרויקט
+                // בדיקה אם הפרויקט נמצא
+                if (project == null)
+                {
+                    return BadRequest("Project not found");
+                }
+
+                // עדכון פרטי הפרויקט עם הפרטים המעודכנים שהתקבלו
+                project.ProjectName = updatedProject.ProjectName;
+                project.Description = updatedProject.Description;
+                project.Deadline = updatedProject.Deadline;
+                project.isDone = updatedProject.isDone;
+
+                // שמירת השינויים בבסיס הנתונים
+                db.SaveChanges();
+
+                return Ok("Project details updated successfully");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
+
+
+
+
+        //עדכון פרויקט קוד ישן
         [HttpPut]
         [Route("api/ProjectUpdate")]
         public IHttpActionResult UpdateProject([FromBody] ProjectsDTO updatedProject)

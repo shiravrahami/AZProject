@@ -37,5 +37,7 @@ namespace SignIn
         public object Name { get; set; }
         public object Tasks { get; set; }
         public object TotalTaskCount { get; set; }
+        public string CusomerType { get; set; }
+        public string CustomerType { get; set; }
     }
 }

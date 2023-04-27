@@ -15,6 +15,9 @@ namespace WebApplication1.Controllers
     public class CustomerDetailsController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
+
+        
+
         //פרטי לקוחות
         [HttpGet]
         [Route("api/CustomerDetails/{id}")]
@@ -34,7 +37,8 @@ namespace WebApplication1.Controllers
                         CustomerPhone = x.CustomerPhone,
                         CustomerAdress = x.CustomerAdress,
                         CustomerIsPotential = x.isPotential,
-                        CustomerIsDeleted = x.isDeleted
+                        CustomerIsDeleted = x.isDeleted,
+                        //CustomerType = x.CustomerType
                     })
                     .FirstOrDefault();
 
@@ -46,33 +50,34 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //עדכון לקוחות
+        //עדכון לקוחות קוד חדש
         [HttpPut]
-        [Route("api/CustomerUpdate")]
-        public IHttpActionResult PutCustomerDetails([FromBody] CustomerDetailsDTO updatedCustomer)
+        [Route("api/CustomerUpdate/{customerId}")]
+        public IHttpActionResult PutCustomerDetails(int customerId, [FromBody] CustomerDetailsDTO updatedCustomer)
         {
             try
             {
-                var customer = db.Customers.FirstOrDefault(c => c.ID == updatedCustomer.ID);
+                var customer = db.Customers.FirstOrDefault(c => c.ID == customerId);
 
                 if (customer == null)
                 {
-                    return NotFound();
+                    return BadRequest("Customer not found");
                 }
-
+                customer.CustomerID = updatedCustomer.CustomerID;
                 customer.CustomerEmail = updatedCustomer.CustomerEmail;
                 customer.CustomerName = updatedCustomer.CustomerName;
                 customer.CustomerPhone = updatedCustomer.CustomerPhone;
                 customer.CustomerAdress = updatedCustomer.CustomerAdress;
                 customer.isPotential = updatedCustomer.CustomerIsPotential;
+                //customer.CustomerType = updatedCustomer.CustomerType;
 
                 db.SaveChanges();
 
-                return Ok("good");
+                return Ok("Customer details updated successfully");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest($"Error updating employee details: {ex.Message}");
             }
         }
 
@@ -99,6 +104,7 @@ namespace WebApplication1.Controllers
                 string CustomerPhone = cust.CustomerPhone.ToString();
                 string CustomerAdress = cust.CustomerAdress.ToString();
                 bool isPotential = cust.CustomerIsPotential;
+                //string CustomerType = cust.CustomerType;
 
                 Customers Customer = new Customers();
                 Customer.CustomerEmail = CustomerEmail;
@@ -107,6 +113,7 @@ namespace WebApplication1.Controllers
                 Customer.CustomerPhone = CustomerPhone;
                 Customer.CustomerAdress = CustomerAdress;
                 Customer.isPotential = isPotential;
+                //Customer.CustomerType = CustomerType;
 
                 db.Customers.Add(Customer);
 
@@ -141,7 +148,9 @@ namespace WebApplication1.Controllers
                     CustomerPhone = x.CustomerPhone,
                     CustomerAdress = x.CustomerAdress,
                     CustomerIsPotential = x.isPotential,
-                    CustomerIsDeleted = x.isDeleted
+                    CustomerIsDeleted = x.isDeleted,
+                    //CustomerType=x.CustomerType
+
                 }).ToList();
                 return Ok(custList);
             }

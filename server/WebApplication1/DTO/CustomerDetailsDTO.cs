@@ -10,7 +10,6 @@ namespace WebApplication1.DTO
     {
         public int ID { get; set; }
         public string CustomerEmail { get; set; }
-
         public string CustomerName { get; set; }
 
         public string CustomerID { get; set; }
@@ -22,6 +21,8 @@ namespace WebApplication1.DTO
         public bool CustomerIsPotential { get; set; }
 
         public bool CustomerIsDeleted { get; set; }
+
+        public string CustomerType { get; set; }//השדה החדש
 
         //public static implicit operator CustomerDetailsDTO(Customers v)
         //{

@@ -46,10 +46,47 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //עדכון משימה לפי מזהה משימה קוד חדש
+        [HttpPut]
+        [Route("api/TaskUpdate/{taskId}")]
+        public IHttpActionResult UpdateTask(int taskId, [FromBody] TasksDTO updatedTask)
+        {
+
+            try
+            {
+                var task = db.Tasks.FirstOrDefault(ts => ts.TaskID == taskId);
+
+                if (task == null)
+                {
+                    return BadRequest("Task not found");
+                }
+
+                task.TaskID = updatedTask.TaskID;
+                task.TaskName = updatedTask.TaskName;
+                task.ProjectID = updatedTask.ProjectID;
+                task.TaskType = updatedTask.TaskType;
+                task.TaskDescription = updatedTask.TaskDescription;
+                task.InsertTaskDate = updatedTask.InsertTaskDate;
+                task.Deadline = updatedTask.Deadline;
+                task.isDone = updatedTask.isDone;
+                task.isDeleted = updatedTask.isDeleted;
+
+                db.SaveChanges();
+
+                return Ok("Task details updated successfully");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
         //עדכון משימה 
         [HttpPut]
         [Route("api/TaskUpdate")]
-        public IHttpActionResult UpdateTask([FromBody] TasksDTO updatedTask)
+        public IHttpActionResult UpdateTasks([FromBody] TasksDTO updatedTask)
         {
 
             try
@@ -139,6 +176,7 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //כולל הוספת המיון
         //ListTasks/{employeeID}
         [HttpGet]
         [Route("api/ListTasks/{employeeID}")]
@@ -150,7 +188,9 @@ namespace WebApplication1.Controllers
                 if (employeeID == 6)
                 {
 
-                    var MangerTasksList = db.Tasks.Where(x => !x.isDeleted).Select(x => new TasksDTO
+                    var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
+                         .OrderByDescending(x => x.InsertTaskDate)
+                        .Select(x => new TasksDTO
                     {
                         TaskID = x.TaskID,
                         TaskName = x.TaskName,
@@ -173,6 +213,7 @@ namespace WebApplication1.Controllers
                                  join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
                                  where tea.EmployeePK == employeeID
                                  && !t.isDeleted
+                                 orderby t.InsertTaskDate descending
                                  select new
                                  {
                                      t.TaskID,
@@ -213,6 +254,99 @@ namespace WebApplication1.Controllers
                 return BadRequest("Error");
             }
         }
+
+        //אותה מתודה עם התאריך העתידי
+        [HttpGet]
+        [Route("api/ListTasksNextDay/{employeeID}")]
+        public IHttpActionResult GetListTasksNextDay(int employeeID)
+        {
+            try
+            {
+                DateTime today = DateTime.Now.Date;
+
+                if (employeeID == 6)
+                {
+                    var MangerTasksList = db.Tasks
+                        .Where(x => !x.isDeleted && x.Deadline >= today)
+                        .OrderByDescending(x => x.InsertTaskDate)
+                        .Select(x => new TasksDTO
+                        {
+                            TaskID = x.TaskID,
+                            TaskName = x.TaskName,
+                            ProjectID = x.ProjectID,
+                            TaskType = x.TaskType,
+                            TaskDescription = x.TaskDescription,
+                            InsertTaskDate = x.InsertTaskDate,
+                            Deadline = (DateTime)(x.Deadline),
+                            isDone = x.isDone,
+                            isDeleted = x.isDeleted
+                        })
+                        .ToList();
+
+                    return Ok(MangerTasksList);
+                }
+                else
+                {
+                    var tasks = (from t in db.Tasks
+                                 join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
+                                 where tea.EmployeePK == employeeID && !t.isDeleted && t.Deadline >= today
+                                 orderby t.InsertTaskDate descending
+                                 select new
+                                 {
+                                     t.TaskID,
+                                     t.TaskName,
+                                     t.ProjectID,
+                                     t.TaskType,
+                                     t.TaskDescription,
+                                     t.InsertTaskDate,
+                                     t.Deadline,
+                                     t.isDone,
+                                     t.isDeleted
+                                 })
+                                 .ToList();
+
+                    if (tasks == null || tasks.Count == 0)
+                    {
+                        return NotFound();
+                        
+                    }
+
+                    var TasksList = tasks.Select(x => new TasksDTO
+                    {
+                        TaskID = x.TaskID,
+                        TaskName = x.TaskName,
+                        ProjectID = x.ProjectID,
+                        TaskType = x.TaskType,
+                        TaskDescription = x.TaskDescription,
+                        InsertTaskDate = x.InsertTaskDate,
+                        Deadline = (DateTime)(x.Deadline),
+                        isDone = x.isDone,
+                        isDeleted = x.isDeleted
+                    })
+                    .ToList();
+
+                    return Ok(TasksList);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //ListTasks/{id}
         [System.Web.Http.HttpPut]

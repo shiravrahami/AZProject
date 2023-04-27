@@ -46,5 +46,6 @@ namespace SignIn
         public int CustomerID { get; set; }
         public int EmployeePK { get; set; }
         public object Customer { get; set; }
+        public string EmployeeID { get; set; }
     }
 }

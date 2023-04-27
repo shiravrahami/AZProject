@@ -46,3 +46,15 @@ C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\
 C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Release\SignIn.csproj.CopyComplete
 C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Release\SignIn.dll
 C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Release\SignIn.pdb
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\SignIn.dll.config
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\SignIn.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\SignIn.pdb
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\EntityFramework.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\EntityFramework.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\obj\Release\SignIn.csproj.AssemblyReference.cache
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\obj\Release\SignIn.csproj.CoreCompileInputs.cache
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\obj\Release\SignIn.csproj.CopyComplete
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\obj\Release\SignIn.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\SignIn\obj\Release\SignIn.pdb

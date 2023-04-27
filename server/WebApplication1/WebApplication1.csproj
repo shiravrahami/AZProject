@@ -180,6 +180,7 @@
     <Compile Include="Controllers\TaskDeatailsController.cs" />
     <Compile Include="Controllers\ProjectDeatailsController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
+    <Compile Include="Controllers\TsaksInProjectController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DTO\ActivityDTO.cs" />
     <Compile Include="DTO\CustomerDetailsDTO.cs" />
