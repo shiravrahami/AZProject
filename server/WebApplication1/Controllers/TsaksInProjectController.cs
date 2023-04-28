@@ -12,7 +12,7 @@ using System.Data.Entity;
 namespace WebApplication1.Controllers
 {
     //מחזירה רשימה של כל הפרויקטים (רק את המזהה שלהם)ולכל פרויקט את המשימות שלו (מוצג מזהה ושם ומשימה)
-    public class ProjectsController : ApiController
+    public class TsaksInProjectController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
 
