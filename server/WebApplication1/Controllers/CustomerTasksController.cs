@@ -48,8 +48,8 @@ namespace WebApplication1.Controllers
 
         //המתודה עם התנאי שאין משימות פתוחות ששוות ל0
         [HttpGet]
-        [Route("api/CustomerTasks/GetCustomerTasksss")]
-        public IHttpActionResult GetCustomerTaskss()
+        [Route("api/CustomerTasks/GetCustomerTasksSummary")]
+        public IHttpActionResult GetCustomerTasksSummary()
         {
             try
             {

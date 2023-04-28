@@ -140,6 +140,47 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //קוד חדש שלא מציג פרויקט שהתאריך שלו קטן מהיום
+        [HttpGet]
+        [Route("api/ListProjectsNextDay/{employeeID}")]
+        public IHttpActionResult GetListProjectsNextDay(int employeeID)
+        {
+            try
+            {
+                DateTime today = DateTime.Now.Date;
+
+                var projects = db.Projects
+                    .Where(x => !x.isDeleted && x.Deadline >= today)
+                    .Select(x => new ProjectsDTO
+                    {
+                        ProjectID = x.ProjectID,
+                        ProjectName = x.ProjectName,
+                        CustomerPK = x.CustomerPK,
+                        Description = x.Description,
+                        InsertDate = x.InsertDate,
+                        Deadline = (DateTime)x.Deadline,
+                        isDone = x.isDone,
+                        isDeleted = x.isDeleted
+                    })
+                    .ToList();
+
+                if (projects == null || projects.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(projects);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+
+
+
+
+        //קוד ישן
         //ListProjects/{employeeID}
         [HttpGet]
         [Route("api/ListProjects/{employeeID}")]
