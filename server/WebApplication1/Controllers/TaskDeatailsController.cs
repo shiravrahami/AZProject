@@ -368,30 +368,61 @@ namespace WebApplication1.Controllers
         }
 
         //מחזיר פעילות לפי משימה ספציפית
-        [HttpGet]
-        [Route("api/Tasks/{taskId}/Activities")]
-        public IHttpActionResult GetActivitiesByTaskId(int taskId)
-        {
-            try
-            {
-                var activities = db.Activity
-                    .Where(a => a.TaskID == taskId)
-                    .Select(a => new ActivityDTO
-                    {
-                        Activity_ID = a.ActivityID,
-                        Task_ID = a.TaskID,
-                        Employee_PK = a.EmployeePK,
-                        Start_Date = a.StartDate
-                    })
-                    .ToList();
+        //[HttpGet]
+        //[Route("api/Tasks/{taskId}/Activities")]
+        //public IHttpActionResult GetActivitiesByTaskId(int taskId)
+        //{
+        //    try
+        //    {
+        //        var activities = db.Activity
+        //            .Where(a => a.TaskID == taskId)
+        //            .Select(a => new ActivityDTO
+        //            {
+        //                Activity_ID = a.ActivityID,
+        //                Task_ID = a.TaskID,
+        //                Employee_PK = a.EmployeePK,
+        //                Start_Date = a.StartDate
+        //            })
+        //            .ToList();
 
-                return Ok(activities);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok(activities);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+        //מתודה חדשה ששיר ביקשה
+        //[HttpGet]
+        //[Route("api/Tasks/{taskId}/Activities")]
+        //public IHttpActionResult GetActivitiesByTaskId(int taskId)
+        //{
+        //    try
+        //    {
+        //        var activities = db.Activity
+        //            .Where(a => a.TaskID == taskId)
+        //            .Join(db.Tasks, a => a.TaskID, t => t.TaskID, (a, t) => new { Activity = a, Task = t })
+        //            .Join(db.Customers, at => at.Task.CustomerID, c => c.ID, (at, c) => new { at.Activity, at.Task, Customer = c })
+        //            .Select(atc => new
+        //            {
+        //                Activity_ID = atc.Activity.ActivityID,
+        //                Task_ID = atc.Task.TaskID,
+        //                Employee_PK = atc.Activity.EmployeePK,
+        //                Start_Date = atc.Activity.StartDate,
+        //                End_Date = atc.Activity.EndDate,
+        //                CustomerName = atc.Customer.CustomerName
+        //            })
+        //            .ToList();
+
+        //        return Ok(activities);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
 
     }
 }

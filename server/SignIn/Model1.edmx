@@ -36,6 +36,7 @@
           <Property Name="CustomerEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CustomerAdress" Type="nvarchar" MaxLength="50" />
           <Property Name="CustomerPhone" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="CustomerType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="isPotential" Type="bit" Nullable="false" />
           <Property Name="isDeleted" Type="bit" Nullable="false" />
         </EntityType>
@@ -403,6 +404,7 @@
           <Property Name="CustomerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CustomerAdress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CustomerPhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CustomerType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isPotential" Type="Boolean" Nullable="false" />
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PriceQuotes" Relationship="Self.FK_PriceQuotes_Customers" FromRole="Customers" ToRole="PriceQuotes" />
@@ -788,6 +790,7 @@
                 <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
                 <ScalarProperty Name="CustomerAdress" ColumnName="CustomerAdress" />
                 <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerType" ColumnName="CustomerType" />
                 <ScalarProperty Name="isPotential" ColumnName="isPotential" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
               </MappingFragment>

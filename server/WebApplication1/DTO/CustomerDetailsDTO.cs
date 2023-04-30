@@ -21,7 +21,7 @@ namespace WebApplication1.DTO
         public bool CustomerIsPotential { get; set; }
 
         public bool CustomerIsDeleted { get; set; }
-
+        
         public string CustomerType { get; set; }//השדה החדש
 
         //public static implicit operator CustomerDetailsDTO(Customers v)
@@ -29,4 +29,6 @@ namespace WebApplication1.DTO
         //    throw new NotImplementedException();
         //}
     }
+
+
 }

@@ -15,8 +15,15 @@ namespace WebApplication1.DTO
 
         public DateTime Start_Date { get; set; }
 
-        public DateTime End_Date { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public DateTime? End_Date { get; set; }
+
+        public string CustomerName { get; set; }
+
     }
+
+
 }
 
 

@@ -27,6 +27,7 @@ namespace SignIn
         public string CustomerEmail { get; set; }
         public string CustomerAdress { get; set; }
         public string CustomerPhone { get; set; }
+        public string CustomerType { get; set; }
         public bool isPotential { get; set; }
         public bool isDeleted { get; set; }
     
@@ -34,10 +35,5 @@ namespace SignIn
         public virtual ICollection<PriceQuotes> PriceQuotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Projects> Projects { get; set; }
-        public object Name { get; set; }
-        public object Tasks { get; set; }
-        public object TotalTaskCount { get; set; }
-        public string CusomerType { get; set; }
-        public string CustomerType { get; set; }
     }
 }

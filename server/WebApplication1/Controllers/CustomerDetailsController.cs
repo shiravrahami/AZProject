@@ -26,6 +26,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
+               
                 var cust = db.Customers
                     .Where(x => x.ID == id)
                     .Select(x => new CustomerDetailsDTO

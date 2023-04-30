@@ -75,9 +75,6 @@ namespace WebApplication1.Controllers
 
         }
 
-
-
-   
     }
 
 
@@ -151,7 +148,7 @@ namespace WebApplication1.Controllers
 
 //                foreach (var task in tAll)
 //                {
-//                    if (task.CustomerID == customer.ID)
+//                    if (task.ID == customer.ID)
 //                    {
 //                        totalTasksCount++;
 //                        if (task.isDone == true)
