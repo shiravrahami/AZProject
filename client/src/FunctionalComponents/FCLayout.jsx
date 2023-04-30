@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import FCHeader from './FCHeader';
 import FCMenu from './FCMenu';
 import FCFooter from './FCFooter';
+import '../Styles/Layout.css';
 
-export default function FCLayout({children}) {
+
+export default function FCLayout({ children }) {
+
     return (
         <div>
             <FCHeader />
             <div className="content">
-                {/* <FCMenu /> */}
-                <div className="main">
-                     {children}
+                <div className="main" style={{ display: 'flex' }}>
+                    {children}
                 </div>
+                <FCMenu />
             </div>
             <FCFooter />
-        </div>
-    )
+        </div>
+    )
 }

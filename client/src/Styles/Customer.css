@@ -133,3 +133,11 @@
     color: #fff;
     border: none;
   }
+  .custname{
+    color: black;
+    text-decoration: none;
+  } 
+  .custname:hover{
+    color: #A827AB;
+    text-decoration: none;
+  }
