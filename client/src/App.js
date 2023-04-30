@@ -13,6 +13,8 @@ import FCemployees from './FunctionalComponents/FCEmployees';
 import FCTest from './FunctionalComponents/FCTest';
 import FCProjects from './FunctionalComponents/FCProjects';
 import FCProject from './FunctionalComponents/FCProject';
+import FCTask from './FunctionalComponents/FCTask';
+
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
             <Route path="/customer" element={<FCLayout><FCCustomer /></FCLayout>} />
             <Route path="/customers" element={<FCLayout><FCCustomers /></FCLayout>} />
             <Route path="/tasks" element={<FCLayout><FCTasks /></FCLayout>} />
+            <Route path="/task" element={<FCLayout><FCTask /></FCLayout>} />
+
             <Route path="/projects" element={<FCLayout><FCProjects /></FCLayout>} />
             <Route path="/employees" element={<FCLayout><FCemployees /></FCLayout>} />
             <Route path="/test" element={<FCTest />} />
