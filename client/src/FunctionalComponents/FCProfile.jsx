@@ -95,6 +95,6 @@ export default function FCProfile() {
                     {isEditing ? "שמירה" : "עריכה"}
                 </Button>
             </Row>
-        </div>
-    )
+        </div>
+    )
 }

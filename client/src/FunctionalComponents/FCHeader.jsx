@@ -6,8 +6,13 @@ import '../Styles/Layout.css';
 
 import { CDBSidebar, CDBSidebarContent, CDBSidebarFooter, CDBSidebarHeader, CDBSidebarMenu, CDBSidebarMenuItem } from 'cdbreact';
 import { NavLink } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from './UserContext';
 
 export default function FCHeader() {
+  const { userDetails } = useContext(UserContext);
+
+  console.log(userDetails);
   return (
     <div >
       <Row>

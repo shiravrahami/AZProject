@@ -6,7 +6,7 @@ import '../Styles/Layout.css';
 export default function FCMenu() {
     return (
                 <div>
-                    <div style={{ direction: 'rtl', display: 'flex', height: '80vh', overflow: 'scroll initial' }}>
+                    <div style={{ marginTop:'30px',direction: 'rtl', display: 'flex', height: '100vh', overflow: 'scroll initial'}}>
                         <CDBSidebar textColor="black" backgroundColor="white">
                             <CDBSidebarHeader className="text-decoration-none" style={{ color: 'black' }} prefix={<i className="fa fa-bars fa-large"></i>}>
                                 תפריט
