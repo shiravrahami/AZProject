@@ -1,19 +1,20 @@
 import React, { useState, useEffect , useContext} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/Home.css';
-import { useLocation } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import UserContext from './UserContext';
+import { useUserContext } from './UserContext';
 
 function HomeScreen(props) {
 
-  const{user}=useContext(UserContext);
+  const { user } = useUserContext();
 
-  const {state} = useLocation();
-  let userDetails = state;
-  
-  console.log('home: '+userDetails.EmployeeName);
+  // const {state} = useLocation();
+  // let userDetails = state;
+    
+  console.log('home: '+user.EmployeeName);
 
   const GoToSignIn = () => {
     window.location.href = '/';
@@ -24,7 +25,7 @@ function HomeScreen(props) {
       <Container>
         <Row>
           <Col xs={12} md={6}>
-            <h2>Hello, {userDetails.EmployeeName}</h2>
+            <h2>Hello, {user.EmployeeName}</h2>
             
           </Col>
         </Row>
