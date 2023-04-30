@@ -1,94 +1,99 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/Profile.css';
 import Form from 'react-bootstrap/Form';
 import { Row, Col } from 'react-bootstrap';
-import FCLayout from './FCLayout';
+import { useLocation } from 'react-router-dom';
+import UserContext from './UserContext';
+import { useUserContext } from './UserContext';
 
 export default function FCProfile() {
+
     const [isEditing, setIsEditing] = useState(false);
-    const [employeeDetails, setEmployeeDetails] = useState({
-        EmployeeName: '',
-        EmployeeEmail: '',
-        EmployeeID: '',
-        EmployeePhone: ''
-    });
+    const { user, updateUser } = useUserContext();
+
+    const [employeeEmail, setemployeeEmail] = useState(user.EmployeeEmail);
+    const [employeeName, setemployeeName] = useState(user.EmployeeName);
+    const [employeeID, setemployeeID] = useState(user.EmployeeID);
+    const [employeePhone, setemployeePhone] = useState(user.EmployeePhone);
+    const [employeeTitle, setemployeeTitle] = useState(user.EmployeeTitle);
+    const [employeePassword, setemployeePassword] = useState(user.EmployeePassword);
+    const [employeePhoto, setemployeePhoto] = useState(user.EmployeePhoto);
 
     const handleEditClick = () => {
+        const updatedUser = {
+            EmployeeEmail: employeeEmail,
+            EmployeeName: employeeName,
+            EmployeeID: employeeID,
+            EmployeePhone: employeePhone,
+            EmployeeTitle: employeeTitle,
+            EmployeePassword: employeePassword,
+            EmployeePhoto: employeePhoto
+        };
         setIsEditing(!isEditing);
+        console.log(user.EmployeePK + ' ' + updatedUser.EmployeePassword + ' ' + updatedUser.EmployeePhoto + ' ' + updatedUser.EmployeeTitle);
+
+        if (isEditing) {
+            updateUser(updatedUser, user)
+        }
+
+
     };
 
 
-    useEffect(() => {
-        const fetchEmployeeDetails = async () => {
-            const response = await fetch('http://194.90.158.74/cgroup95/prod/api/EmployeeDetails', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setEmployeeDetails(data);
-            }
-        };
-
-        fetchEmployeeDetails();
-    }, []);
+    console.log('proflie: ' + user.EmployeeEmail + ' ' + user.EmployeeName + ' ' + user.EmployeePK);
 
     return (
         <div className='container'>
             <Row>
                 <Col style={{ borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
-                    <Form style={{direction:'rtl'}}>
+                    <Form style={{ direction: 'rtl' }}>
+                        <Form.Label className='labelemail' style={{ textAlign: 'right', display: 'flex' }}> שם עובד</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{ textAlign: 'right', fontSize: 30 }}>
-                            <Form.Label className='labelemail'style={{textAlign:'right'}}> שם עובד</Form.Label>
                             <InputGroup>
-                                <FormControl className='input' disabled={!isEditing} type="text" placeholder="שם עובד" style={{ textAlign: 'right', fontSize: 20 }} value={employeeDetails.EmployeeName} onChange={(e) => setEmployeeDetails({ ...employeeDetails, EmployeeName: e.target.value })} />
+                                <FormControl className='input' type="text" placeholder={user.EmployeeName} defaultValue={user.EmployeeName} style={{ textAlign: 'right', fontSize: 20 }} onChange={(e) => setemployeeName(e.target.value)} disabled={!isEditing} />
                             </InputGroup>
                         </Form.Group>
 
+                        <Form.Label className='labelemail' style={{ textAlign: 'right', display: 'flex' }}> אי-מייל</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{ textAlign: 'right', fontSize: 30 }}>
-                            <Form.Label className='labelemail'> אי-מייל</Form.Label>
                             <InputGroup>
-                                <FormControl className='input' disabled={!isEditing} type="email" placeholder="אי-מייל" style={{ textAlign: 'right', fontSize: 20 }} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" value={employeeDetails.EmployeeEmail} onChange={(e) => setEmployeeDetails({ ...employeeDetails, EmployeeEmail: e.target.value })} />
+                                <FormControl className='input' disabled={!isEditing} type="email" placeholder={user.EmployeeEmail} defaultValue={user.EmployeeEmail} style={{ textAlign: 'right', fontSize: 20 }} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" onChange={(e) => setemployeeEmail(e.target.value)} />
                             </InputGroup>
                         </Form.Group>
 
+                        <Form.Label className='labelemail' style={{ textAlign: 'right', display: 'flex' }}> תעודת זהות</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{ textAlign: 'right', fontSize: 30 }}>
-                            <Form.Label className='labelemail'> תעודת זהות</Form.Label>
                             <InputGroup>
-                                <FormControl className='input' disabled={!isEditing} type="tel" placeholder="תעודת זהות" style={{ textAlign: 'right', fontSize: 20 }} value={employeeDetails.EmployeeID} onChange={(e) => setEmployeeDetails({ ...employeeDetails, EmployeeID: e.target.value })} />
+                                <FormControl className='input' disabled={!isEditing} type="tel" placeholder={user.EmployeeID} defaultValue={user.EmployeeID} style={{ textAlign: 'right', fontSize: 20 }} onChange={(e) => setemployeeID(e.target.value)} />
                             </InputGroup>
                         </Form.Group>
 
+                        <Form.Label className='labelemail' style={{ textAlign: 'right', display: 'flex' }}>מספר טלפון</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{ textAlign: 'right', fontSize: 30 }}>
-                            <Form.Label className='labelemail'>מספר טלפון</Form.Label>
                             <InputGroup>
-                                <FormControl className='input' disabled={!isEditing} type="tel" placeholder="מספר טלפון" style={{ textAlign: 'right', fontSize: 20 }} value={employeeDetails.EmployeePhone} onChange={(e) => setEmployeeDetails({ ...employeeDetails, EmployeePhone: e.target.value })} />
+                                <FormControl className='input' disabled={!isEditing} type="tel" placeholder={user.EmployeePhone} defaultValue={user.EmployeePhone} style={{ textAlign: 'right', fontSize: 20 }} onChange={(e) => setemployeePhone(e.target.value)} />
                             </InputGroup>
                         </Form.Group>
 
                     </Form>
                 </Col>
-                <Col style={{ textAlign: 'center' }}>
+                {/* <Col style={{ textAlign: 'center' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <img
                             src={process.env.PUBLIC_URL + '/ProfileDemo.png'}
                             alt='profile_picture'
                             style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                         />
-                        <label style={{ marginTop: '10px', fontSize: '30px' }}>Hello Anat</label>
+                        <label style={{ marginTop: '10px', fontSize: '30px' }}>Hello {user.EmployeeName}</label>
                     </div>
-                </Col>
+                </Col> */}
             </Row>
             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button className='btn-gradient-purple' type="button" onClick={handleEditClick}>
                     {isEditing ? "שמירה" : "עריכה"}
                 </Button>
-
             </Row>
         </div>
     )

@@ -1,85 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Accordion, Button, InputGroup, FormControl, Collapse } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/Customer.css';
 import { Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-
+import { useLocation } from 'react-router-dom';
 
 export default function FCCustomer() {
+    const [customerGet, setCustomerGet] = useState([]);
+    const [customer, setCust] = useState(customerGet);
+    const [CustomerNameUpdated, SetCustomerNameUpdated] = useState(customerGet.CustomerName);
+    const [CustomerEmailUpdated, SetCustomerEmailUpdated] = useState(customerGet.CustomerEmail);
+    const [CustomerAdressUpdated, SetCustomerAdressUpdated] = useState(customerGet.CustomerAdress);
+    const [CustomerPhoneUpdated, SetCustomerPhoneUpdated] = useState(customerGet.CustomerPhone);
+    const [CustomerIDUpdated, SetCustomerIDUpdated] = useState(customerGet.CustomerID);
+    const [isEditing, setIsEditing] = useState(false);
+    const location = useLocation();
+    const customerPK = location.state;
+    console.log("nevigate:" + customerPK);
+    const [projectGet, setprojectGet] = useState([]);
+
+
+    function handleClick() {
+        const customerDetailsUpdate = {
+            CustomerName: CustomerNameUpdated || customerGet.CustomerName,
+            CustomerEmail: CustomerEmailUpdated || customerGet.CustomerEmail,
+            CustomerAdress: CustomerAdressUpdated || customerGet.CustomerAdress,
+            CustomerPhone: CustomerPhoneUpdated || customerGet.CustomerPhone,
+            CustomerID: CustomerIDUpdated || customerGet.CustomerID
+        }
+        setIsEditing(!isEditing);
+        if (isEditing) {
+            updateCustomer(customerDetailsUpdate);
+            console.log(customerDetailsUpdate);
+        }
+    }
+    useEffect(() => {
+        async function fetchCustomer() {
+            try {
+                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/CustomerDetails/${customerPK}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    }
+                });
+                const json = await response.json();
+                setCustomerGet(json)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchCustomer();
+        async function showProjects() {
+            try {
+                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/Project_Cus_Task/GetProjectsAndTasks/${customerPK}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                    }
+                });
+                const json = await response.json();
+                setprojectGet(json)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        showProjects();
+    }, []);
+
+    function updateCustomer(customerDetailsUpdate) {
+        try {
+            const response = fetch(`https://194.90.158.74/cgroup95/prod/api/CustomerUpdate/${customerPK}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(customerDetailsUpdate)
+            });
+            if (response.ok) {
+                const updatedCustomer = response.json();
+                setCust(updatedCustomer);
+            } else {
+                throw new Error('Failed to update customer details');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+function passTask(TaskID){
+
+}
+
     return (
         <div className='fccust'>
-            {/* <Row>
-                <Col className='imgLogo' style={{ display: 'flex', justifyContent: 'center' }}>
-                    <img style={{ width: '20%' }} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br />
-                </Col>
-            </Row> */}
-            {/* <Row>
-                <Col className='projclass' style={{ borderRadius: '30px ', margin: '20px', padding: '20px' }}>
-                    <Row className="align-items-center">
-                        <Col xs={4}>
-                            <Form style={{ textAlign: 'right' }}>
-                                <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicEmail">
-                                    <Form.Label style={{ textAlign: 'right' }}>כתובת אי-מייל</Form.Label>
-                                    <InputGroup>
-                                        <FormControl className='input' type="email" placeholder="Email" />
-                                    </InputGroup>
-                                </Form.Group>
-
-                                <Form.Label>מספר טלפון</Form.Label>
-                                <InputGroup>
-                                    <FormControl className='input' type="tel" placeholder="050-0000000" onKeyPress={(event) => {
-                                        if (!/[0-9]/.test(event.key)) {
-                                            event.preventDefault();
-                                        }
-                                    }} />
-                                </InputGroup><br />
-                                <Form.Group controlId="CustType">
-                                    <Form.Select style={{ textAlign: 'right', paddingTop: '14.3px' }}>
-                                        <option value="1">סוג לקוח</option>
-                                        <option value="2">ניהול</option>
-                                        <option value="3">עיצוב</option>
-                                        <option value="3">פיתוח</option>
-                                    </Form.Select>
-                                </Form.Group>
-                            </Form>
-                        </Col>
-                        <Col xs={4}>
-                            <Form style={{ textAlign: 'right' }}>
-                                <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicEmail">
-                                    <Form.Label >שם הלקוח</Form.Label>
-                                    <InputGroup>
-                                        <FormControl style={{ textAlign: 'right' }} className='input' type="text" placeholder="שם הלקוח" />
-                                    </InputGroup>
-                                </Form.Group>
-                                <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicPassword">
-                                    <Form.Label className='id' >ח"פ/ ת"ז</Form.Label>
-                                    <InputGroup>
-                                        <FormControl style={{ textAlign: 'right' }} className='input' type="tel" placeholder='ח"פ/ ת"ז' onKeyPress={(event) => {
-                                            if (!/[0-9]/.test(event.key)) {
-                                                event.preventDefault();
-                                            }
-                                        }} />
-                                    </InputGroup>
-                                </Form.Group>
-                                <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicPassword">
-                                    <Form.Label>כתובת</Form.Label>
-                                    <InputGroup>
-                                        <FormControl style={{ textAlign: 'right' }} className='input' type="text" placeholder="כתובת" />
-                                    </InputGroup>
-                                </Form.Group>
-                            </Form>
-                        </Col>
-                        <Col xs={4} style={{ textAlign: 'left' }}>
-                            <Button className='btn-contract' type="button">עותק חוזה</Button>
-                            <br />
-                            <Button className='btn-price' type="button">עותק הצעת מחיר</Button>
-                            <br />
-                            <Button className='btn-gradient-purple' type="button">עדכן</Button>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row > */}
             <Form className='projclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                 <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }}>
                     <Accordion.Item eventKey="0">
@@ -87,60 +101,61 @@ export default function FCCustomer() {
                         <Accordion.Body >
                             <Row >
                                 <Col >
-                                    <Form.Group style={{ textAlign: 'right' }}>
+                                    <Form.Group style={{ textalign: 'right' }}>
                                         <Form.Label >כתובת אי-מייל</Form.Label>
                                         <InputGroup>
-                                            <FormControl className='input' type="email" placeholder="Email" />
+                                            <FormControl className='input' type="email" defaultValue={customerGet.CustomerEmail} onChange={(e) => SetCustomerEmailUpdated(e.target.value)} />
                                         </InputGroup>
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group style={{ textAlign: 'right' }}>
+                                    <Form.Group style={{ textalign: 'right' }}>
                                         <Form.Label>מספר טלפון</Form.Label>
-                                        <InputGroup style={{ textAlign: 'right' }}>
-                                            <FormControl className='input' type="tel" placeholder="050-0000000" onKeyPress={(event) => {
-                                                if (!/[0-9]/.test(event.key)) {
-                                                    event.preventDefault();
-                                                }
-                                            }} />
+                                        <InputGroup style={{ textalign: 'right' }}>
+                                            <FormControl className='input' type="tel" defaultValue={customerGet.CustomerPhone} onChange={(e) => SetCustomerPhoneUpdated(e.target.value)}
+                                                onKeyPress={(event) => {
+                                                    if (!/[0-9]/.test(event.key)) {
+                                                        event.preventDefault();
+                                                    }
+                                                }} />
                                         </InputGroup>
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group style={{ textAlign: 'right' }} controlId="CustType">
+                                    <Form.Group style={{ textalign: 'right' }} controlId="CustType">
                                         <Form.Label>סוג לקוח</Form.Label>
-                                        <Form.Select style={{ fontSize: '20px', textAlign: 'right' }}>
-                                            <option value="1">פיתוח</option>
-                                            <option value="2">ניהול</option>
-                                            <option value="3">עיצוב</option>
+                                        <Form.Select style={{ fontSize: '20px', textalign: 'right' }}>
+                                            <option value="1">שעתי</option>
+                                            <option value="2">חודשי</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicEmail">
+                                    <Form.Group style={{ textalign: 'right' }} className="" controlId="formBasicEmail">
                                         <Form.Label >שם הלקוח</Form.Label>
                                         <InputGroup>
-                                            <FormControl style={{ textAlign: 'right' }} className='input' type="text" placeholder="שם הלקוח" />
+                                            <FormControl style={{ textalign: 'right' }} className='input' type="text" defaultValue={customerGet.CustomerName} onChange={(e) => SetCustomerNameUpdated(e.target.value)} />
                                         </InputGroup>
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicPassword">
+                                    <Form.Group style={{ textalign: 'right' }} className="" controlId="formBasicPassword">
                                         <Form.Label className='id' >ח"פ/ ת"ז</Form.Label>
                                         <InputGroup>
-                                            <FormControl style={{ textAlign: 'right' }} className='input' type="tel" placeholder='ח"פ/ ת"ז' onKeyPress={(event) => {
-                                                if (!/[0-9]/.test(event.key)) {
-                                                    event.preventDefault();
-                                                }
-                                            }} />
+                                            <FormControl style={{ textalign: 'right' }} className='input' type="tel" defaultValue={customerGet.CustomerID} onChange={(e) => SetCustomerIDUpdated(e.target.value)}
+                                                onKeyPress={(event) => {
+                                                    if (!/[0-9]/.test(event.key)) {
+                                                        event.preventDefault();
+                                                    }
+                                                }} />
                                         </InputGroup>
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicPassword">
+                                    <Form.Group style={{ textalign: 'right' }} className="" controlId="formBasicPassword">
                                         <Form.Label>כתובת</Form.Label>
                                         <InputGroup>
-                                            <FormControl style={{ textAlign: 'right' }} className='input' type="text" placeholder="כתובת" />
+                                            <FormControl style={{ textalign: 'right' }} className='input' type="text" defaultValue={customerGet.CustomerAdress} onChange={(e) => SetCustomerAdressUpdated(e.target.value)} />
                                         </InputGroup>
                                     </Form.Group>
                                 </Col>
@@ -150,10 +165,12 @@ export default function FCCustomer() {
                                 <Col>
                                     <Button className='btn-contract' type="button">עותק חוזה</Button>
                                 </Col>
-                                <Col style={{textAlign: "center"}}>
-                                    <Button className='btn-gradient-purple_Customer' type="button">עדכן</Button>
+                                <Col style={{ textalign: "center" }}>
+                                    <Button className='btn-gradient-purple_Customer' type='button' onClick={handleClick} >
+                                        {isEditing ? "שמירה" : "עריכה"}
+                                    </Button>
                                 </Col>
-                                <Col style={{ textAlign: 'left' }}>
+                                <Col style={{ textalign: 'left' }}>
                                     <Button className='btn-price' type="button">עותק הצעת מחיר</Button>
                                 </Col>
                             </Row>
@@ -164,42 +181,29 @@ export default function FCCustomer() {
             <Row>
                 <Col className='projclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     פרויקטים
-                    <Accordion className="accordionProj" style={{ direction: 'rtl' }}>
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header >
-                                <span style={{ textAlign: 'right' }}>פרויקט 1</span>
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                <span>פרויקט 1</span>
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>פרויקט 2</Accordion.Header>
-                            <Accordion.Body>
-                                פרויקט 2
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="2">
-                            <Accordion.Header>פרויקט 2</Accordion.Header>
-                            <Accordion.Body>
-                                פרויקט 2
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="3">
-                            <Accordion.Header>פרויקט 2</Accordion.Header>
-                            <Accordion.Body>
-                                פרויקט 2
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="4">
-                            <Accordion.Header>פרויקט 2</Accordion.Header>
-                            <Accordion.Body>
-                                פרויקט 2
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
+                    {projectGet
+                        .filter((project) => project.ProjectName)
+                        .map((project) => (
+                            <Accordion className="accordionProj" style={{ direction: 'rtl' }}>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header >
+                                        <span style={{ textalign: 'right' }}>{project.ProjectName}</span>
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <span>
+                                            <Row>
+                                                <Col className="custname" onClick={() => passTask(project.TaskID)}>
+                                                {project.TaskName}
+                                                </Col>
+                                                <Col>
+                                                {new Date(project.Deadline).toLocaleDateString('en-GB')}                                                </Col>
+                                            </Row>
+                                        </span>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                        ))}
                 </Col>
-
             </Row>
         </div >
 
