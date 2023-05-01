@@ -14,7 +14,7 @@ namespace WebApplication1.Controllers
     public class TaskDeatailsController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
-        
+
         //פרטי משימה 
         [HttpGet]
         [Route("api/TaskDeatails/{id}")]
@@ -23,8 +23,8 @@ namespace WebApplication1.Controllers
             try
             {
                 var task = db.Tasks
-                    .Where(x => x.TaskID == id) 
-                    .Select(x => new TasksDTO 
+                    .Where(x => x.TaskID == id)
+                    .Select(x => new TasksDTO
                     {
                         TaskID = x.TaskID,
                         TaskName = x.TaskName,
@@ -180,7 +180,7 @@ namespace WebApplication1.Controllers
         //ListTasks/{employeeID}
         [HttpGet]
         [Route("api/ListTasks/{employeeID}")]
-        public IHttpActionResult GetListTasks (int employeeID)
+        public IHttpActionResult GetListTasks(int employeeID)
         {
             try
             {
@@ -191,18 +191,18 @@ namespace WebApplication1.Controllers
                     var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
                          .OrderByDescending(x => x.InsertTaskDate)
                         .Select(x => new TasksDTO
-                    {
-                        TaskID = x.TaskID,
-                        TaskName = x.TaskName,
-                        ProjectID = x.ProjectID,
-                        TaskType = x.TaskType,
-                        TaskDescription = x.TaskDescription,
-                        InsertTaskDate = x.InsertTaskDate,
-                        Deadline = (DateTime)(x.Deadline),
-                        isDone = x.isDone,
-                        isDeleted = x.isDeleted
+                        {
+                            TaskID = x.TaskID,
+                            TaskName = x.TaskName,
+                            ProjectID = x.ProjectID,
+                            TaskType = x.TaskType,
+                            TaskDescription = x.TaskDescription,
+                            InsertTaskDate = x.InsertTaskDate,
+                            Deadline = (DateTime)(x.Deadline),
+                            isDone = x.isDone,
+                            isDeleted = x.isDeleted
 
-                    }).ToList();
+                        }).ToList();
                     return Ok(MangerTasksList);
 
                 }
@@ -308,7 +308,7 @@ namespace WebApplication1.Controllers
                     if (tasks == null || tasks.Count == 0)
                     {
                         return NotFound();
-                        
+
                     }
 
                     var TasksList = tasks.Select(x => new TasksDTO
@@ -341,7 +341,7 @@ namespace WebApplication1.Controllers
         //ListTasks/{id}
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/ListTasks/{id}")]
-        public IHttpActionResult PutListTasks (int id)
+        public IHttpActionResult PutListTasks(int id)
         {
             var tasks = db.Tasks.FirstOrDefault(c => c.TaskID == id);
             if (tasks == null)
@@ -367,7 +367,9 @@ namespace WebApplication1.Controllers
             return Ok(openTasksCount);
         }
 
-        //מחזיר פעילות לפי משימה ספציפית
+
+        //מחזיר פעילות לפי משימה ספציפית 
+        //יצרתי אותה מתודה בתוספת שם לקוח
         //[HttpGet]
         //[Route("api/Tasks/{taskId}/Activities")]
         //public IHttpActionResult GetActivitiesByTaskId(int taskId)
@@ -393,40 +395,10 @@ namespace WebApplication1.Controllers
         //    }
         //}
 
-        //מתודה חדשה ששיר ביקשה
-        //[HttpGet]
-        //[Route("api/Tasks/{taskId}/Activities")]
-        //public IHttpActionResult GetActivitiesByTaskId(int taskId)
-        //{
-        //    try
-        //    {
-        //        var activities = db.Activity
-        //            .Where(a => a.TaskID == taskId)
-        //            .Join(db.Tasks, a => a.TaskID, t => t.TaskID, (a, t) => new { Activity = a, Task = t })
-        //            .Join(db.Customers, at => at.Task.CustomerID, c => c.ID, (at, c) => new { at.Activity, at.Task, Customer = c })
-        //            .Select(atc => new
-        //            {
-        //                Activity_ID = atc.Activity.ActivityID,
-        //                Task_ID = atc.Task.TaskID,
-        //                Employee_PK = atc.Activity.EmployeePK,
-        //                Start_Date = atc.Activity.StartDate,
-        //                End_Date = atc.Activity.EndDate,
-        //                CustomerName = atc.Customer.CustomerName
-        //            })
-        //            .ToList();
-
-        //        return Ok(activities);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
 
 
     }
 }
-
 
 
 

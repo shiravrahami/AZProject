@@ -15,7 +15,7 @@ namespace WebApplication1.DTO
 
         public string EmployeePhone { get; set; }
 
-        public int EmployeePK { get; set; }
+        public int ID { get; set; }
         public string EmployeeTitle { get; set; }
         public string EmployeePassword { get; set; }
         public string EmployeePhoto { get; set; }

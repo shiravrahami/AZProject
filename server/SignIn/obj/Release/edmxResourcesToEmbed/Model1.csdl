@@ -36,6 +36,7 @@
     <Property Name="CustomerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="CustomerAdress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CustomerPhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="CustomerType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="isPotential" Type="Boolean" Nullable="false" />
     <Property Name="isDeleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="PriceQuotes" Relationship="Self.FK_PriceQuotes_Customers" FromRole="Customers" ToRole="PriceQuotes" />

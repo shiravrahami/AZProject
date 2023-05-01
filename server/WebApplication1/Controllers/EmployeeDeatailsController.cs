@@ -27,7 +27,7 @@ public class EmployeeDetailsController : ApiController
                     EmployeeName = x.EmployeeName,
                     EmployeeID = x.EmployeeID,
                     EmployeePhone = x.EmployeePhone,
-                    EmployeePK = x.EmployeePK,
+                    ID = x.ID,
                     EmployeeTitle = x.EmployeeTitle,
                     EmployeePassword = x.EmployeePassword,
                     EmployeePhoto = x.EmployeePhoto
@@ -176,9 +176,9 @@ public class EmployeeDetailsController : ApiController
             {
                 return NotFound();
             }
-
             var empList = db.Employees.Where(x => !x.isDeleted).Select(x => new EmployeeDeatailsDTO
             {
+                ID = x.ID,
                 EmployeeID = x.EmployeeID,
                 EmployeeName = x.EmployeeName,
                 EmployeeEmail = x.EmployeeEmail,

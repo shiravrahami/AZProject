@@ -33,6 +33,7 @@
           <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
           <ScalarProperty Name="CustomerAdress" ColumnName="CustomerAdress" />
           <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+          <ScalarProperty Name="CustomerType" ColumnName="CustomerType" />
           <ScalarProperty Name="isPotential" ColumnName="isPotential" />
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
         </MappingFragment>

@@ -31,6 +31,7 @@
     <Property Name="CustomerEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="CustomerAdress" Type="nvarchar" MaxLength="50" />
     <Property Name="CustomerPhone" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="CustomerType" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="isPotential" Type="bit" Nullable="false" />
     <Property Name="isDeleted" Type="bit" Nullable="false" />
   </EntityType>

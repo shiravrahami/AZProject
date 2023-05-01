@@ -28,7 +28,7 @@ namespace WebApplication1.Controllers
             using (var db = new igroup195_DB_Prod())
             {
                 var employeeTasks = db.Tasks
-                    .Where(t => t.EmployeePK == employeeId && t.InsertTaskDate.Date == date.Date)
+                    .Where(t => t.ID == employeeId && t.InsertTaskDate.Date == date.Date)
                     .ToList();
 
                 foreach (var task in employeeTasks)

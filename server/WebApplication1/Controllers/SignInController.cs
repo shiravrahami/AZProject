@@ -29,7 +29,7 @@ namespace WebApplication1.Controllers
                         EmployeeName = employee.EmployeeName,
                         EmployeeID = employee.EmployeeID,
                         EmployeePhone = employee.EmployeePhone,
-                        EmployeePK = employee.ID,
+                        ID = employee.ID,
                         EmployeeTitle = employee.EmployeeTitle,
                         EmployeePassword = employee.EmployeePassword,
                         EmployeePhoto = employee.EmployeePhoto
