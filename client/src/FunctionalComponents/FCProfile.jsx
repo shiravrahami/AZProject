@@ -47,7 +47,7 @@ export default function FCProfile() {
     return (
         <div className='container'>
             <Row>
-                <Col style={{ borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
+                <Col style={{width:'95%', borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
                     <Form style={{ direction: 'rtl' }}>
                         <Form.Label className='labelemail' style={{ textAlign: 'right', display: 'flex' }}> שם עובד</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{ textAlign: 'right', fontSize: 30 }}>

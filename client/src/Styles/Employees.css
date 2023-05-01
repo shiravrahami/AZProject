@@ -1,7 +1,7 @@
-.custtable {
+.emptable {
     background-color: #ffffff;
     min-height: 100vh;
-    display: flex;
+    display: inline;
     flex-direction: column;
     justify-content: center;
     font-size: calc(10px + 2vmin);
@@ -9,6 +9,7 @@
     margin-left: 100px;
     margin-right: 100px;
     direction: rtl;
+    margin-top: 20px
 }
 
 .imgLogo {

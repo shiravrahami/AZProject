@@ -47,7 +47,7 @@ export default function FCCustomers() {
     useEffect(() => {
         async function fetchCustomers() {
             try {
-                const response = await fetch("http://194.90.158.74/cgroup95/prod/api/CustomerTasks/GetCustomerTasks", {
+                const response = await fetch("https://proj.ruppin.ac.il/cgroup95/prod/api/CustomerTasks/GetCustomerTasks", {
                     method: "GET",
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8'
@@ -65,7 +65,7 @@ export default function FCCustomers() {
     function deleteCustomers(customerPK) {
         try {
             const response = fetch(
-                `https://194.90.158.74/cgroup95/prod/api/ListCustomers/${customerPK}`,
+                `https://proj.ruppin.ac.il/cgroup95/prod/api/ListCustomers/${customerPK}`,
                 {
                     method: "PUT",
                     headers: {
@@ -88,7 +88,7 @@ export default function FCCustomers() {
     return (
         <div className='custtable'>
             <Row>
-                <Form className='projclass' style={{ width: '1250px', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
+                <Form className='projclass' style={{width:'95%', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header style={{ backgroundColor: '#f7f7f7', alignItems: 'left', fontSize: '20px' }}>לקוחות</Accordion.Header>

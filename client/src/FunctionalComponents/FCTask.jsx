@@ -30,7 +30,7 @@ export default function FCTask() {
     useEffect(() => {
         const fetchTaskTypes = async () => {
             try {
-                const response = await fetch('http://194.90.158.74/cgroup95/prod/api/TaskTypes');
+                const response = await fetch('https://proj.ruppin.ac.il/cgroup95/prod/api/TaskTypes');
                 const data = await response.json();
                 setTaskTypes(data);
             } catch (error) {
@@ -42,7 +42,7 @@ export default function FCTask() {
 
         const fetchActivities = async () => {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/Tasks/${task.TaskId}/Activities`, {
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/GetActivity_Task_CusName/${task.TaskID}`, {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
@@ -59,7 +59,7 @@ export default function FCTask() {
     function deleteTasks(TaskID) {
         try {
             const response = fetch(
-                `https://194.90.158.74/cgroup95/prod/api/ListTasks/${TaskID}`,
+                `https://proj.ruppin.ac.il/cgroup95/prod/api/ListTasks/${TaskID}`,
                 {
                     method: "PUT",
                     headers: {

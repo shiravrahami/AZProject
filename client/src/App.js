@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/cgroup95/prod/build">
           <Routes>
             <Route path="/" element={<SignInScreen />} />
             <Route path="/home" element={<FCLayout><FCHome /></FCLayout>} />
@@ -29,7 +29,6 @@ function App() {
             <Route path="/customers" element={<FCLayout><FCCustomers /></FCLayout>} />
             <Route path="/tasks" element={<FCLayout><FCTasks /></FCLayout>} />
             <Route path="/task" element={<FCLayout><FCTask /></FCLayout>} />
-
             <Route path="/projects" element={<FCLayout><FCProjects /></FCLayout>} />
             <Route path="/employees" element={<FCLayout><FCemployees /></FCLayout>} />
             <Route path="/test" element={<FCTest />} />

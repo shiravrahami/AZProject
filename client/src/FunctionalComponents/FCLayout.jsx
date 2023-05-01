@@ -11,7 +11,7 @@ export default function FCLayout({ children }) {
         <div>
             <FCHeader />
             <div className="content">
-                <div className="main" style={{ display: 'flex' }}>
+                <div className="main" style={{ display: 'inline', padding:'20px' }}>
                     {children}
                 </div>
                 <FCMenu />

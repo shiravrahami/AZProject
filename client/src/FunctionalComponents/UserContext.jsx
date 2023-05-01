@@ -14,9 +14,9 @@ export const UserProvider = ({ children }) => {
   }
 
   async function updateUser(updatedUser, user) {
-    console.log('77777777777'+user.EmployeePK + ' ' + updatedUser.EmployeeName);
+    console.log('77777777777'+user.EmployeePK + ' '+user.ID + ' ' + updatedUser.EmployeeName);
     try {
-      const response = await fetch(`https://194.90.158.74/cgroup95/prod/api/EmployeeUpdate/${user.EmployeePK}`, {
+      const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/EmployeeUpdate/${user.EmployeePK}`, {
         method: "PUT",
         body: JSON.stringify(updatedUser),
         headers: new Headers({

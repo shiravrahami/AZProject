@@ -38,7 +38,7 @@ export default function FCCustomer() {
     useEffect(() => {
         async function fetchCustomer() {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/CustomerDetails/${customerPK}`, {
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/CustomerDetails/${customerPK}`, {
                     method: "GET",
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8'
@@ -53,7 +53,7 @@ export default function FCCustomer() {
         fetchCustomer();
         async function showProjects() {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/Project_Cus_Task/GetProjectsAndTasks/${customerPK}`, {
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/Project_Cus_Task/GetProjectsAndTasks/${customerPK}`, {
                     method: "GET",
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8'
@@ -70,7 +70,7 @@ export default function FCCustomer() {
 
     function updateCustomer(customerDetailsUpdate) {
         try {
-            const response = fetch(`https://194.90.158.74/cgroup95/prod/api/CustomerUpdate/${customerPK}`, {
+            const response = fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/CustomerUpdate/${customerPK}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

@@ -39,7 +39,7 @@ export default function FCTasks() {
     function deleteTasks(TaskID) {
         try {
             const response = fetch(
-                `https://194.90.158.74/cgroup95/prod/api/ListTasks/${TaskID}`,
+                `https://proj.ruppin.ac.il/cgroup95/prod/api/ListTasks/${TaskID}`,
                 {
                     method: "PUT",
                     headers: {
@@ -57,7 +57,7 @@ export default function FCTasks() {
     useEffect(() => {
         async function fetchtasks() {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/ListTasks/${user.EmployeePK}`, {
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/ListTasks/${user.EmployeePK}`, {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
@@ -76,10 +76,10 @@ export default function FCTasks() {
     console.log("first get" + tasks);
 
 
-    async function SwitchChange(user) {
+    async function SwitchChange() {
         setswitchon(!switchon);
         try {
-            const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/ListTasksNextDay/6`, {
+            const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/ListTasksNextDay/${user.EmployeePK}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
@@ -102,7 +102,7 @@ export default function FCTasks() {
     return (
         <div className='custtable'>
             <Row>
-                <Form className='projclass' style={{ width: '1250px', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
+                <Form className='projclass' style={{width:'95%',borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header style={{ backgroundColor: '#f7f7f7', alignItems: 'left', fontSize: '20px' }}>משימות</Accordion.Header>

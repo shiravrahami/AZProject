@@ -26,7 +26,7 @@ function SignInScreen() {
   }
 
   const handleSubmit = () => {
-    fetch('http://194.90.158.74/cgroup95/prod/api/signin', {
+    fetch('https://proj.ruppin.ac.il/cgroup95/prod/api/signin', {
       method: 'POST',
       body: JSON.stringify(user),
       headers: new Headers({
@@ -48,7 +48,7 @@ function SignInScreen() {
       .then(data => {
         // Create a new object with the response data
         const userDetails = {
-          EmployeePK: data.EmployeePK,
+          EmployeePK: data.ID,
           EmployeeID: data.EmployeeID,
           EmployeeName: data.EmployeeName,
           EmployeeEmail: data.EmployeeEmail,

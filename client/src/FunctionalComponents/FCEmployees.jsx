@@ -35,7 +35,7 @@ export default function FCemployees() {
         console.log("delete "+ ID);
         try {
             const response = fetch(
-                `https://194.90.158.74/cgroup95/prod/api/Listemployees/${ID}`,
+                `https://proj.ruppin.ac.il/cgroup95/prod/api/Listemployees/${ID}`,
                 {
                     method: "PUT",
                     headers: {
@@ -53,7 +53,7 @@ export default function FCemployees() {
     useEffect(() => {
         async function fetchemployees() {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/ListEmployees`, {
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/ListEmployees`, {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
@@ -74,7 +74,7 @@ export default function FCemployees() {
         showPassword: false,
     });
 
-    const handleClickShowPassword = () => {
+    const handleClickShowPassword = (id) => {
         setValues({ ...values, showPassword: !values.showPassword });
     };
 
@@ -88,9 +88,12 @@ export default function FCemployees() {
     };
 
     return (
-        <div className='custtable'>
+        <div className='emptable'>
             <Row>
-                <Form className='projclass' style={{ width: '1700px', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
+                <Form  
+                // style={{ width: '1250px', borderRadius: '20px ', margin: '20px', padding: '20px' }}
+                style={{ width: '95%', borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}
+                >
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header style={{ backgroundColor: '#f7f7f7', alignItems: 'left', fontSize: '20px' }}>עובדים</Accordion.Header>
@@ -139,7 +142,7 @@ export default function FCemployees() {
                 <Col   style={{textAlign:'center'}}lg={1}>
                 </Col>
             </Row>
-            <Row style={{textAlign:'right'}}>
+            <Row style={{textAlign:'right',  marginRight: '10px'}}>
                 {employees
                     .filter((employee) => employee.EmployeeName.includes(searchValue))
                     .map((employee) => (
@@ -161,7 +164,7 @@ export default function FCemployees() {
                                                 fontSize={25}
                                                 className='iconeye'
                                                 icon={values.showPassword ? faEyeSlash : faEye}
-                                                onClick={handleClickShowPassword}
+                                                onClick={()=>handleClickShowPassword(employee.ID)}
                                                 onMouseDown={handleMouseDownPassword} />
                                         </InputGroup.Text>
                                     </InputGroup>

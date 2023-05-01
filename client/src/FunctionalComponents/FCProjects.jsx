@@ -39,7 +39,7 @@ export default function FCprojects() {
     function deleteprojects(projectID) {
         try {
             const response = fetch(
-                `http://194.90.158.74/cgroup95/prod/api/Listprojects/${projectID}`,
+                `https://proj.ruppin.ac.il/cgroup95/prod/api/Listprojects/${projectID}`,
                 {
                     method: "PUT",
                     headers: {
@@ -57,7 +57,7 @@ export default function FCprojects() {
     useEffect(() => {
         async function fetchprojects() {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/ListProjects`, {
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/ListProjects`, {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
@@ -78,7 +78,7 @@ export default function FCprojects() {
     async function SwitchChange() {
         setswitchon(!switchon);
         try {
-            const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/ListProjectsNextDay`, {
+            const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/ListProjectsNextDay`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
@@ -102,7 +102,7 @@ export default function FCprojects() {
     return (
         <div className='custtable'>
             <Row>
-                <Form className='projclass' style={{ width: '1250px', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
+                <Form className='projclass' style={{width:'95%', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header style={{ backgroundColor: '#f7f7f7', alignItems: 'left', fontSize: '20px' }}>פרויקטים</Accordion.Header>
