@@ -42,8 +42,7 @@ export default function FCTask() {
 
         const fetchActivities = async () => {
             try {
-                const response = await fetch(`http://194.90.158.74/cgroup95/prod/api/Tasks/${task.TaskId}/Activities`, {
-                    method: "GET",
+                const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/GetActivity_Task_CusName/${task.TaskID}`, {                    method: "GET",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
                     },
