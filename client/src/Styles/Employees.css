@@ -142,4 +142,14 @@
     width: 100%;
 
   }
-  
+.eyeicon{
+    margin-right:50px;
+    background-color: transparent;
+}
+.passwordInput{
+    border: none;
+    background-color: transparent;
+}
+.input-group-text{
+    background-color: transparent;
+}

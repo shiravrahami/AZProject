@@ -25,6 +25,7 @@ const label = { inputProps: { 'aria-label': 'Color switch demo' } };
 export default function FCTasks() {
 
     const [tasks, settasks] = useState([]);
+    const [tasksName, settasksName] = useState([]);
     const [tasksDay, settasksDay] = useState([]);
     const [settasksDel] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -75,6 +76,20 @@ export default function FCTasks() {
 
     console.log("first get" + tasks);
 
+    async function fetchTasksByName(){
+        try {
+            const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/ListTasksNameDesc/${user.EmployeePK}`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            });
+            const json = await response.json();
+            settasksName(json || []); // make sure tasks is always an array
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     async function SwitchChange() {
         setswitchon(!switchon);
@@ -94,7 +109,7 @@ export default function FCTasks() {
         console.log("second get" + tasksDay);
     }
 
-     const passTask = (task) => {
+    const passTask = (task) => {
         navigate('/task', { state: task });
     }
 
@@ -102,7 +117,7 @@ export default function FCTasks() {
     return (
         <div className='custtable'>
             <Row>
-                <Form className='projclass' style={{width:'95%',borderRadius: '20px ', margin: '20px', padding: '20px' }}>
+                <Form className='projclass' style={{ width: '95%', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header style={{ backgroundColor: '#f7f7f7', alignItems: 'left', fontSize: '20px' }}>משימות</Accordion.Header>
@@ -113,8 +128,10 @@ export default function FCTasks() {
                                     </Col> */}
                                     <Col className="col-auto">
                                         <Form.Group style={{ textalign: 'right', width: '150px', backgroundColor: 'none' }} controlId="CustType">
-                                            {/* <Form.Label>סוג לקוח</Form.Label> */}
-                                            <Form.Select style={{ fontSize: '20px', textalign: 'right' }}>
+                                            <Form.Select style={{backgroundColor:'transparent', fontSize: '20px', textAlign: 'right' }} onChange={(event) => {
+                                                if (event.target.value === '2') {
+                                                    fetchTasksByName();
+                                                }}}>
                                                 <option value="1">הכי חדש</option>
                                                 <option value="2">לפי שם</option>
                                             </Form.Select>
