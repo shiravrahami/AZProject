@@ -19,17 +19,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { useUserContext } from './UserContext';
 
-const PinkSwitch = styled(Switch)(({ theme }) => ({
-    '& .MuiSwitch-switchBase.Mui-checked': {
-        color: pink[600],
-        '&:hover': {
-            backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
-        },
-    },
-    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-        backgroundColor: pink[600],
-    },
-}));
+// const PinkSwitch = styled(Switch)(({ theme }) => ({
+//     '& .MuiSwitch-switchBase.Mui-checked': {
+//         color: pink[600],
+//         '&:hover': {
+//             backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
+//         },
+//     },
+//     '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+//         backgroundColor: pink[600],
+//     },
+// }));
 
 const label = { inputProps: { 'aria-label': 'Color switch demo' } };
 export default function FCCustomers() {
@@ -38,7 +38,8 @@ export default function FCCustomers() {
     const [searchValue, setSearchValue] = useState('');
     const { custSet } = useUserContext();
     const navigate = useNavigate();
-
+    const [switchon, setswitchon] = useState(false);
+    const [customersNoTasks, setcustomersNoTasks] = useState([]);
 
     const handleSearch = (event) => {
         setSearchValue(event.target.value);
@@ -61,7 +62,24 @@ export default function FCCustomers() {
         }
         fetchCustomers();
     }, []);
-    
+
+    async function SwitchChange() {
+        setswitchon(!switchon);
+        try {
+            const response = await fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/CustomerTasks/GetCustomerTasksSummary`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            });
+            const json = await response.json();
+            setcustomersNoTasks(json || []); // make sure tasks is always an array
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
     function deleteCustomers(customerPK) {
         try {
             const response = fetch(
@@ -94,9 +112,9 @@ export default function FCCustomers() {
                             <Accordion.Header style={{ backgroundColor: '#f7f7f7', alignItems: 'left', fontSize: '20px' }}>לקוחות</Accordion.Header>
                             <Accordion.Body style={{ backgroundColor: '#f7f7f7' }}>
                                 <Row>
-                                    <Col >
+                                    {/* <Col >
                                         <Button className='btn-filter'>סנן</Button>
-                                    </Col>
+                                    </Col> */}
                                     <Col className='switch'>
                                         <FormControlLabel
                                             value="end"
@@ -105,6 +123,8 @@ export default function FCCustomers() {
                                             labelPlacement="start"
                                             className='switch'
                                             style={{ fontFamily: 'Calibri, sans-serif' }}
+                                            onChange={SwitchChange}
+                                            checked={switchon}
                                         />
                                     </Col>
                                 </Row>
@@ -143,7 +163,7 @@ export default function FCCustomers() {
                 <Col lg={1}></Col>
             </Row>
             <Row>
-                {customers
+            {switchon && customersNoTasks
                     .filter((customer) => customer.CustomerName.includes(searchValue))
                     .map((customer) => (
                         <Row className="customer-row" key={customer.CustomerName}>
@@ -155,13 +175,33 @@ export default function FCCustomers() {
                             <Col lg={1}>
                                 <Button className="trash" onClick={() => {
                                     deleteCustomers(customer.CustomerPK);
-                                    setCustomers(customers.filter((c) => c.CustomerPK !== customer.CustomerPK));
+                                    setcustomersNoTasks(customersNoTasks.filter((c) => c.CustomerPK !== customer.CustomerPK));
                                 }}>
                                     <FontAwesomeIcon icon={faTrash} />
                                 </Button>
                             </Col>
                         </Row>
                     ))}
+                    {!switchon && customers
+                        .filter((customer) => customer.CustomerName.includes(searchValue))
+                        .map((customer) => (
+                            <Row className="customer-row" key={customer.CustomerName}>
+                                <Col style={{testAlign:'right'}} lg={4} className="custname" onClick={() => passCust(customer)}>
+                                    {customer.CustomerName}
+                                </Col>
+                                <Col lg={4}>{customer.TotalopenCount}</Col>
+                                <Col lg={3}>{customer.CountTasks}</Col>
+                                <Col lg={1}>
+                                    <Button className="trash" onClick={() => {
+                                        deleteCustomers(customer.CustomerPK);
+                                        setCustomers(customers.filter((c) => c.CustomerPK !== customer.CustomerPK));
+                                    }}>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </Button>
+                                </Col>
+                            </Row>
+                        ))}
+
             </Row>
         </div >
     )

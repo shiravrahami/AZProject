@@ -67,7 +67,6 @@ function SignInScreen() {
         console.log("Error fetching user data: ", error);
       });
   };
-  ////////////////////////////////////
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
@@ -86,11 +85,44 @@ function SignInScreen() {
     setPassword(event.target.value)
   };
 
-  ////////////////////////////////////
   return (
-    <div className='main'>
+    <div>
+      <div 
+      style={{ 
+        backgroundImage: `url(${process.env.PUBLIC_URL}/building1.png)`,
+        backgroundPosition: "center bottom",
+        backgroundSize: "cover",
+        minHeight: "100vh",
+        width:'100%',
+        position: "relative",
+    }}>
+
+    </div>
+    <div style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(255, 255, 255, 0.864)",
+      zIndex: 1,
+    }} />
+    <div className='mainsignin' style={{
+      backgroundColor: "transparent",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 1,
+  }}>
       <img height={'250px'} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br />
-      <Form >
+      <Form className='signinBox' 
+      style={{ borderRadius: '50px', 
+      padding: '50px', 
+      backgroundColor:'white', 
+      background: "white",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
+     }}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           {/* <Form.Label className='labelemail' style={{textAlign: 'right'}}> Email כתובת</Form.Label> */}
           <InputGroup>
@@ -121,6 +153,7 @@ function SignInScreen() {
         {errorMessage && <p style={{ fontSize: '23px', color: 'red' }}>{errorMessage}</p>}
         <Button className='btn-gradient-purple' type="button" onClick={handleSubmit}>התחבר</Button>
       </Form>
+    </div>
     </div>
   );
 }

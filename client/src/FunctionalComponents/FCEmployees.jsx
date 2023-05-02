@@ -11,28 +11,28 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-import { useUserContext } from './UserContext';
-
 const label = { inputProps: { 'aria-label': 'Color switch demo' } };
 
 export default function FCemployees() {
 
     const [employees, setemployees] = useState([]);
-    const [employeesDay, setemployeesDay] = useState([]);
     const [setemployeesDel] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [switchon, setswitchon] = useState(false);
+    const [showPassword, setShowPassword] = useState({});
 
-    const [password, setPassword] = useState('');
-
-    const { user } = useUserContext();
+    const togglePassword = (employeeId) => {
+        setShowPassword((prevState) => ({
+            ...prevState,
+            [employeeId]: !prevState[employeeId],
+        }));
+    };
 
     const handleSearch = (event) => {
         setSearchValue(event.target.value);
     };
 
     function deleteemployees(ID) {
-        console.log("delete "+ ID);
+        console.log("delete " + ID);
         try {
             const response = fetch(
                 `https://proj.ruppin.ac.il/cgroup95/prod/api/Listemployees/${ID}`,
@@ -60,39 +60,20 @@ export default function FCemployees() {
                     },
                 });
                 const json = await response.json();
-                setemployees(json || []); // make sure employees is always an array
+                setemployees(json || []); 
             } catch (error) {
                 console.error(error);
             }
         }
         fetchemployees();
-        //         console.log("first get" + " " +employees[1].EmployeeName+ " "+employees[1].EmployeeEmail+ " "+employees.EmployeePhone+ " "+employees.EmployeeTitle+ " "+employees.EmployeePassword)
     }, []);
-
-    const [values, setValues] = React.useState({
-        password: "",
-        showPassword: false,
-    });
-
-    const handleClickShowPassword = (id) => {
-        setValues({ ...values, showPassword: !values.showPassword });
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const handlePasswordChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-        setPassword(event.target.value)
-    };
 
     return (
         <div className='emptable'>
             <Row>
-                <Form  
-                // style={{ width: '1250px', borderRadius: '20px ', margin: '20px', padding: '20px' }}
-                style={{ width: '95%', borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}
+                <Form
+                    // style={{ width: '1250px', borderRadius: '20px ', margin: '20px', padding: '20px' }}
+                    style={{ width: '95%', borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}
                 >
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
                         <Accordion.Item eventKey="0">
@@ -120,53 +101,55 @@ export default function FCemployees() {
                     </Accordion>
                 </Form>
             </Row>
-            <Row className='titles' style={{textAlign:'center'}}>
-                <Col  style={{textAlign:'center'}}lg={2}>
+            <Row className='titles' style={{ textAlign: 'center' }}>
+                <Col style={{ textAlign: 'center' }} lg={2}>
                     שם העובד
                 </Col>
-                <Col   style={{textAlign:'center'}}lg={1}>
+                <Col style={{ textAlign: 'center' }} lg={1}>
                     ת"ז
                 </Col>
-                <Col  style={{textAlign:'center'}}lg={3}>
+                <Col style={{ textAlign: 'center' }} lg={3}>
                     אימייל
                 </Col>
-                <Col   style={{textAlign:'center'}}lg={2}>
+                <Col style={{ textAlign: 'center' }} lg={2}>
                     מס' טלפון
                 </Col>
-                <Col  style={{textAlign:'center', marginLeft:'5px'}}lg={1}>
+                <Col style={{ textAlign: 'center', marginLeft: '5px' }} lg={1}>
                     תפקיד
                 </Col>
-                <Col  style={{textAlign:'center'}}lg={2}>
+                <Col style={{ textAlign: 'center' }} lg={2}>
                     סיסמה
                 </Col>
-                <Col   style={{textAlign:'center'}}lg={1}>
+                <Col style={{ textAlign: 'center' }} lg={1}>
                 </Col>
             </Row>
-            <Row style={{textAlign:'right',  marginRight: '10px'}}>
+            <Row style={{ textAlign: 'right', marginRight: '10px' }}>
                 {employees
                     .filter((employee) => employee.EmployeeName.includes(searchValue))
                     .map((employee) => (
                         <Row className="employee-row" key={employee.EmployeeName}>
-                            <Col className="empname employee-col" lg={2}> 
+                            <Col className="empname employee-col" lg={2}>
                                 {employee.EmployeeName}
                             </Col>
                             <Col className="employee-col" lg={1}>{employee.EmployeeID}</Col>
-                            <Col className="employee-col" style={{textAlign:'left'}} lg={3}>{employee.EmployeeEmail}</Col>
-                            <Col className="employee-col" style={{textAlign:'center'}} lg={2}>{employee.EmployeePhone}</Col>
-                            <Col className="employee-col"  lg={1}>{employee.EmployeeTitle}</Col>
-                            <Col className="employee-col"  lg={2} style={{ marginLeft:'1px', width:'250px'}}>
+                            <Col className="employee-col" style={{ textAlign: 'left' }} lg={3}>{employee.EmployeeEmail}</Col>
+                            <Col className="employee-col" style={{ textAlign: 'center' }} lg={2}>{employee.EmployeePhone}</Col>
+                            <Col className="employee-col" lg={1}>{employee.EmployeeTitle}</Col>
+                            <Col className="employee-col" lg={2} style={{ marginLeft: '1px', width: '250px' }}>
                                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <InputGroup >
-                                        <FormControl className='input' type={values.showPassword ? "text" : "password"} onChange={handlePasswordChange("password")}
-                                            value={employee.EmployeePassword} style={{ backgroundColor: 'transparent', textAlign: 'left' }} />
+                                    <InputGroup style={{textAlign:'center'}}>
                                         <InputGroup.Text style={{ padding: '0px' }}>
                                             <FontAwesomeIcon
-                                                fontSize={25}
-                                                className='iconeye'
-                                                icon={values.showPassword ? faEyeSlash : faEye}
-                                                onClick={()=>handleClickShowPassword(employee.ID)}
-                                                onMouseDown={handleMouseDownPassword} />
+                                            className='eyeicon'
+                                                icon={showPassword[employee.ID] ? faEyeSlash : faEye}
+                                                onClick={() => togglePassword(employee.ID)}
+                                            />
                                         </InputGroup.Text>
+                                        <FormControl className="passwordInput"
+                                        style={{fontSize:'28.74px', fontFamily:'Calibri'}}
+                                            type={showPassword[employee.ID] ? 'text' : 'password'}
+                                            value={employee.EmployeePassword}
+                                            readOnly />
                                     </InputGroup>
                                 </Form.Group>
                             </Col>
@@ -184,4 +167,3 @@ export default function FCemployees() {
         </div >
     )
 }
-

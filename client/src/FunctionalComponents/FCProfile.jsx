@@ -7,6 +7,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import UserContext from './UserContext';
 import { useUserContext } from './UserContext';
+import Toast from 'react-bootstrap/Toast';
 
 export default function FCProfile() {
 
@@ -20,6 +21,8 @@ export default function FCProfile() {
     const [employeeTitle, setemployeeTitle] = useState(user.EmployeeTitle);
     const [employeePassword, setemployeePassword] = useState(user.EmployeePassword);
     const [employeePhoto, setemployeePhoto] = useState(user.EmployeePhoto);
+    const [show, setShow] = useState(false);
+
 
     const handleEditClick = () => {
         const updatedUser = {
@@ -36,19 +39,27 @@ export default function FCProfile() {
 
         if (isEditing) {
             updateUser(updatedUser, user)
+            setShow(true);
         }
-
-
     };
-
 
     console.log('proflie: ' + user.EmployeeEmail + ' ' + user.EmployeeName + ' ' + user.EmployeePK);
 
     return (
         <div className='container'>
             <Row>
+                <Col lg={12}>
+                    <Toast style={{marginBottom:'20px',width:'100%',justifyContent:'center'}} onClose={() => setShow(false)} show={show} delay={3000} autohide>
+                        <Toast.Body style={{backgroundColor:'#d3ffdf'}}>העובד נשמר בהצלחה</Toast.Body>
+                    </Toast>
+                </Col>
+            </Row>
+            <Row>
                 <Col style={{width:'95%', borderRadius: '30px ', margin: '20px', padding: '20px', backgroundColor: 'rgb(247, 247, 247)', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
                     <Form style={{ direction: 'rtl' }}>
+                        <Form.Label className='profileTitle'>
+                            פרופיל אישי
+                        </Form.Label>
                         <Form.Label className='labelemail' style={{ textAlign: 'right', display: 'flex' }}> שם עובד</Form.Label>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{ textAlign: 'right', fontSize: 30 }}>
                             <InputGroup>
