@@ -37,11 +37,7 @@ export default function FCProfile() {
         if (isEditing) {
             updateUser(updatedUser, user)
         }
-
-
     };
-
-
     console.log('proflie: ' + user.EmployeeEmail + ' ' + user.EmployeeName + ' ' + user.EmployeePK);
 
     return (

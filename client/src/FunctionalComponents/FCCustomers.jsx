@@ -6,17 +6,13 @@ import { Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
 import { alpha, styled } from '@mui/material/styles';
 import { pink } from '@mui/material/colors';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-
 import { useNavigate } from 'react-router-dom';
-
 import { useUserContext } from './UserContext';
 
 const PinkSwitch = styled(Switch)(({ theme }) => ({
