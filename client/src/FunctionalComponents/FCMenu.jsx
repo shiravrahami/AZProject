@@ -36,7 +36,6 @@ export default function FCMenu() {
                                 </CDBSidebarMenu>
                             </CDBSidebarContent>
                             <CDBSidebarFooter style={{ textalign: 'center' }}>
-                                <div style={{ padding: '20px 5px' }} > Sidebar Footer </div>
                             </CDBSidebarFooter>
                         </CDBSidebar>
                     </div>

@@ -19,7 +19,7 @@ export default function FCHeader() {
         <Col lg={1}>
           <div >
             <div  style={{ alignItems: 'left', textalign: 'left', height: '30px', margin: '15px', display: 'flex' }}>
-              <FontAwesomeIcon icon={faSignOutAlt} onClick={() => (window.location.href = '/')} title="התנתק/י" />
+              <FontAwesomeIcon icon={faSignOutAlt} onClick={() => (window.location.href = 'cgroup95/prod/build/')} title="התנתק/י" />
             </div>
           </div>
         </Col>

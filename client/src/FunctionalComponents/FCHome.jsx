@@ -17,7 +17,10 @@ function HomeScreen(props) {
   }
   return (
     <div>
-      {/* <img height={'350px'} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br /> */}
+      <br/>
+      <br/>
+      <h1 style={{fontSize:"100px"}} >:) בשיפוצים</h1>
+      {/* <img height={'350px'} src={process.env.PUBLIC_URL + '/LogoWithoutDesc.jpg'} alt="Logo" /><br /><br />
       <Container>
         <Row>
           <Col xs={12} md={6}>
@@ -48,7 +51,7 @@ function HomeScreen(props) {
             <p>event</p>
           </Col>
         </Row>
-      </Container>
+      </Container> */}
     </div>
   );
 }

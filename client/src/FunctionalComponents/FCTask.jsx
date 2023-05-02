@@ -130,7 +130,7 @@ export default function FCTask() {
         }
     }
     return (
-        <Form className='projclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px', width: '85%' }}>
+        <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px' , width: '95%'}}>
             <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }}>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header style={{ alignItems: 'left', fontSize: '20px' }}>פרטי משימה- {task.TaskName} </Accordion.Header>
