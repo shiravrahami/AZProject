@@ -176,20 +176,95 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //כולל הוספת המיון
-        //ListTasks/{employeeID}
+        //מקורית
+        //[HttpGet]
+        //[Route("api/ListTasks/{employeeID}")]
+        //public IHttpActionResult GetListTasks(int employeeID)
+        //{
+        //    try
+        //    {
+
+        //        if (employeeID == 6)
+        //        {
+        //            var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
+        //                 .OrderByDescending(x => x.InsertTaskDate)
+        //                .Select(x => new TasksDTO
+        //                {
+        //                    TaskID = x.TaskID,
+        //                    TaskName = x.TaskName,
+        //                    ProjectID = x.ProjectID,
+        //                    TaskType = x.TaskType,
+        //                    TaskDescription = x.TaskDescription,
+        //                    InsertTaskDate = x.InsertTaskDate,
+        //                    Deadline = (DateTime)(x.Deadline),
+        //                    isDone = x.isDone,
+        //                    isDeleted = x.isDeleted,
+        //                    CustomerName = x.Projects.Customers.CustomerName
+
+        //                }).ToList();
+        //            return Ok(MangerTasksList);
+
+        //        }
+        //        else
+        //        {
+        //            var tasks = (from t in db.Tasks
+        //                         join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
+        //                         where tea.EmployeePK == employeeID
+        //                         && !t.isDeleted
+        //                         orderby t.InsertTaskDate descending
+        //                         select new
+        //                         {
+        //                             t.TaskID,
+        //                             t.TaskName,
+        //                             t.ProjectID,
+        //                             t.TaskType,
+        //                             t.TaskDescription,
+        //                             t.InsertTaskDate,
+        //                             t.Deadline,
+        //                             t.isDone,
+        //                             t.isDeleted,
+        //                             CustomerName = t.Projects.Customers.CustomerName
+        //                         }).ToList();
+
+        //            if (tasks == null || tasks.Count == 0)
+        //            {
+        //                return NotFound();
+        //            }
+
+        //            var TasksList = tasks.Select(x => new TasksDTO
+        //            {
+        //                TaskID = x.TaskID,
+        //                TaskName = x.TaskName,
+        //                ProjectID = x.ProjectID,
+        //                TaskType = x.TaskType,
+        //                TaskDescription = x.TaskDescription,
+        //                InsertTaskDate = x.InsertTaskDate,
+        //                Deadline = (DateTime)(x.Deadline),
+        //                isDone = x.isDone,
+        //                isDeleted = x.isDeleted,
+        //                CustomerName = x.CustomerName
+        //            }).ToList();
+
+        //            return Ok(TasksList);
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest("Error");
+        //    }
+        //}
+
+        //מקורית בתוספת שם העובד
         [HttpGet]
         [Route("api/ListTasks/{employeeID}")]
         public IHttpActionResult GetListTasks(int employeeID)
         {
             try
             {
-
                 if (employeeID == 6)
                 {
-
                     var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
-                         .OrderByDescending(x => x.InsertTaskDate)
+                        .OrderByDescending(x => x.InsertTaskDate)
                         .Select(x => new TasksDTO
                         {
                             TaskID = x.TaskID,
@@ -200,7 +275,98 @@ namespace WebApplication1.Controllers
                             InsertTaskDate = x.InsertTaskDate,
                             Deadline = (DateTime)(x.Deadline),
                             isDone = x.isDone,
-                            isDeleted = x.isDeleted
+                            isDeleted = x.isDeleted,
+                            CustomerName = x.Projects.Customers.CustomerName,
+                            EmployeeName = ""
+                        }).ToList();
+                    return Ok(MangerTasksList);
+                }
+                else
+                {
+                    var tasks = (from t in db.Tasks
+                                 join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
+                                 join e in db.Employees on tea.EmployeePK equals e.ID
+                                 where tea.EmployeePK == employeeID && !t.isDeleted
+                                 orderby t.InsertTaskDate descending
+                                 select new
+                                 {
+                                     t.TaskID,
+                                     t.TaskName,
+                                     t.ProjectID,
+                                     t.TaskType,
+                                     t.TaskDescription,
+                                     t.InsertTaskDate,
+                                     t.Deadline,
+                                     t.isDone,
+                                     t.isDeleted,
+                                     CustomerName = t.Projects.Customers.CustomerName,
+                                     EmployeeName = e.EmployeeName
+                                 }).ToList();
+
+                    if (tasks == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var TasksList = tasks.Select(x => new TasksDTO
+                    {
+                        TaskID = x.TaskID,
+                        TaskName = x.TaskName,
+                        ProjectID = x.ProjectID,
+                        TaskType = x.TaskType,
+                        TaskDescription = x.TaskDescription,
+                        InsertTaskDate = x.InsertTaskDate,
+                        Deadline = (DateTime)(x.Deadline),
+                        isDone = x.isDone,
+                        isDeleted = x.isDeleted,
+                        CustomerName = x.CustomerName,
+                        EmployeeName = x.EmployeeName
+                    }).ToList();
+
+                    return Ok(TasksList);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        //שכפול ומיון לפי שם משימה
+        [HttpGet]
+        [Route("api/ListTasksNameDesc/{employeeID}")]
+        public IHttpActionResult GetListTasksNameDesc(int employeeID)
+        {
+            try
+            {
+
+                if (employeeID == 6)
+                {
+                    var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
+                         .OrderByDescending(x => x.TaskName)
+                        .Select(x => new TasksDTO
+                        {
+                            TaskID = x.TaskID,
+                            TaskName = x.TaskName,
+                            ProjectID = x.ProjectID,
+                            TaskType = x.TaskType,
+                            TaskDescription = x.TaskDescription,
+                            InsertTaskDate = x.InsertTaskDate,
+                            Deadline = (DateTime)(x.Deadline),
+                            isDone = x.isDone,
+                            isDeleted = x.isDeleted,
+                            CustomerName = x.Projects.Customers.CustomerName
 
                         }).ToList();
                     return Ok(MangerTasksList);
@@ -208,7 +374,6 @@ namespace WebApplication1.Controllers
                 }
                 else
                 {
-
                     var tasks = (from t in db.Tasks
                                  join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
                                  where tea.EmployeePK == employeeID
@@ -224,9 +389,9 @@ namespace WebApplication1.Controllers
                                      t.InsertTaskDate,
                                      t.Deadline,
                                      t.isDone,
-                                     t.isDeleted
+                                     t.isDeleted,
+                                     CustomerName = t.Projects.Customers.CustomerName
                                  }).ToList();
-
 
                     if (tasks == null || tasks.Count == 0)
                     {
@@ -243,9 +408,10 @@ namespace WebApplication1.Controllers
                         InsertTaskDate = x.InsertTaskDate,
                         Deadline = (DateTime)(x.Deadline),
                         isDone = x.isDone,
-                        isDeleted = x.isDeleted
-
+                        isDeleted = x.isDeleted,
+                        CustomerName = x.CustomerName
                     }).ToList();
+
                     return Ok(TasksList);
                 }
             }
@@ -254,6 +420,92 @@ namespace WebApplication1.Controllers
                 return BadRequest("Error");
             }
         }
+
+
+
+
+
+
+
+
+        //כולל הוספת המיון
+        //ListTasks/{employeeID}
+        //[HttpGet]
+        //[Route("api/ListTasks/{employeeID}")]
+        //public IHttpActionResult GetListTasks(int employeeID)
+        //{
+        //    try
+        //    {
+
+        //        if (employeeID == 6)
+        //        {
+
+        //            var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
+        //                 .OrderByDescending(x => x.InsertTaskDate)
+        //                .Select(x => new TasksDTO
+        //                {
+        //                    TaskID = x.TaskID,
+        //                    TaskName = x.TaskName,
+        //                    ProjectID = x.ProjectID,
+        //                    TaskType = x.TaskType,
+        //                    TaskDescription = x.TaskDescription,
+        //                    InsertTaskDate = x.InsertTaskDate,
+        //                    Deadline = (DateTime)(x.Deadline),
+        //                    isDone = x.isDone,
+        //                    isDeleted = x.isDeleted
+
+        //                }).ToList();
+        //            return Ok(MangerTasksList);
+
+        //        }
+        //        else
+        //        {
+
+        //            var tasks = (from t in db.Tasks
+        //                         join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
+        //                         where tea.EmployeePK == employeeID
+        //                         && !t.isDeleted
+        //                         orderby t.InsertTaskDate descending
+        //                         select new
+        //                         {
+        //                             t.TaskID,
+        //                             t.TaskName,
+        //                             t.ProjectID,
+        //                             t.TaskType,
+        //                             t.TaskDescription,
+        //                             t.InsertTaskDate,
+        //                             t.Deadline,
+        //                             t.isDone,
+        //                             t.isDeleted
+        //                         }).ToList();
+
+
+        //            if (tasks == null || tasks.Count == 0)
+        //            {
+        //                return NotFound();
+        //            }
+
+        //            var TasksList = tasks.Select(x => new TasksDTO
+        //            {
+        //                TaskID = x.TaskID,
+        //                TaskName = x.TaskName,
+        //                ProjectID = x.ProjectID,
+        //                TaskType = x.TaskType,
+        //                TaskDescription = x.TaskDescription,
+        //                InsertTaskDate = x.InsertTaskDate,
+        //                Deadline = (DateTime)(x.Deadline),
+        //                isDone = x.isDone,
+        //                isDeleted = x.isDeleted
+
+        //            }).ToList();
+        //            return Ok(TasksList);
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest("Error");
+        //    }
+        //}
 
         //אותה מתודה עם התאריך העתידי
         [HttpGet]

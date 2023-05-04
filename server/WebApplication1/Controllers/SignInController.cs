@@ -15,7 +15,8 @@ namespace WebApplication1.Controllers
     public class SignInController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
-
+        [HttpPost]
+        [Route("api/signin")]
         public IHttpActionResult PostEmployeeSignIn ([FromBody] EmployeeSignInDTO user)
         {
             var employee = db.Employees.FirstOrDefault(emp => emp.EmployeeEmail == user.Email && emp.EmployeePassword == user.Password);

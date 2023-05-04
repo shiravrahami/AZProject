@@ -81,32 +81,32 @@ namespace WebApplication1.Controllers
 
 
         //עדכון פרויקט קוד ישן
-        [HttpPut]
-        [Route("api/ProjectUpdate")]
-        public IHttpActionResult UpdateProject([FromBody] ProjectsDTO updatedProject)
-        {
-            try
-            {
-                var project = db.Projects.Find(updatedProject.ProjectID);
-                if (project == null)
-                {
-                    return NotFound();
-                }
+        //[HttpPut]
+        //[Route("api/ProjectUpdate")]
+        //public IHttpActionResult UpdateProject([FromBody] ProjectsDTO updatedProject)
+        //{
+        //    try
+        //    {
+        //        var project = db.Projects.Find(updatedProject.ProjectID);
+        //        if (project == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                project.ProjectName = updatedProject.ProjectName;
-                project.Description = updatedProject.Description;
-                project.Deadline = updatedProject.Deadline;
-                project.isDone = updatedProject.isDone;
+        //        project.ProjectName = updatedProject.ProjectName;
+        //        project.Description = updatedProject.Description;
+        //        project.Deadline = updatedProject.Deadline;
+        //        project.isDone = updatedProject.isDone;
 
-                db.SaveChanges();
+        //        db.SaveChanges();
 
-                return Ok("good");
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+        //        return Ok("good");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
 
         //InsertProject
         [HttpPost]
@@ -178,70 +178,6 @@ namespace WebApplication1.Controllers
         }
 
 
-        //חדש נוסף- לבדוק מה טוב יותר
-        //[HttpGet]
-        //[Route("api/ListProjects")]
-        //public IHttpActionResult GetListProjects()
-        //{
-        //    try
-        //    {
-        //        var employeeID = 6; // או כל ערך אחר המתאים לצורך המחיקה של הפרמטר
-        //        if (employeeID == 6)
-        //        {
-        //            var projects = db.Projects.ToList();
-        //            if (projects == null || projects.Count == 0)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            var projList = db.Projects
-        //                .Where(x => !x.isDeleted)
-        //                .OrderByDescending(x => x.InsertDate) // מיון לפי תאריך יורד
-        //                .Select(x => new ProjectsDTO
-        //                {
-        //                    ProjectID = x.ProjectID,
-        //                    ProjectName = x.ProjectName,
-        //                    CustomerPK = x.CustomerPK,
-        //                    Description = x.Description,
-        //                    InsertDate = x.InsertDate,
-        //                    Deadline = (DateTime)(x.Deadline),
-        //                    isDone = x.isDone,
-        //                    isDeleted = x.isDeleted
-        //                })
-        //                .ToList();
-
-        //            return Ok(projList);
-        //        }
-        //        else
-        //        {
-        //            var projects = (from p in db.Projects
-        //                            join t in db.Tasks on p.ProjectID equals t.ProjectID
-        //                            join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
-        //                            where tea.EmployeePK == employeeID
-        //                                && !t.isDeleted
-        //                            select new
-        //                            {
-        //                                p.ProjectID,
-        //                                p.ProjectName,
-        //                                p.CustomerPK,
-        //                                p.Description,
-        //                                p.InsertDate,
-        //                                p.Deadline,
-        //                                p.isDone,
-        //                                p.isDeleted
-        //                            })
-        //                            .OrderByDescending(x => x.InsertDate) // מיון לפי תאריך יורד
-        //                            .ToList();
-        //            return Ok(projects);
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return BadRequest("Error");
-        //    }
-        //}
-
-
 
 
         //כולל הוספת מיון
@@ -281,6 +217,46 @@ namespace WebApplication1.Controllers
                 return BadRequest("Error");
             }
         }
+
+
+        //שכפול
+        [HttpGet]
+        [Route("api/ListProjectsNameDesc")]
+        public IHttpActionResult GetListProjectsNameDesc()
+        {
+            try
+            {
+                var projects = db.Projects.ToList();
+                if (projects == null || projects.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                var projList = db.Projects
+                    .Where(x => !x.isDeleted)
+                    .OrderByDescending(x => x.ProjectName) // מיון לפי תאריך יורד
+                    .Select(x => new ProjectsDTO
+                    {
+                        ProjectID = x.ProjectID,
+                        ProjectName = x.ProjectName,
+                        CustomerPK = x.CustomerPK,
+                        Description = x.Description,
+                        InsertDate = x.InsertDate,
+                        Deadline = (DateTime)(x.Deadline),
+                        isDone = x.isDone,
+                        isDeleted = x.isDeleted
+                    })
+                    .ToList();
+
+                return Ok(projList);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+
+
 
 
 

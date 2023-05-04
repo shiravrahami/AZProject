@@ -568,3 +568,6 @@ C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebAppli
 C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\obj\Release\WebApplication1.csproj.CopyComplete
 C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\obj\Release\WebApplication1.dll
 C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\obj\Release\WebApplication1.pdb
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\NLog.config
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\NLog.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\NLog.xml

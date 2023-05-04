@@ -7,22 +7,18 @@ namespace WebApplication1.DTO
 {
     public class ActivityDTO
     {
-        public int Activity_ID { get; set; }
+        public int ActivityID { get; set; }
 
-        public int Task_ID { get; set; }
+        public int TaskID { get; set; }
 
-        public int Employee_PK { get; set; }
+        public int EmployeePK { get; set; }
 
-        public DateTime Start_Date { get; set; }
+        public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
-
-        //public DateTime? End_Date { get; set; }
-
         public string CustomerName { get; set; }
 
     }
-
 
 }
 

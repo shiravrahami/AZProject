@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.DTO;
 using Newtonsoft.Json.Linq;
+using NLog;
 
 namespace WebApplication1.Controllers
 {
@@ -15,7 +16,7 @@ namespace WebApplication1.Controllers
     public class Activity_Task_CusNameController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         [HttpGet]
         [Route("api/GetActivity_Task_CusName/{taskId}")]
         public IHttpActionResult GetActivity_Task_CusName(int taskId)
@@ -28,10 +29,10 @@ namespace WebApplication1.Controllers
                     .Join(db.Customers, at => at.Task.ProjectID, c => c.ID, (at, c) => new { ActivityTask = at, Customer = c })
                     .Select(a => new ActivityDTO
                     {
-                        Activity_ID = a.ActivityTask.Activity.ActivityID,
-                        Task_ID = a.ActivityTask.Activity.TaskID,
-                        Employee_PK = a.ActivityTask.Activity.EmployeePK,
-                        Start_Date = a.ActivityTask.Activity.StartDate,
+                        ActivityID = a.ActivityTask.Activity.ActivityID,
+                        TaskID = a.ActivityTask.Activity.TaskID,
+                        EmployeePK = a.ActivityTask.Activity.EmployeePK,
+                        StartDate = a.ActivityTask.Activity.StartDate,
                         CustomerName = a.Customer.CustomerName
                     })
                     .ToList();
@@ -43,5 +44,8 @@ namespace WebApplication1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
     }
 }

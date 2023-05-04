@@ -130,7 +130,7 @@ namespace WebApplication1.Controllers
     //}
 
 
-    //הקוד מביא ללקוח את הפרויקטים שלו, לכל פרוייקט את המשימות שלו. במידה ויש לפרויקט מספר משימות הן מוצגות באותו אובייקט תחת שם הפרויקט, כל פרטי המשימות מוצגות
+    //הקוד מביא ללקוח את הפרויקטים שלו, לכל פרוייקט את המשימות שלו. במידה ויש לפרויקט מספר משימות הן מוצגות באותו אובייקט תחת שם הפרויקט, לא מוצג כל פרטי המשימה
     public class Project_Cus_TaskController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
@@ -148,17 +148,11 @@ namespace WebApplication1.Controllers
                         ProjectName = p.ProjectName,
                         Tasks = p.Tasks
                             .Where(t => !t.isDeleted)
-                            .Select(t => new TasksDTO
+                            .Select(t => new
                             {
-                                TaskID = t.TaskID,
-                                TaskName = t.TaskName,
-                                ProjectID = t.ProjectID,
-                                TaskType = t.TaskType,
-                                TaskDescription = t.TaskDescription,
-                                InsertTaskDate = t.InsertTaskDate,
-                                Deadline = (DateTime)t.Deadline,
-                                isDone = t.isDone,
-                                isDeleted = t.isDeleted
+                                t.TaskID,
+                                t.TaskName,
+                                Deadline = (DateTime)t.Deadline
                             })
                             .ToList()
                     })
@@ -181,9 +175,70 @@ namespace WebApplication1.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
+
+
+
+
+
+
+
+    //הקוד מביא ללקוח את הפרויקטים שלו, לכל פרוייקט את המשימות שלו. במידה ויש לפרויקט מספר משימות הן מוצגות באותו אובייקט תחת שם הפרויקט, כל פרטי המשימות מוצגות
+    //public class Project_Cus_TaskController : ApiController
+    //{
+    //    igroup195_DB_Prod db = new igroup195_DB_Prod();
+
+    //    [HttpGet]
+    //    [Route("api/Project_Cus_Task/GetProjectsAndTasks/{customerId}")]
+    //    public IHttpActionResult GetProjectsAndTasks(int customerId)
+    //    {
+    //        try
+    //        {
+    //            var projectsAndTasks = db.Projects
+    //                .Where(p => p.CustomerPK == customerId && !p.isDeleted)
+    //                .Select(p => new
+    //                {
+    //                    ProjectName = p.ProjectName,
+    //                    Tasks = p.Tasks
+    //                        .Where(t => !t.isDeleted)
+    //                        .Select(t => new TasksDTO
+    //                        {
+    //                            TaskID = t.TaskID,
+    //                            TaskName = t.TaskName,
+    //                            ProjectID = t.ProjectID,
+    //                            TaskType = t.TaskType,
+    //                            TaskDescription = t.TaskDescription,
+    //                            InsertTaskDate = t.InsertTaskDate,
+    //                            Deadline = (DateTime)t.Deadline,
+    //                            isDone = t.isDone,
+    //                            isDeleted = t.isDeleted
+    //                        })
+    //                        .ToList()
+    //                })
+    //                .ToList();
+
+    //            var result = projectsAndTasks
+    //                .GroupBy(p => p.ProjectName)
+    //                .Select(g => new
+    //                {
+    //                    ProjectName = g.Key,
+    //                    Tasks = g.SelectMany(p => p.Tasks)
+    //                        .ToList()
+    //                })
+    //                .ToList();
+
+    //            return Ok(result);
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            return BadRequest(ex.Message);
+    //        }
+
+    //    }
+
+
+
+    //}
 }
 
 

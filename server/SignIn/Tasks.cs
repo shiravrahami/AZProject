@@ -42,5 +42,6 @@ namespace SignIn
         public virtual TaskType TaskType1 { get; set; }
         public int ID { get; set; }
         public object CustomerID { get; set; }
+        public object Customer { get; set; }
     }
 }

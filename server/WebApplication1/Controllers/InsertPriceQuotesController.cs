@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
                 if (priceDTO.Customer_PK == 0 ||
                     priceDTO.Project_Id == 0 ||
                     priceDTO.TotalWork_Hours == 0 ||
-                    priceDTO.Total_Price == null)
+                    priceDTO.Total_Price == 0)
                 {
                     return BadRequest("One or more parameters are missing or empty");
                 }
@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers
                     DiscoutPercent = priceDTO.Discout_Percent,
                     TotalPrice = priceDTO.Total_Price,
                     PriceQuoteFile = priceDTO.PriceQuote_File
-                    //האם צריכה להוסיף גם את שני השדות האחרונים ששמתי בDTO ?
+
                 };
 
                 // עדכון המסד נתונים 
@@ -70,5 +70,40 @@ namespace WebApplication1.Controllers
             return Ok(priceQuote);
             //הפעולה מקבלת מזהה של הצעת מחיר כפרמטר ומחזירה את ההצעה המתאים ממסד הנתונים
         }
+
+
+        // לקובץ של הצעת מחיר לפי הלקוח 
+        [HttpGet]
+        [Route("api/PriceQuote/{customerId}")]
+        public IHttpActionResult GetPriceQuoteByCustomer(int customerId)
+        {
+            try
+            {
+                var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == customerId);
+                if (priceQuote == null)
+                {
+                    return NotFound();
+                }
+
+                var priceDTO = new PriceDTO
+                {
+                    PriceQuote_Id = priceQuote.PriceQuoteID,
+                    Customer_PK = priceQuote.CustomerPK,
+                    Project_Id = priceQuote.ProjectID,
+                    TotalWork_Hours = priceQuote.TotalWorkHours,
+                    Discout_Percent = priceQuote.DiscoutPercent,
+                    Total_Price = priceQuote.TotalPrice,
+                    PriceQuote_File = priceQuote.PriceQuoteFile
+                };
+
+                return Ok(priceDTO);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+
+
     }
 }
