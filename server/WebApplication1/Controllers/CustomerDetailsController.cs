@@ -39,7 +39,7 @@ namespace WebApplication1.Controllers
                         CustomerAdress = x.CustomerAdress,
                         CustomerIsPotential = x.isPotential,
                         CustomerIsDeleted = x.isDeleted,
-                        //CustomerType = x.CustomerType
+                        CustomerType = x.CustomerType
                     })
                     .FirstOrDefault();
 
@@ -70,7 +70,7 @@ namespace WebApplication1.Controllers
                 customer.CustomerPhone = updatedCustomer.CustomerPhone;
                 customer.CustomerAdress = updatedCustomer.CustomerAdress;
                 customer.isPotential = updatedCustomer.CustomerIsPotential;
-                //customer.CustomerType = updatedCustomer.CustomerType;
+                customer.CustomerType = updatedCustomer.CustomerType;
 
                 db.SaveChanges();
 
@@ -105,7 +105,7 @@ namespace WebApplication1.Controllers
                 string CustomerPhone = cust.CustomerPhone.ToString();
                 string CustomerAdress = cust.CustomerAdress.ToString();
                 bool isPotential = cust.CustomerIsPotential;
-                //string CustomerType = cust.CustomerType;
+                string CustomerType = cust.CustomerType;
 
                 Customers Customer = new Customers();
                 Customer.CustomerEmail = CustomerEmail;
@@ -114,7 +114,7 @@ namespace WebApplication1.Controllers
                 Customer.CustomerPhone = CustomerPhone;
                 Customer.CustomerAdress = CustomerAdress;
                 Customer.isPotential = isPotential;
-                //Customer.CustomerType = CustomerType;
+                Customer.CustomerType = CustomerType;
 
                 db.Customers.Add(Customer);
 
@@ -150,7 +150,7 @@ namespace WebApplication1.Controllers
                     CustomerAdress = x.CustomerAdress,
                     CustomerIsPotential = x.isPotential,
                     CustomerIsDeleted = x.isDeleted,
-                    //CustomerType=x.CustomerType
+                    CustomerType=x.CustomerType
 
                 }).ToList();
                 return Ok(custList);

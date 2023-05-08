@@ -10,9 +10,10 @@ function App() {
       {/* <header className="App-header"> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SignInScreen />} />
+          {/* <Route path="/" element={<SignInScreen />} />
           <Route path="/home" element={<FCHome />} />
-          <Route path="/profile" element={<FCProfile />} />
+          <Route path="/profile" element={<FCProfile />} /> */}
+          <Route path="/" element={<FCNots />} />
         </Routes>
       </BrowserRouter>
       {/* <SignInScreen/> */}
