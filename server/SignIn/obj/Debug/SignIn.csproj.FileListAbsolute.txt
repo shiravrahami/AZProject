@@ -1,0 +1,48 @@
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\SignIn.dll.config
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\SignIn.dll
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\SignIn.pdb
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\EntityFramework.dll
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\EntityFramework.xml
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\obj\Debug\SignIn.csproj.AssemblyReference.cache
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\obj\Debug\SignIn.csproj.CoreCompileInputs.cache
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\obj\Debug\SignIn.csproj.CopyComplete
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\obj\Debug\SignIn.dll
+C:\Users\ester\OneDrive\לימודים\'שנה ג\פרויקט גמר\קוד\SignIn\SignIn\obj\Debug\SignIn.pdb
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\SignIn.dll.config
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\SignIn.dll
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\SignIn.pdb
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\EntityFramework.dll
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\EntityFramework.xml
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\obj\Debug\SignIn.csproj.AssemblyReference.cache
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\obj\Debug\SignIn.csproj.CoreCompileInputs.cache
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\obj\Debug\SignIn.csproj.CopyComplete
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\obj\Debug\SignIn.dll
+C:\Users\שני סימן טוב\Desktop\Server\SignIn\obj\Debug\SignIn.pdb
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\SignIn.dll.config
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\SignIn.dll
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\SignIn.pdb
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\EntityFramework.dll
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\EntityFramework.xml
+C:\Users\ester\Desktop\Server\SignIn\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\ester\Desktop\Server\SignIn\obj\Debug\SignIn.csproj.AssemblyReference.cache
+C:\Users\ester\Desktop\Server\SignIn\obj\Debug\SignIn.csproj.CoreCompileInputs.cache
+C:\Users\ester\Desktop\Server\SignIn\obj\Debug\SignIn.csproj.CopyComplete
+C:\Users\ester\Desktop\Server\SignIn\obj\Debug\SignIn.dll
+C:\Users\ester\Desktop\Server\SignIn\obj\Debug\SignIn.pdb
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\SignIn.dll.config
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\SignIn.dll
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\SignIn.pdb
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\EntityFramework.dll
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\EntityFramework.xml
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Debug\SignIn.csproj.AssemblyReference.cache
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Debug\SignIn.csproj.CoreCompileInputs.cache
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Debug\SignIn.csproj.CopyComplete
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Debug\SignIn.dll
+C:\Users\שני סימן טוב\Desktop\AZProject-main\server\Server\SignIn\obj\Debug\SignIn.pdb
