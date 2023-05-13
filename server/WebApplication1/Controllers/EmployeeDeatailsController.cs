@@ -120,7 +120,7 @@ public class EmployeeDetailsController : ApiController
     //}
 
     //InsertEmployee
-    [HttpPost]
+    [HttpPut]
     [Route("api/InsertEmployee")]
     public IHttpActionResult InsertEmployee([FromBody] EmployeeDeatailsDTO emp)
     {
