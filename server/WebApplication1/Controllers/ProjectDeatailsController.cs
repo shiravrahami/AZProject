@@ -14,35 +14,72 @@ namespace WebApplication1.Controllers
     public class ProjectDeatailsController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
-         
-        //פרטי פרויקט
+
+        ////פרטי פרויקט ישן
+        //[HttpGet]
+        //[Route("api/ProjectDeatails/{id}")]
+        //public IHttpActionResult GetProject(int id)
+        //{
+        //    try
+        //    {
+        //        var project = db.Projects
+        //            .Where(p => p.ProjectID == id)
+        //            .Select(p => new ProjectsDTO
+        //            {
+        //                ProjectID = p.ProjectID,
+        //                ProjectName = p.ProjectName,
+        //                CustomerPK = p.CustomerPK,
+        //                isDone = p.isDone,
+        //                InsertDate = p.InsertDate,
+        //                Description = p.Description,
+        //                Deadline = (DateTime)(p.Deadline)
+
+        //            })
+        //            .FirstOrDefault();
+
+        //        return Ok(project);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+        //מציגה שם לקוח, דד ליין ותיאור
         [HttpGet]
         [Route("api/ProjectDeatails/{id}")]
         public IHttpActionResult GetProject(int id)
         {
             try
             {
-                var project = db.Projects
-                    .Where(p => p.ProjectID == id)
-                    .Select(p => new ProjectsDTO 
-                    {
-                        ProjectID = p.ProjectID,
-                        ProjectName = p.ProjectName,
-                        CustomerPK = p.CustomerPK,
-                        Description = p.Description,
-                        InsertDate = p.InsertDate,
-                        Deadline = (DateTime)(p.Deadline),
-                        isDone = p.isDone
-                    })
-                    .FirstOrDefault();
+                // מציאת הפרויקט לפי ה-ID שנשלח בבקשה
+                var project = db.Projects.FirstOrDefault(p => p.ProjectID == id);
 
-                return Ok(project);
+                if (project == null)
+                    return NotFound(); // אם הפרויקט לא קיים, מחזירים תשובת 404
+
+                // מציאת שם הלקוח של הפרויקט
+                var customerName = db.Customers.FirstOrDefault(c => c.ID == project.CustomerPK)?.CustomerName;
+
+                // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח
+                var projectDetails = new
+                {
+                    
+                    Deadline = (DateTime)project.Deadline,
+                    Description = project.Description,
+                    CustomerName = customerName
+                };
+
+                return Ok(projectDetails);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
+
 
         //עדכון פרויקט קוד חדש
         [HttpPut]

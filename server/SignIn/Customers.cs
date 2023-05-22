@@ -35,5 +35,6 @@ namespace SignIn
         public virtual ICollection<PriceQuotes> PriceQuotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Projects> Projects { get; set; }
+        public int CustomerPK { get; set; }
     }
 }

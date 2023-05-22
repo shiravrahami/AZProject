@@ -14,8 +14,6 @@ namespace SignIn
     
     public partial class PriceQuotes
     {
-        //public int Customer_PK;
-
         public int PriceQuoteID { get; set; }
         public int CustomerPK { get; set; }
         public int ProjectID { get; set; }
@@ -26,6 +24,5 @@ namespace SignIn
     
         public virtual Customers Customers { get; set; }
         public virtual Projects Projects { get; set; }
-        public int Customer_PK { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
         igroup195_DB_Prod db = new igroup195_DB_Prod();
 
         [HttpGet]
-        [Route("api/Projects")]
+        [Route("api/InProjects")]
         public IHttpActionResult GetProjects()
         {
             var projects = db.Projects
