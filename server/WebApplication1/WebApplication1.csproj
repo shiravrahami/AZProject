@@ -197,6 +197,7 @@
     <Compile Include="DTO\FileDTO.cs" />
     <Compile Include="DTO\NotesDTO.cs" />
     <Compile Include="DTO\PriceDTO.cs" />
+    <Compile Include="DTO\ProjectTaskActivity.cs" />
     <Compile Include="DTO\TaskNameAndDateDTO.cs" />
     <Compile Include="DTO\TasksDTO.cs" />
     <Compile Include="DTO\ProjectsDTO.cs" />

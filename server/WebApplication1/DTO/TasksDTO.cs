@@ -27,5 +27,7 @@ namespace WebApplication1.DTO
         public bool isDeleted { get; set; }
         public object EmployeeName { get; internal set; }
         //public string CustomerName { get; internal set; }
+        public DateTime EndDate { get; internal set; }//התווסף
+
     }
 }

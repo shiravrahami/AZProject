@@ -33,6 +33,7 @@ namespace WebApplication1.Controllers
                         TaskID = a.ActivityTask.Activity.TaskID,
                         EmployeePK = a.ActivityTask.Activity.EmployeePK,
                         StartDate = a.ActivityTask.Activity.StartDate,
+                        EndDate =(DateTime)a.ActivityTask.Activity.EndDate,
                         CustomerName = a.Customer.CustomerName
                     })
                     .ToList();

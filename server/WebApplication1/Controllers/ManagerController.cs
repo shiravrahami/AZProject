@@ -101,7 +101,7 @@ namespace WebApplication1.Controllers
             // יצירת אובייקט MailMessage עם הפרטים המתאימים
             MailMessage mailMessage = new MailMessage("your_email@example.com", recipientEmail, subject, body);
 
-            // הגדרת פרטי שרת ה-SMTP שלך (יכול להיות ערכים שונים בהתאם לספק השירות שלך)
+           
             SmtpClient smtpClient = new SmtpClient("smtp.example.com", 587);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new System.Net.NetworkCredential("your_email@example.com", "your_password");

@@ -40,5 +40,7 @@ namespace SignIn
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
         public virtual TaskType TaskType1 { get; set; }
+        public IEnumerable<object> Activities { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

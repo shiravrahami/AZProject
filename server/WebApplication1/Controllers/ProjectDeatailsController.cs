@@ -64,7 +64,7 @@ namespace WebApplication1.Controllers
                 // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח
                 var projectDetails = new
                 {
-                    
+
                     Deadline = (DateTime)project.Deadline,
                     Description = project.Description,
                     CustomerName = customerName
@@ -362,15 +362,10 @@ namespace WebApplication1.Controllers
         //}
 
 
-
-
-
-
-
         //ListProjects/{id}
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/ListProjects/{id}")]
-        public IHttpActionResult PutListProjects (int id)
+        public IHttpActionResult PutListProjects(int id)
         {
             var project = db.Projects.FirstOrDefault(c => c.ProjectID == id);
             if (project == null)
@@ -382,6 +377,37 @@ namespace WebApplication1.Controllers
             return Ok("The project has been deleted!");
         }
 
+
+        //חדשה של אסתר
+        [HttpGet]
+        [Route("api/Projects/Tasks/{projectID}")]
+        public IHttpActionResult GetTasksByProject(int projectID)
+        {
+            try
+            {
+                var project = db.Projects.FirstOrDefault(p => p.ProjectID == projectID);
+                if (project == null)
+                {
+                    return NotFound();
+                }
+
+                var tasks = db.Tasks
+                    .Where(t => t.ProjectID == projectID)
+                    .Select(t => new ProjectTaskActivity
+                    {
+                        TaskName = t.TaskName,
+                        TaskID = t.TaskID,
+                        EndDate = t.Activity.Select(a => a.EndDate).FirstOrDefault()
+                    })
+                    .ToList();
+
+                return Ok(tasks);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
 

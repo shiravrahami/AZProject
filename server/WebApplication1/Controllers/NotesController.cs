@@ -112,16 +112,16 @@ namespace WebApplication1.Controllers
                 // יצירת פתק חדש במסד הנתונים
                 var note = new Notes
                 {
-                    ID= newNote.ID,
                     EmployeePK = newNote.EmployeePK,
                     Title = newNote.Title,
                     Description = newNote.Description
                 };
 
-                db.Notes.Add(note);
+                var insertedNote = db.Notes.Add(note);
+  
                 db.SaveChanges();
 
-                return Ok();
+                return Ok(insertedNote);
             }
             catch (Exception ex)
             {
