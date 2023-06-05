@@ -63,3 +63,8 @@ color: #00000050;
   background-Color: rgba(255, 255, 255, 0.864)
 
 }
+.loading-icon-container{
+  color: #A827AB;
+  width: 350px;
+  margin-top: 60px;
+}
