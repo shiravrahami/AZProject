@@ -27,11 +27,29 @@ export default function FCProfile() {
     const [progress, setProgress] = useState(0);
     const [user1, setUser1] = useState(null);
 
+    const [imageUrl, setImageUrl] = useState(user.EmployeePhoto); // New state variable for the image URL
+
+    useEffect(() => {
+        // Fetch the image URL from Firebase when the component mounts
+        const fetchImageUrl = async () => {
+            try {
+                const response = await storage.ref('images').child(user.EmployeePhoto).getDownloadURL();
+                setImageUrl(response);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (user.EmployeePhoto) {
+            fetchImageUrl();
+        }
+    }, [user.EmployeePhoto]);
 
     const handleChange = (e) => {
         if (e.target.files[0]) {
             setImage(e.target.files[0]);
             setemployeePhoto(e.target.files[0]);
+            setImageUrl(URL.createObjectURL(e.target.files[0])); // Update imageUrl with the new image URL
         }
     };
 
@@ -50,26 +68,27 @@ export default function FCProfile() {
         console.log(user.EmployeePK + ' ' + updatedUser.EmployeePassword + ' ' + updatedUser.EmployeePhoto + ' ' + updatedUser.EmployeeTitle);
 
         if (isEditing) {
-                console.log('77777777777'+user.EmployeePK + ' '+user.ID + ' ' + updatedUser.EmployeeName);
-                try {
-                  const response = fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/EmployeeUpdate/${user.EmployeePK}`, {
+            console.log('77777777777' + user.EmployeePK + ' ' + user.ID + ' ' + updatedUser.EmployeeName);
+            try {
+                const response = fetch(`https://proj.ruppin.ac.il/cgroup95/prod/api/EmployeeUpdate/${user.EmployeePK}`, {
                     method: "PUT",
                     body: JSON.stringify(updatedUser),
                     headers: new Headers({
-                      'Accept': 'application/json; charset=UTF-8',
-                      'Content-type': 'application/json; charset=UTF-8'
+                        'Accept': 'application/json; charset=UTF-8',
+                        'Content-type': 'application/json; charset=UTF-8'
                     })
-                  });
-                  const json = response.json();
-                  setUser1(json);
-                } catch (error) {
-                  console.log("error", error);
-                } 
+                });
+                const json = response.json();
+                setUser1(json);
                 
-              }
-
+            } catch (error) {
+                console.log("error", error);
+            }
             setShow(true);
-        
+
+        }
+
+
         handleUpload();
     };
 
@@ -102,6 +121,7 @@ export default function FCProfile() {
                         .then((url) => {
                             // Do something with the image URL
                             console.log(url);
+                            setImageUrl(url); // Update imageUrl with the newly uploaded image URL
                         })
                         .catch((error) => {
                             // Handle any download URL errors
@@ -127,10 +147,31 @@ export default function FCProfile() {
                             פרופיל אישי
                         </Form.Label>
                         <Row className="div-ImageUpload">
-                            <label htmlFor="upload-input" className="image-upload-label">
+                            {/* <label htmlFor="upload-input" className="image-upload-label">
                                 <div className="circle">
                                     {<img className="profileImage" src={image ? image : user.EmployeePhoto} />}
                                     {!image && <div className="placeholder"></div>}
+                                </div>
+                                <input
+                                    disabled={!isEditing}
+                                    id="upload-input"
+                                    type="file"
+                                    onChange={handleChange}
+                                    style={{ display: 'none' }}
+                                />
+                            </label> */}
+                            <label htmlFor="upload-input" className="image-upload-label">
+                                <div className="circle">
+                                    {imageUrl ? (
+                                        <img className="profileImage" src={imageUrl} alt="Profile" />
+                                    ) : (
+                                        <img
+                                            className="profileImage"
+                                            src={user.EmployeePhoto}
+                                            alt="Default Profile"
+                                        />
+                                    )}
+                                    {!imageUrl && <div className="placeholder"></div>}
                                 </div>
                                 <input
                                     disabled={!isEditing}
