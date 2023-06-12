@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApplication1.Controllers
 {
-    public class ProjectDeatailsController : ApiController
+    public class ProjectDetailsController : ApiController
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
 
@@ -47,7 +47,7 @@ namespace WebApplication1.Controllers
 
         //מציגה שם לקוח, דד ליין ותיאור
         [HttpGet]
-        [Route("api/ProjectDeatails/{id}")]
+        [Route("api/ProjectDetails/{id}")]
         public IHttpActionResult GetProject(int id)
         {
             try
@@ -64,7 +64,7 @@ namespace WebApplication1.Controllers
                 // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח
                 var projectDetails = new
                 {
-
+                    InsertDate = project.InsertDate,
                     Deadline = (DateTime)project.Deadline,
                     Description = project.Description,
                     CustomerName = customerName
@@ -397,7 +397,8 @@ namespace WebApplication1.Controllers
                     {
                         TaskName = t.TaskName,
                         TaskID = t.TaskID,
-                        EndDate = t.Activity.Select(a => a.EndDate).FirstOrDefault()
+                        EndDate = t.Activity.Select(a => a.EndDate).FirstOrDefault(),
+                        StartDate= t.Activity.Select (b=> b.StartDate).FirstOrDefault()
                     })
                     .ToList();
 

@@ -10,5 +10,6 @@ namespace WebApplication1.DTO
         public string TaskName { get; set; }
         public int TaskID { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime StartDate { get; internal set; }
     }
 }

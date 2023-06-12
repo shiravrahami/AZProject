@@ -185,7 +185,7 @@
     <Compile Include="Controllers\InsertPriceQuotesController.cs" />
     <Compile Include="Controllers\Project_Cus_TaskController.cs" />
     <Compile Include="Controllers\TaskDeatailsController.cs" />
-    <Compile Include="Controllers\ProjectDeatailsController.cs" />
+    <Compile Include="Controllers\ProjectDetailsController.cs" />
     <Compile Include="Controllers\SignInController.cs" />
     <Compile Include="Controllers\TsaksInProjectController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />

@@ -91,7 +91,7 @@ namespace WebApplication1.Controllers
 
                 db.SaveChanges();
 
-                return Ok();
+                return Ok(note);
             }
             catch (Exception ex)
             {
