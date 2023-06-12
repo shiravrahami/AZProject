@@ -157,7 +157,7 @@ function SignInScreen() {
           {errorMessage && <p style={{ fontSize: '23px', color: 'red' }}>{errorMessage}</p>}
           <div>
             {isLoading ? (
-              <div style={{textAlign:'center'}} className="loading-icon-container">
+              <div style={{ textAlign: 'center' }} className="loading-icon-container">
                 <FontAwesomeIcon icon={faSpinner} spin />
               </div>
             ) : (

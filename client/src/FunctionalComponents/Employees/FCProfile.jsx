@@ -9,6 +9,7 @@ import UserContext from '../UserContext';
 import { useUserContext } from '../UserContext';
 import Toast from 'react-bootstrap/Toast';
 import { storage } from '../../firebase';
+import { saveUserToLocalStorage, getUserFromLocalStorage } from '../../utils/localStorageUtils';
 
 export default function FCProfile() {
 
@@ -80,16 +81,16 @@ export default function FCProfile() {
                 });
                 const json = response.json();
                 setUser1(json);
-                
+
             } catch (error) {
                 console.log("error", error);
             }
+            saveUserToLocalStorage(updatedUser);
             setShow(true);
 
         }
-
-
         handleUpload();
+        
     };
 
     console.log('proflie: ' + user.EmployeeEmail + ' ' + user.EmployeeName + ' ' + user.EmployeePK + ' photo:' + user.EmployeePhoto + ' image:' + image.name);

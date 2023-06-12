@@ -1,4 +1,5 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
+import { saveUserToLocalStorage, getUserFromLocalStorage } from '../utils/localStorageUtils';
 
 const UserContext = createContext();
 
@@ -8,6 +9,15 @@ export function useUserContext() {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check if user data exists in local storage
+    const storedUser = getUserFromLocalStorage();
+
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
 
   const path = "https://proj.ruppin.ac.il/cgroup95/prod/api/";
 
