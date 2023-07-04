@@ -1,0 +1,155 @@
+.emptable {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: inline;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(0, 0, 0);
+    margin-left: 100px;
+    margin-right: 100px;
+    direction: rtl;
+    margin-top: 20px
+}
+
+.imgLogo {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(0, 0, 0);
+}
+
+.mb-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.switch {
+    text-align: left;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+
+.form-check-input:checked {
+    background: #A827AB;
+    border-color: #A827AB;
+    border-radius: 4px;
+}
+
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked {
+    color: #A827AB;
+    border-color: #A827AB;
+    border-radius: 4px;
+
+}
+
+.css-1f2kvjf-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-family: calibri;
+    font-size: 20px;
+}
+
+/* .btn-filter, .btn-filter:hover, .btn-filter:active {
+    background-color: white;
+    color: black;
+    border:none
+} */
+
+.btn-filter,
+.btn-filter:hover {
+    background: linear-gradient(270deg, #1A73E9 0%, #6C92F4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border: none;
+    font-size: 20px;
+}
+
+.serachinput {
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid #00000050;
+
+}
+
+.trash,
+.trash:hover,
+.btn-link,
+.btn-link:hover {
+    background-color: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border: none;
+    color: rgb(53, 53, 53);
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.checked {
+    background: linear-gradient(270deg, #FFFFFF 0%, rgb(168, 39, 171, 0.24) 100%);
+}
+
+.success-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 16px;
+    background-color: green;
+    color: white;
+    border: 2px solid black;
+    border-radius: 8px;
+}
+
+.empname {
+    color: black;
+    text-decoration: none;
+}
+
+.empname:hover {
+    color: #A827AB;
+    text-decoration: none;
+}
+
+.check {
+    align-items: 'cetner';
+}
+
+  .employee-row:hover{
+    background: linear-gradient(270deg, #FFFFFF 0%, rgb(168, 39, 171, 0.24) 100%);
+
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+  .employee-row .trash {
+    display: none;
+}
+.employee-row:hover .trash {
+    display: block;
+}
+.titles{
+    font-weight: bold;
+}
+.employee-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+  }
+.eyeicon{
+    margin-right:50px;
+    background-color: transparent;
+}
+.passwordInput{
+    border: none;
+    background-color: transparent;
+}
+.input-group-text{
+    background-color: transparent;
+}

@@ -1,0 +1,37 @@
+.sidebar-menu .nav-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sidebar-menu .nav-link .fa {
+    margin-right: 10px;
+  }
+  
+  .sidebar-menu .nav-link-text {
+    margin-right: 10px !important;
+  }
+  
+  .content {
+    display: flex;
+    /* flex-wrap: wrap; */
+  }
+  
+  .content .main {
+    flex-grow: 1;
+    padding: 20px;
+  }
+.sc-BKAtq.cOHZCn.pro-sidebar-content.sidebar-content{
+  background: linear-gradient(270deg, #e0e0e0 0%, #FFFFFF 70%);
+}
+.head-div{
+  background: linear-gradient(270deg, #e0e0e0 0%, #FFFFFF 70%);
+}
+.item-content{
+  text-align: right;
+  margin-right:15px ;
+}
+.kkqKLc:hover{
+  background: linear-gradient(270deg, #cecece 0%, #FFFFFF 70%);
+
+}

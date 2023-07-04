@@ -1,0 +1,152 @@
+.signlecust {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: inline;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(0, 0, 0);
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.imgLogo {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(0, 0, 0);
+}
+
+.form-label {
+    font-size: 20px;
+}
+
+.accordion {
+    text-align: right;
+}
+
+.input-group-text {
+    text-align: right;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #A827AB;
+    background: linear-gradient(270deg, #FFFFFF 0%, rgb(168, 39, 171, 0.24) 100%);
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+#CustType {
+    border: none;
+    border-bottom: 2px solid #00000050;
+    border-radius: 0;
+
+
+}
+
+#CustType.hover {
+    background-image: linear-gradient(to right, #8c228e 0%, #bfacc4 100%);
+    color: #fff;
+    border: none;
+}
+
+/* .projclass {
+    border-radius: '50px';
+    padding: '20px';
+    background-color: rgb(247, 247, 247);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width:'95%';
+    margin: '20px';
+} */
+
+
+
+.btn-price {
+    background-color: gray;
+    border: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.btn-price:hover {
+    background-color: rgb(103, 103, 103);
+    border: gray;
+}
+
+.btn-contract {
+    background-color: gray;
+    border: gray;
+    margin-top: 10px;
+
+}
+
+.btn-contract:hover {
+    background-color: rgb(103, 103, 103);
+    border: gray;
+}
+
+.btn-contract:active {
+    background-color: rgb(255, 0, 0);
+    border: gray;
+}
+
+.headeracc .accordion-button {
+    font-size: 20px;
+    display: flex;
+    justify-content: start;
+
+}
+.headeracc .accordion-button::after {
+    text-align: left;
+    display: flex;
+    justify-content: start;
+}
+
+.headeracc .accordionCust .accordion-button::after {
+    display: none;
+
+}
+.headeracc .accordionCust .accordion-button{
+    text-align: center;
+    display: flex;
+    justify-content: start;
+}
+
+.headeracc .accordion-button {
+    font-size: 20px;
+    justify-content: start;
+}
+
+
+.btn-gradient-purple_Customer{
+    background-image: linear-gradient(to right, #A827AB 0%, #E6D0EE 100%);
+    color: #fff;
+    border: none;
+    width: 350px;
+    font-size: 20px;
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 80px;
+}
+.btn-gradient-purple_Customer:hover {
+    background-image: linear-gradient(to right, #8c228e 0%, #bfacc4 100%);
+    color: #fff;
+    border: none;
+  }
+  .taskname{
+    color: black;
+    text-decoration: none;
+  } 
+  .taskname:hover{
+    color: #A827AB;
+    text-decoration: none;
+  }
+
+
