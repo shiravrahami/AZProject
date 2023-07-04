@@ -12,7 +12,7 @@ export default function FCNotes() {
   const [noteForm, setNoteForm] = useState({});
 
   useEffect(() => {
-    axios.get('https://localhost:44399/api/Notes').then(res => {
+    axios.get('/cgroup95/prod/api/Notes').then(res => {
       setNotes(res.data);
     });
   }, []);
@@ -35,7 +35,7 @@ export default function FCNotes() {
         Description
       };
       if(ID) {
-        axios.put(`https://localhost:44399/api/Notes/${ID}`, {...note}).then((res) => {
+        axios.put(`/cgroup95/prod/api/Notes/${ID}`, {...note}).then((res) => {
           const newNote = res.data;
           const updatedNotes = [...notes];
           const thisNote = updatedNotes.filter(note => note.ID === selectedNote)[0];
@@ -47,7 +47,7 @@ export default function FCNotes() {
           console.log(e);
         })
       } else {
-        axios.post('https://localhost:44399/api/Notes', {...note}).then((res) => {
+        axios.post('/cgroup95/prod/api/Notes', {...note}).then((res) => {
           setNotes(prev => [...prev, res.data]);
           toggleAddingNote();
         }).catch(e => {
@@ -68,7 +68,7 @@ export default function FCNotes() {
   }
 
   const onDelete = () => {
-    axios.delete(`https://localhost:44399/api/Notes/${selectedNote}`).then(res => {
+    axios.delete(`/cgroup95/prod/api/Notes/${selectedNote}`).then(res => {
       let oldNotes = [...notes];
       oldNotes = oldNotes.filter((note) => note.ID !== selectedNote);
       setNotes(oldNotes);
