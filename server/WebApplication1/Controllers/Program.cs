@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace WebApplication1.Controllers
 {
-    //פונקציה בסיש ניר
+    //פונקציה בסיש מניר
     // הקוד מציג  את האינדקס הקרוב ביותר לנקודת הנתונים החדשה
+    //ההפרשים בין הזמן בפועל לבין הדמיון, לוקחים את ההפרשים, מייצרים ליסט ארוך , מייצר חמש מרכזים קטגוריות ואז ניקח כל אחת המנק למי היא הכי קרובה
     public class Program
     {
         static void Main()
@@ -23,7 +24,8 @@ namespace WebApplication1.Controllers
             int clusterIndex = distances.IndexOf(minDistance);
 
             Console.WriteLine("Accigned cluster index: " + clusterIndex);// מדפיס את המספר של הנק החדשה הקרובה ביותר
-            //Assigned cluster index: 1
+            //המרחק הקצר ביותר
+            //מדפיס 1
 
         }
     }

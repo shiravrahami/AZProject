@@ -62,8 +62,9 @@ namespace WebApplication1.Controllers
     
 
     //אופציה 2
-    class PriceProposal
-    {
+   public class PriceProposal
+   {
+
         public void SendPriceOffer(string customerEmail)
         {
             // שליחת הצעת מחיר ללקוח
@@ -78,7 +79,6 @@ namespace WebApplication1.Controllers
 
         private void SendEmail(string to, string subject, string body)
         {
-            // כאן אתה יכול לממש את הקוד לשליחת המייל
             // תוכל להשתמש בספריית מיילים כמו System.Net.Mail או שירות דוא"ל חיצוני
             Console.WriteLine($"שליחת מייל לכתובת: {to}\nנושא: {subject}\nתוכן: {body}");
         }
