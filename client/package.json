@@ -8,20 +8,18 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.3",
     "@mui/material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "bootstrap-switch-button-react": "^1.2.0",
     "cdbreact": "^1.5.13",
     "firebase": "^9.21.0",
     "mdbreact": "^5.2.0",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.7.2",
-    "react-bootstrap-date-picker": "^5.1.0",
+    "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-fontawesome": "^1.7.1",
     "react-icons": "^4.8.0",
@@ -38,8 +36,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-"homepage": "https://proj.ruppin.ac.il/cgroup95/prod/build",
-
+  "homepage": "https://proj.ruppin.ac.il/cgroup95/prod/build",
   "eslintConfig": {
     "extends": [
       "react-app",
