@@ -42,5 +42,8 @@ namespace SignIn
         public virtual TaskType TaskType1 { get; set; }
         public IEnumerable<object> Activities { get; set; }
         public DateTime EndDate { get; set; }
+        public object Employee { get; set; }
+        public object EmployeeID { get; set; }
+        //public object Employees { get; set; }
     }
 }

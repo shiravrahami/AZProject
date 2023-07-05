@@ -38,29 +38,6 @@ namespace WebApplication1.Controllers
             return Ok(projects);
         }
 
-        //מחזירה רשימה של כל הפרויקטים(מזהה ושם)ולכל פרויקט את המשימות שלו (מזהה ושם) חדש
-        [HttpGet]
-        [Route("api/ProjectsAndTasks")]
-        public IHttpActionResult GetProjectsAndTasks()
-        {
-            var projects = db.Projects
-                .Where(p => !p.isDeleted)
-                .Select(p => new
-                {
-                    ProjectID = p.ProjectID,
-                    ProjectName = p.ProjectName,
-                    Tasks = p.Tasks
-                        .Where(t => !t.isDeleted)
-                        .OrderBy(t => t.Deadline)
-                        .Select(t => new
-                        {
-                            TaskID = t.TaskID,
-                            TaskName = t.TaskName,
-                        }).ToList()
-                }).ToList();
-
-            return Ok(projects);
-        }
 
 
 
@@ -82,15 +59,81 @@ namespace WebApplication1.Controllers
                             {
                                 TaskID = t.TaskID,
                                 TaskName = t.TaskName,
+                                
                             }).ToList()
                     }).ToList();
 
                 return Ok(projects);
             }
-       
+
+
+
+
+
+        //מחזירה רשימה של כל הפרויקטים(מזהה ושם)ולכל פרויקט את המשימות שלו (מזהה ושם) חדש
+        //[HttpGet]
+        //[Route("api/ProjectsAndTasks")]
+        //public IHttpActionResult GetProjectsAndTasks()
+        //{
+        //    var projects = db.Projects
+        //        .Where(p => !p.isDeleted)
+        //        .Select(p => new
+        //        {
+        //            ProjectID = p.ProjectID,
+        //            ProjectName = p.ProjectName,
+        //            Tasks = p.Tasks
+        //                .Where(t => !t.isDeleted)
+        //                .OrderBy(t => t.Deadline)
+        //                .Select(t => new
+        //                {
+        //                    TaskID = t.TaskID,
+        //                    TaskName = t.TaskName,
+        //                }).ToList()
+        //        }).ToList();
+
+        //    return Ok(projects);
+        //}
+
+        //מחזירה רשימה של כל הפרויקטים(מזהה ושם)ולכל פרויקט את המשימות שלו (מזהה ושם) ושם עובד לאותה משימה
+        [HttpGet]
+        [Route("api/ProjectsAndTasks")]
+        public IHttpActionResult GetProjectsAndTasks()
+        {
+            try
+            {
+                var projectsAndTasks = db.Projects
+                    .Where(p => !p.isDeleted)
+                    .Select(p => new
+                    {
+                        ProjectID = p.ProjectID,
+                        ProjectName = p.ProjectName,
+                        Tasks = p.Tasks
+                            .Where(t => !t.isDeleted)
+                            .OrderBy(t => t.InsertTaskDate)
+                            .Select(t => new
+                            {
+                                TaskID = t.TaskID,
+                                TaskName = t.TaskName,
+                                EmployeeName = t.Task_Employee_Activity
+                                    .Where(tea => tea.TaskID == t.TaskID)
+                                    .Select(tea => tea.Employees.EmployeeName)
+                                    .FirstOrDefault() 
+                    }).ToList()
+                    }).ToList();
+
+                return Ok(projectsAndTasks);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
+
+
 }
+
 
 
 
