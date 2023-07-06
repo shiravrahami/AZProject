@@ -205,7 +205,7 @@ export default function FCproject() {
                                     onChange={handleFileInputChange}
                                 />
                             </Col>
-                            <Col lg={10} style={{ justifyContent: 'center', display: 'flex', textAlign: 'center' }}>
+                            <Col lg={10} style={{justifyContent: 'center', display: 'flex', textAlign: 'center' }}>
                                 <Button className='btn-gradient-purple' type="button" style={{ marginTop: 0, marginRight: 170 }} onClick={handleEditClick} >
                                     {isEditing ? "שמירה" : "עריכה"}
                                 </Button>
@@ -232,17 +232,17 @@ export default function FCproject() {
                         </Row>
                         <Row >
                             <Col lg={4} >
-                                <Form.Group style={{ textAlign: 'right', fontWeight: 'bold'  ,textAlign:'center'}}>
+                                <Form.Group style={{ textAlign: 'right'  ,textAlign:'center'}}>
                                     <Form.Label >שם משימה</Form.Label>
                                 </Form.Group>
                             </Col>
                             <Col lg={4} >
-                                <Form.Group style={{ textAlign: 'right', fontWeight: 'bold' ,textAlign:'center' }}>
+                                <Form.Group style={{ textAlign: 'right' ,textAlign:'center' }}>
                                     <Form.Label >שעות פעילות</Form.Label>
                                 </Form.Group>
                             </Col>
                             <Col lg={4} >
-                                <Form.Group style={{ textAlign: 'right', fontWeight: 'bold' ,textAlign:'center'}}>
+                                <Form.Group style={{ textAlign: 'right',textAlign:'center'}}>
                                     <Form.Label >סה"כ שעות</Form.Label>
                                 </Form.Group>
                             </Col>

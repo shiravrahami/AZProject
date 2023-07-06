@@ -19,7 +19,6 @@ export default function FCTask() {
     const [isEditing, setIsEditing] = useState(false);
     const [settasksDel] = useState([]);
     
-    
     const location = useLocation();
     const task = location.state;
     console.log(task.TaskName);

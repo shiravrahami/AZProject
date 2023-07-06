@@ -4,8 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Styles/Profile.css';
 import Form from 'react-bootstrap/Form';
 import { Row, Col } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
-import UserContext from '../UserContext';
 import { useUserContext } from '../UserContext';
 import Toast from 'react-bootstrap/Toast';
 import { storage } from '../../firebase';
@@ -63,7 +61,7 @@ export default function FCProfile() {
             EmployeePhone: employeePhone,
             EmployeeTitle: employeeTitle,
             EmployeePassword: employeePassword,
-            EmployeePhoto: image ? image.name : null
+            EmployeePhoto: image ? image.name : "user.png"
         };
         setIsEditing(!isEditing);
         console.log(user.EmployeePK + ' ' + updatedUser.EmployeePassword + ' ' + updatedUser.EmployeePhoto + ' ' + updatedUser.EmployeeTitle);
@@ -90,10 +88,8 @@ export default function FCProfile() {
 
         }
         handleUpload();
-        
-    };
 
-    console.log('proflie: ' + user.EmployeeEmail + ' ' + user.EmployeeName + ' ' + user.EmployeePK + ' photo:' + user.EmployeePhoto + ' image:' + image.name);
+    };
 
     const handleUpload = () => {
         console.log("upload start");
@@ -147,7 +143,7 @@ export default function FCProfile() {
                         <Form.Label className='profileTitle'>
                             פרופיל אישי
                         </Form.Label>
-                        <Row className="div-ImageUpload">
+                        <Row className="div-ImageUpload" style={{ marginRight: '43%' }}>
                             {/* <label htmlFor="upload-input" className="image-upload-label">
                                 <div className="circle">
                                     {<img className="profileImage" src={image ? image : user.EmployeePhoto} />}

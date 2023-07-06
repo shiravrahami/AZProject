@@ -128,7 +128,6 @@ function SignInScreen() {
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
           }}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            {/* <Form.Label className='labelemail' style={{textAlign: 'right'}}> Email כתובת</Form.Label> */}
             <InputGroup>
               <InputGroup.Text>
                 <FontAwesomeIcon fontSize={25} className='iconenv' icon={faEnvelope} />

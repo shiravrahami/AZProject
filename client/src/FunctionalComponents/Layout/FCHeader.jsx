@@ -7,7 +7,7 @@ import '../../Styles/Layout.css';
 export default function FCHeader() {
   return (
     <div >
-      <div style={{marginTop:'15px', alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{marginRight:"280px",marginTop:'15px', alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img height={'100px'} src={process.env.PUBLIC_URL + '/‏‏LogoNoText.jpg'} alt="Logo" onClick={() => (window.location.href = '/home')} />
       </div>
 

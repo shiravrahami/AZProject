@@ -21,7 +21,7 @@ export default function FCInsertEmployee() {
     const [EmployeePhoneInput, setEmployeePhoneInput] = useState();
     const [EmployeeTitleInput, setEmployeeTitleInput] = useState();
     const [EmployeePasswordInput, setEmployeePasswordInput] = useState();
-    const [EmployeePhotoInput, setEmployeePhotoInput] = useState('sfdsfd');
+    const [EmployeePhotoInput, setEmployeePhotoInput] = useState('user.png');
     const [show, setShow] = useState(false);
 
     const InsertEmployee = async () => {
@@ -32,7 +32,7 @@ export default function FCInsertEmployee() {
             EmployeePhone: EmployeePhoneInput,
             EmployeeTitle: EmployeeTitleInput,
             EmployeePassword: EmployeePasswordInput,
-            EmployeePhoto: EmployeePhotoInput,
+            EmployeePhoto: "user.png",
         };
         console.log(NewEmployee);
 

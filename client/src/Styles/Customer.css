@@ -149,4 +149,8 @@
     text-decoration: none;
   }
 
+  .taskname:hover{
+    color: #e89ee9;
+    text-decoration: none;
+  }
 

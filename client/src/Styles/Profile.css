@@ -90,3 +90,8 @@ color: #00000050;
   height: 100%;
   background-color: lightgray;
 }
+
+.center-div{
+  display: flex;
+  justify-content: center;
+}
