@@ -37,6 +37,9 @@ export default function FCMenu() {
                             <NavLink exact to="/employees" activeclassname="activeClicked">
                                 <CDBSidebarMenuItem style={{ justifyContent: 'flex-end' }} icon="chart-line" textStyle={{ textalign: 'right' }}>עובדים</CDBSidebarMenuItem>
                             </NavLink>
+                            <NavLink exact to="/notes" activeclassname="activeClicked">
+                                <CDBSidebarMenuItem style={{ justifyContent: 'flex-end' }} icon="chart-line" textStyle={{ textalign: 'right' }}>פתקים</CDBSidebarMenuItem>
+                            </NavLink>
                         </CDBSidebarMenu>
                     </CDBSidebarContent>
                     <CDBSidebarFooter style={{ textalign: 'center' }}>

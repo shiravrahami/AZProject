@@ -10,17 +10,6 @@ function SunburstDiagram() {
     const customColors = ['#8c228e', '#A827AB', '#b04bb2', '#b162b3', '#dc7edd', '#e89ee9'];
     const navigate = useNavigate();
 
-    // const [taskID, settaskID] = useState();
-    // const [taskName, settaskName] = useState();
-    // const [projectID, setprojectID] = useState();
-    // const [taskType, settaskType] = useState();
-    // const [taskDescription, settaskDescription] = useState();
-    // const [insertTaskDate, setinsertTaskDate] = useState();
-    // const [deadline, setdeadline] = useState();
-    // const [isDone, setisDone] = useState();
-    // const [isDeleted, setisDeleted] = useState();
-
-
     useEffect(() => {
         fetchData();
     }, []);
