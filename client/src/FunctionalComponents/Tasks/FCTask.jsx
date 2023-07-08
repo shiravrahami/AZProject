@@ -13,21 +13,27 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import '../../Styles/Task.css';
 
 export default function FCTask() {
-    const { user,path } = useUserContext();
+    const { user, path } = useUserContext();
     const [taskTypes, setTaskTypes] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [employees, setEmployees] = useState([]);
+
     const [activities, setActivities] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [settasksDel] = useState([]);
-    
+
     const location = useLocation();
     const task = location.state;
-    console.log(task.TaskName);
+    console.log(task.CustomerID);
     const [taskUpdate, setTaskUpdate] = useState(task);
-    
+
     const [taskID, settaskID] = useState(task.TaskID);
     const [taskName, settaskName] = useState(task.TaskName);
     const [projectID, setprojectID] = useState(task.ProjectID);
     const [taskType, settaskType] = useState(task.TaskType);
+    const [customer, setCustomer] = useState(task.customer);
+    const [employee, setEmployee] = useState([]);
+
     const [taskDescription, settaskDescription] = useState(task.TaskDescription);
     const [insertTaskDate, setinsertTaskDate] = useState(task.InsertTaskDate);
     const [deadline, setdeadline] = useState(task.Deadline);
@@ -50,8 +56,30 @@ export default function FCTask() {
                 console.error(error);
             }
         };
-
         fetchTaskTypes();
+
+        const fetchCustomers = async () => {
+            try {
+                const response = await fetch(`${path}ListCustomers`);
+                const data = await response.json();
+                setCustomers(data);
+                console.log("cust arr" + data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchCustomers();
+
+        const fetchEmployees = async () => {
+            try {
+                const response = await fetch(`${path}ListEmployees`);
+                const data = await response.json();
+                setEmployees(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchEmployees();
 
         const fetchActivities = async () => {
             try {
@@ -122,19 +150,21 @@ export default function FCTask() {
         }
     }
     return (
-        <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px' , width: '95%'}}>
+        <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px', width: '95%' }}>
             <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }}>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header style={{ alignItems: 'left', fontSize: '20px' }}>פרטי משימה- {task.TaskName} </Accordion.Header>
                     <Accordion.Body >
                         <Row >
                             <Col >
-                                <Form.Group style={{ textAlign: 'right' }}>
-                                    <Form.Label >לקוח</Form.Label>
-                                    <InputGroup>
-                                        <FormControl disabled={!isEditing} className='input' type="text" defaultValue='לקוח עשיר' />
-                                    </InputGroup>
-                                </Form.Group>
+                                <Form.Group style={{ textAlign: 'right' }} controlId="CustType">
+                                    <Form.Label>לקוח</Form.Label>
+                                    <Form.Select onChange={(e) => setCustomer(e.target.value)} disabled={!isEditing} style={{ fontSize: '20px', textAlign: 'right' }} defaultValue={task.Customer}>
+                                        {customers.map(customer => (
+                                            <option key={customer.CustomerID} value={customer.CustomerID}>{customer.CustomerName}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>                               
                             </Col>
                             <Col>
                                 <Form.Group style={{ textAlign: 'right' }} controlId="CustType">
@@ -148,12 +178,20 @@ export default function FCTask() {
                             </Col>
 
                             <Col>
-                                <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicEmail">
+                                <Form.Group style={{ textAlign: 'right' }} controlId="CustType">
+                                    <Form.Label>שם עובד</Form.Label>
+                                    <Form.Select onChange={(e) => setEmployee(e.target.value)} disabled={!isEditing} style={{ fontSize: '20px', textAlign: 'right' }} defaultValue={task.EmployeeName}>
+                                        {employees.map(employee => (
+                                            <option key={employee.EmployeeID} value={employee.EmployeeID}>{employee.EmployeeName}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>
+                                {/*  <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicEmail">
                                     <Form.Label >שם עובד</Form.Label>
                                     <InputGroup>
                                         <FormControl disabled={!isEditing} style={{ textAlign: 'right' }} className='input' type="text" defaultValue={user.EmployeeName} />
                                     </InputGroup>
-                                </Form.Group>
+                                        </Form.Group> */}
                             </Col>
 
                             <Col>
