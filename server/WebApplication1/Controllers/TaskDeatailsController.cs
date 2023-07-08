@@ -84,38 +84,38 @@ namespace WebApplication1.Controllers
 
 
         //עדכון משימה קוד ישן 
-        [HttpPut]
-        [Route("api/TaskUpdate")]
-        public IHttpActionResult UpdateTasks([FromBody] TasksDTO updatedTask)
-        {
+        //[HttpPut]
+        //[Route("api/TaskUpdate")]
+        //public IHttpActionResult UpdateTasks([FromBody] TasksDTO updatedTask)
+        //{
 
-            try
-            {
-                var task = db.Tasks.Find(updatedTask.TaskID);
-                if (task == null)
-                {
-                    return NotFound();
-                }
+        //    try
+        //    {
+        //        var task = db.Tasks.Find(updatedTask.TaskID);
+        //        if (task == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                task.TaskID = updatedTask.TaskID;
-                task.TaskName = updatedTask.TaskName;
-                task.ProjectID = updatedTask.ProjectID;
-                task.TaskType = updatedTask.TaskType;
-                task.TaskDescription = updatedTask.TaskDescription;
-                task.InsertTaskDate = updatedTask.InsertTaskDate;
-                task.Deadline = updatedTask.Deadline;
-                task.isDone = updatedTask.isDone;
-                task.isDeleted = updatedTask.isDeleted;
+        //        task.TaskID = updatedTask.TaskID;
+        //        task.TaskName = updatedTask.TaskName;
+        //        task.ProjectID = updatedTask.ProjectID;
+        //        task.TaskType = updatedTask.TaskType;
+        //        task.TaskDescription = updatedTask.TaskDescription;
+        //        task.InsertTaskDate = updatedTask.InsertTaskDate;
+        //        task.Deadline = updatedTask.Deadline;
+        //        task.isDone = updatedTask.isDone;
+        //        task.isDeleted = updatedTask.isDeleted;
 
-                db.SaveChanges();
+        //        db.SaveChanges();
 
-                return Ok("good");
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+        //        return Ok("good");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
 
         //סוגי משימה
         [HttpGet]
@@ -640,8 +640,17 @@ namespace WebApplication1.Controllers
         //}
 
 
+        
+       
 
+        
     }
+        
+
+        
+             
+
+   
 }
 
 

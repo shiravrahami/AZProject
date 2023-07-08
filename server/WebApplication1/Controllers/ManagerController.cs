@@ -64,12 +64,12 @@ namespace WebApplication1.Controllers
             // יצירת אובייקט לפרטי העובד
             EmployeeDeatailsDTO employeeDetails = new EmployeeDeatailsDTO();
 
-           //פרטי העובד עם המזהה
-            using (var context = new igroup195_DB_Prod() ) 
+            //פרטי העובד עם המזהה
+            using (var context = new igroup195_DB_Prod())
             {
                 Employees employee = context.Employees.FirstOrDefault(e => e.ID == id);
 
-               //מילוי פרטי העובד
+                //מילוי פרטי העובד
                 if (employee != null)
                 {
                     employeeDetails.EmployeeID = employee.EmployeeID;
@@ -101,7 +101,7 @@ namespace WebApplication1.Controllers
             // יצירת אובייקט MailMessage עם הפרטים המתאימים
             MailMessage mailMessage = new MailMessage("your_email@example.com", recipientEmail, subject, body);
 
-           
+
             SmtpClient smtpClient = new SmtpClient("smtp.example.com", 587);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new System.Net.NetworkCredential("your_email@example.com", "your_password");

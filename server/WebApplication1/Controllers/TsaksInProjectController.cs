@@ -95,6 +95,49 @@ namespace WebApplication1.Controllers
         //}
 
         //מחזירה רשימה של כל הפרויקטים(מזהה ושם)ולכל פרויקט את המשימות שלו (מזהה ושם) ושם עובד לאותה משימה
+        //[HttpGet]
+        //[Route("api/ProjectsAndTasks")]
+        //public IHttpActionResult GetProjectsAndTasks()
+        //{
+        //    try
+        //    {
+        //        var projectsAndTasks = db.Projects
+        //            .Where(p => !p.isDeleted)
+        //            .Select(p => new
+        //            {
+        //                ProjectID = p.ProjectID,
+        //                ProjectName = p.ProjectName,
+        //                Tasks = p.Tasks
+        //                    .Where(t => !t.isDeleted)
+        //                    .OrderBy(t => t.InsertTaskDate)
+        //                    .Select(t => new
+        //                    {
+        //                        TaskID = t.TaskID,
+        //                        TaskName = t.TaskName,
+        //                        ProjectID = t.ProjectID,
+        //                        TaskType = t.TaskType,
+        //                        TaskDescription = t.TaskDescription,
+        //                        InsertTaskDate = t.InsertTaskDate,
+        //                        Deadline = (DateTime)(t.Deadline),
+        //                        isDone = t.isDone,
+        //                        isDeleted = t.isDeleted,
+        //                        EmployeeName = t.Task_Employee_Activity
+        //                            .Where(tea => tea.TaskID == t.TaskID)
+        //                            .Select(tea => tea.Employees.EmployeeName)
+        //                            .FirstOrDefault() 
+        //            }).ToList()
+        //            }).ToList();
+
+        //        return Ok(projectsAndTasks);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+        //סופי עם כל הפרטים
+
         [HttpGet]
         [Route("api/ProjectsAndTasks")]
         public IHttpActionResult GetProjectsAndTasks()
@@ -107,18 +150,30 @@ namespace WebApplication1.Controllers
                     {
                         ProjectID = p.ProjectID,
                         ProjectName = p.ProjectName,
+                        CustomerPK = p.CustomerPK,
+                        isDone = p.isDone,
+                        InsertDate = p.InsertDate,
+                        Description = p.Description,
+                        Deadline = (DateTime)(p.Deadline),
                         Tasks = p.Tasks
                             .Where(t => !t.isDeleted)
                             .OrderBy(t => t.InsertTaskDate)
                             .Select(t => new
                             {
-                                TaskID = t.TaskID,
+                                t.TaskID,
                                 TaskName = t.TaskName,
+                                ProjectID = t.ProjectID,
+                                TaskType = t.TaskType,
+                                TaskDescription = t.TaskDescription,
+                                InsertTaskDate = t.InsertTaskDate,
+                                Deadline = (DateTime)(t.Deadline),
+                                isDone = t.isDone,
+                                isDeleted = t.isDeleted,
                                 EmployeeName = t.Task_Employee_Activity
                                     .Where(tea => tea.TaskID == t.TaskID)
                                     .Select(tea => tea.Employees.EmployeeName)
-                                    .FirstOrDefault() 
-                    }).ToList()
+                                    .FirstOrDefault()
+                            }).ToList()
                     }).ToList();
 
                 return Ok(projectsAndTasks);
@@ -128,6 +183,7 @@ namespace WebApplication1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
     }
 

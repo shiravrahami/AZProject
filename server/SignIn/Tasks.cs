@@ -44,6 +44,7 @@ namespace SignIn
         public DateTime EndDate { get; set; }
         public object Employee { get; set; }
         public object EmployeeID { get; set; }
+        public DateTime StartDate { get; set; }
         //public object Employees { get; set; }
     }
 }

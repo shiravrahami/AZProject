@@ -137,5 +137,69 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //מקבלת מזהה של משימה ומחזירה את השעת התחלה וסיום עבורה
+        [HttpGet]
+        [Route("api/TaskDetailsActivity/{id}")]
+        public IHttpActionResult GetTaskDetailsActivity(int id)
+        {
+            try
+            {
+                var activities = db.Activity
+                    .Where(a => a.TaskID == id)
+                    .Select(a => new
+                    {
+                        StartDate = a.StartDate.Hour,
+                        EndDate = a.EndDate.Hour
+                    })
+                    .ToList();
+
+                if (activities.Count == 0)
+                    return NotFound();
+
+                return Ok(activities);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //המתודה מציגה את סך השעות שעבדו על המשימה
+        [HttpGet]
+        [Route("api/TaskDetailsHour/{id}")]
+        public IHttpActionResult GetTaskDetailsHour(int id)
+        {
+            try
+            {
+                var activities = db.Activity
+                    .Where(a => a.TaskID == id)
+                    .ToList();
+
+                if (activities.Count == 0)
+                    return NotFound();
+
+                TimeSpan totalWorkHours = TimeSpan.Zero;
+
+                foreach (var activity in activities)
+                {
+                    totalWorkHours += activity.EndDate - activity.StartDate;
+                }
+
+                var result = new
+                {
+                    TotalWorkHours = totalWorkHours.TotalHours
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
 }

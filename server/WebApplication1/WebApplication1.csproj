@@ -174,8 +174,6 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\Activity_Task_CusNameController.cs" />
-    <Compile Include="Controllers\PriceQuotesInC.cs" />
-    <Compile Include="Controllers\Program.cs" />
     <Compile Include="Controllers\CustomerDetailsController.cs" />
     <Compile Include="Controllers\CustomerTasksController.cs" />
     <Compile Include="Controllers\DayEmployeeController.cs" />
