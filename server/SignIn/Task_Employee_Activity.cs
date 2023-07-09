@@ -21,6 +21,5 @@ namespace SignIn
         public virtual Activity Activity { get; set; }
         public virtual Employees Employees { get; set; }
         public virtual Tasks Tasks { get; set; }
-        //public object Employee { get; set; }
     }
 }

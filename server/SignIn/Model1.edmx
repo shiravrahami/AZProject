@@ -133,6 +133,7 @@
           <Property Name="Deadline" Type="datetime" />
           <Property Name="isDone" Type="bit" Nullable="false" />
           <Property Name="isDeleted" Type="bit" Nullable="false" />
+          <Property Name="PriceQuoteTime" Type="int" />
         </EntityType>
         <EntityType Name="TaskType">
           <Key>
@@ -516,6 +517,7 @@
           <Property Name="Deadline" Type="DateTime" Precision="3" />
           <Property Name="isDone" Type="Boolean" Nullable="false" />
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="PriceQuoteTime" Type="Int32" />
           <NavigationProperty Name="Activity" Relationship="Self.FK_Activity_Task" FromRole="Tasks" ToRole="Activity" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Tasks" FromRole="Tasks" ToRole="Comments" />
           <NavigationProperty Name="Projects" Relationship="Self.FK_Tasks_Projects" FromRole="Tasks" ToRole="Projects" />
@@ -891,6 +893,7 @@
                 <ScalarProperty Name="Deadline" ColumnName="Deadline" />
                 <ScalarProperty Name="isDone" ColumnName="isDone" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="PriceQuoteTime" ColumnName="PriceQuoteTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

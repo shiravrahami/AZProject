@@ -98,7 +98,7 @@ namespace WebApplication1.Controllers
                 }
 
                 // עדכון פרטי הפרויקט עם הפרטים המעודכנים שהתקבלו
-                project.ProjectName = updatedProject.ProjectName;
+                //project.ProjectName = updatedProject.ProjectName;
                 project.Description = updatedProject.Description;
                 project.Deadline = updatedProject.Deadline;
                 project.isDone = updatedProject.isDone;
@@ -397,7 +397,7 @@ namespace WebApplication1.Controllers
                     {
                         TaskName = t.TaskName,
                         TaskID = t.TaskID,
-                        EndDate = t.Activity.Select(a => a.EndDate).FirstOrDefault(),
+                        EndDate =(DateTime) t.Activity.Select(a => a.EndDate).FirstOrDefault(),
                         StartDate= t.Activity.Select (b=> b.StartDate).FirstOrDefault()
                     })
                     .ToList();

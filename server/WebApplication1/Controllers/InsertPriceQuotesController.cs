@@ -24,10 +24,10 @@ namespace WebApplication1.Controllers
 
             try //בודק שכל הפרמטרים הנדרשים קיימים
             {
-                if (priceDTO.Customer_PK == 0 ||
-                    priceDTO.Project_Id == 0 ||
-                    priceDTO.TotalWork_Hours == 0 ||
-                    priceDTO.Total_Price == 0)
+                if (priceDTO.CustomerPK == 0 ||
+                    priceDTO.ProjectId == 0 ||
+                    priceDTO.TotalWorkHours == 0 ||
+                    priceDTO.TotalPrice == 0)
                 {
                     return BadRequest("One or more parameters are missing or empty");
                 }
@@ -35,12 +35,12 @@ namespace WebApplication1.Controllers
                 // יצירת ציטוט מחיר חדש מה-DTO המתקבל
                 PriceQuotes newPriceQuote = new PriceQuotes() //Inside the action, a new PriceQuotes object is created based on the PriceDTO object sent in the request.
                 {
-                    CustomerPK = priceDTO.Customer_PK,
-                    ProjectID = priceDTO.Project_Id,
-                    TotalWorkHours = priceDTO.TotalWork_Hours,
-                    DiscoutPercent = priceDTO.Discout_Percent,
-                    TotalPrice = priceDTO.Total_Price,
-                    PriceQuoteFile = priceDTO.PriceQuote_File
+                    CustomerPK = priceDTO.CustomerPK,
+                    ProjectID = priceDTO.ProjectId,
+                    TotalWorkHours = priceDTO.TotalWorkHours,
+                    DiscoutPercent = priceDTO.DiscoutPercent,
+                    TotalPrice = priceDTO.TotalPrice,
+                    PriceQuoteFile = priceDTO.PriceQuoteFile
 
                 };
 
@@ -87,13 +87,13 @@ namespace WebApplication1.Controllers
 
                 var priceDTO = new PriceDTO
                 {
-                    PriceQuote_Id = priceQuote.PriceQuoteID,
-                    Customer_PK = priceQuote.CustomerPK,
-                    Project_Id = priceQuote.ProjectID,
-                    TotalWork_Hours = priceQuote.TotalWorkHours,
-                    Discout_Percent = priceQuote.DiscoutPercent,
-                    Total_Price = priceQuote.TotalPrice,
-                    PriceQuote_File = priceQuote.PriceQuoteFile
+                    PriceQuoteId = priceQuote.PriceQuoteID,
+                    CustomerPK = priceQuote.CustomerPK,
+                    ProjectId = priceQuote.ProjectID,
+                    TotalWorkHours = priceQuote.TotalWorkHours,
+                    DiscoutPercent = priceQuote.DiscoutPercent,
+                    TotalPrice = priceQuote.TotalPrice,
+                    PriceQuoteFile = priceQuote.PriceQuoteFile
                 };
 
                 return Ok(priceDTO);

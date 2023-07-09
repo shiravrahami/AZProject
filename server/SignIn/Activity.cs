@@ -14,8 +14,6 @@ namespace SignIn
     
     public partial class Activity
     {
-        //public object WorkingHours;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Activity()
         {
@@ -27,13 +25,12 @@ namespace SignIn
         public int EmployeePK { get; set; }
         public string Description { get; set; }
         public System.DateTime StartDate { get; set; }
-        public Nullable<System.DateTime> EndDates { get; set; }
+        public System.DateTime EndDate { get; set; }
+        //public Nullable<System.DateTime> EndDate { get; set; }
     
         public virtual Employees Employees { get; set; }
         public virtual Tasks Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
-        public DateTime EndDate { get; set; }
-        //public object WorkingHours { get; set; }
     }
 }

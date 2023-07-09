@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.DTO;
 using Newtonsoft.Json.Linq;
+using System.Net.Mail;
 
 public class EmployeeDetailsController : ApiController
 {
@@ -119,50 +120,7 @@ public class EmployeeDetailsController : ApiController
     //    }
     //}
 
-    //InsertEmployee
-    [HttpPut]
-    [Route("api/InsertEmployee")]
-    public IHttpActionResult InsertEmployee([FromBody] EmployeeDeatailsDTO emp)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(emp.EmployeeEmail?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeeName?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeePassword?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeeID?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeeTitle?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeePhone?.ToString()))
-            {
-                return BadRequest("One or more parameters are missing or empty");
-            }
-
-            string employeeEmail = emp.EmployeeEmail.ToString();
-            string employeeName = emp.EmployeeName.ToString();
-            string employeePassword = emp.EmployeePassword.ToString();
-            string employeeID = emp.EmployeeID.ToString();
-            string employeeTitle = emp.EmployeeTitle.ToString();
-            string employeePhone = emp.EmployeePhone.ToString();
-            string employeePhoto = emp.EmployeePhoto.ToString();
-
-            Employees employee = new Employees();
-            employee.EmployeeEmail = employeeEmail;
-            employee.EmployeeName = employeeName;
-            employee.EmployeeID = employeeID;
-            employee.EmployeePhone = employeePhone;
-            employee.EmployeePhoto = employeePhoto;
-            employee.EmployeeTitle = employeeTitle;
-            employee.EmployeePassword = employeePassword;
-
-            db.Employees.Add(employee);
-
-            db.SaveChanges();
-            return Ok("Employee details saved successfully");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error saving employee details: {ex.Message}");
-        }
-    }
+    
 
     //ListEmployees
     [HttpGet]
@@ -211,6 +169,161 @@ public class EmployeeDetailsController : ApiController
         db.SaveChanges();
         return Ok("The employee has been deleted!");
     }
+
+    //הוספת עובד חדש מקורי
+    //[HttpPut]
+    //[Route("api/InsertEmployee")]
+    //public IHttpActionResult InsertEmployee([FromBody] EmployeeDeatailsDTO emp)
+    //{
+    //    try
+    //    {
+    //        if (string.IsNullOrEmpty(emp.EmployeeEmail?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeeName?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeePassword?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeeID?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeeTitle?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeePhone?.ToString()))
+    //        {
+    //            return BadRequest("One or more parameters are missing or empty");
+    //        }
+
+    //        string employeeEmail = emp.EmployeeEmail.ToString();
+    //        string employeeName = emp.EmployeeName.ToString();
+    //        string employeePassword = emp.EmployeePassword.ToString();
+    //        string employeeID = emp.EmployeeID.ToString();
+    //        string employeeTitle = emp.EmployeeTitle.ToString();
+    //        string employeePhone = emp.EmployeePhone.ToString();
+    //        string employeePhoto = emp.EmployeePhoto.ToString();
+
+    //        Employees employee = new Employees();
+    //        employee.EmployeeEmail = employeeEmail;
+    //        employee.EmployeeName = employeeName;
+    //        employee.EmployeeID = employeeID;
+    //        employee.EmployeePhone = employeePhone;
+    //        employee.EmployeePhoto = employeePhoto;
+    //        employee.EmployeeTitle = employeeTitle;
+    //        employee.EmployeePassword = employeePassword;
+
+    //        db.Employees.Add(employee);
+
+    //        db.SaveChanges();
+
+    //        string subject = "employee password";
+    //        string body = $"Hello {employeeName},\nWelcome to the system.\nYour Password is {employeePassword} .";
+
+    //        SendEmail(employeeEmail, subject, body);
+
+    //        return Ok("Employee details saved successfully");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return BadRequest($"Error saving employee details: {ex.Message}");
+    //    }
+    //}
+
+
+    //מתודה המוסיפה עובד חדש למערכת ושולחת לו ססמא ראשונית במייל
+    [HttpPut]
+    [Route("api/InsertEmployee")]
+    public IHttpActionResult InsertEmployeeSendMail([FromBody] EmployeeDeatailsDTO emp)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(emp.EmployeeEmail?.ToString()) ||
+                string.IsNullOrEmpty(emp.EmployeeName?.ToString()) ||
+                string.IsNullOrEmpty(emp.EmployeePassword?.ToString()) ||
+                string.IsNullOrEmpty(emp.EmployeeID?.ToString()) ||
+                string.IsNullOrEmpty(emp.EmployeeTitle?.ToString()) ||
+                string.IsNullOrEmpty(emp.EmployeePhone?.ToString()))
+            {
+                return BadRequest("One or more parameters are missing or empty");
+            }
+
+            string employeeEmail = emp.EmployeeEmail.ToString();
+            string employeeName = emp.EmployeeName.ToString();
+            string employeePassword = emp.EmployeePassword.ToString();
+            string employeeID = emp.EmployeeID.ToString();
+            string employeeTitle = emp.EmployeeTitle.ToString();
+            string employeePhone = emp.EmployeePhone.ToString();
+            string employeePhoto = emp.EmployeePhoto.ToString();
+
+            Employees employee = new Employees();
+            employee.EmployeeEmail = employeeEmail;
+            employee.EmployeeName = employeeName;
+            employee.EmployeeID = employeeID;
+            employee.EmployeePhone = employeePhone;
+            employee.EmployeePhoto = employeePhoto;
+            employee.EmployeeTitle = employeeTitle;
+            employee.EmployeePassword = employeePassword;
+
+            db.Employees.Add(employee);
+
+            db.SaveChanges();
+
+            string subject = "פרטי התחברות למערכת";
+            string body = $"שלום {employeeName} ,\n ברוך הבא למערכת שלנו ! \n הססמא הראשונית שלך היא {employeePassword}";
+            
+            SendEmail(employeeEmail, subject, body);
+
+            return Ok("Employee details saved successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error saving employee details: {ex.Message}");
+        }
+    }
+  
+    private void SendEmail(string toMail, string subjects, string bodys)
+    {
+        Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
+
+        MailMessage message = new MailMessage();
+        message.From = new MailAddress("remotlat@outlook.com");
+        message.To.Add(toMail);
+        message.Subject = subjects;
+        message.Body = bodys;
+
+        SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
+        smtpClient.UseDefaultCredentials = false;
+        smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
+        smtpClient.EnableSsl = true;
+
+        smtpClient.Send(message);
+    }
+
+
+    //מחזירה את המזהה של העובד החדש ביותר
+    //[HttpGet]
+    //[Route("api/GetNewEmployeeID")]
+    //public IHttpActionResult GetNewEmployeeID()
+    //{
+    //    try
+    //    {
+    //        // נמצא את העובד החדש באמצעות מיון לפי המזהה ID בסדר יורד
+    //        Employees newEmployee = db.Employees.OrderByDescending(e => e.ID).FirstOrDefault();
+
+    //        if (newEmployee != null)
+    //        {
+    //            return Ok(newEmployee.ID);
+    //        }
+    //        else
+    //        {
+    //            return NotFound();
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return BadRequest($"Error retrieving new employee ID: {ex.Message}");
+    //    }
+    //}
+
+
+
+    
+   
+
+
+
 }
 
 

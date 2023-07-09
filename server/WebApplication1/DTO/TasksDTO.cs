@@ -29,5 +29,7 @@ namespace WebApplication1.DTO
         //public string CustomerName { get; internal set; }
         public DateTime EndDate { get; internal set; }//התווסף
 
+        public int PriceQuoteTime { get; set; }//new
+
     }
 }

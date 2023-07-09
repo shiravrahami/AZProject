@@ -180,7 +180,6 @@
     <Compile Include="Controllers\EmployeeDeatailsController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\NotesController.cs" />
     <Compile Include="Controllers\InsertPriceQuotesController.cs" />
     <Compile Include="Controllers\Project_Cus_TaskController.cs" />

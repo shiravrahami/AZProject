@@ -10,6 +10,7 @@ using WebApplication1.DTO;
 using Newtonsoft.Json.Linq;
 using NLog;
 
+
 namespace WebApplication1.Controllers
 {
     public class ActivityController : ApiController
@@ -137,6 +138,14 @@ namespace WebApplication1.Controllers
             }
         }
 
+
+
+
+        //מכאן מתחיל קוד שקשור לפרויקט NIRchen
+
+
+
+
         //מקבלת מזהה של משימה ומחזירה את השעת התחלה וסיום עבורה
         [HttpGet]
         [Route("api/TaskDetailsActivity/{id}")]
@@ -150,6 +159,7 @@ namespace WebApplication1.Controllers
                     {
                         StartDate = a.StartDate.Hour,
                         EndDate = a.EndDate.Hour
+
                     })
                     .ToList();
 
@@ -196,7 +206,149 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
         }
+
+        //המתודה כולל ההפרש בין המשוער לבפועל 
+        [HttpGet]
+        [Route("api/TaskDetailsHourCHECK/{id}")]
+        public IHttpActionResult GetTaskDetailsHourCHECK(int id)
+        {
+            try
+            {
+                var task = db.Tasks.FirstOrDefault(t => t.TaskID == id);
+                if (task == null)
+                    return NotFound();
+
+                double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+                var activities = db.Activity
+                    .Where(a => a.TaskID == id)
+                    .ToList();
+
+                if (activities.Count == 0)
+                    return NotFound();
+
+                TimeSpan totalWorkHours = TimeSpan.Zero;
+
+                foreach (var activity in activities)
+                {
+                    totalWorkHours += activity.EndDate - activity.StartDate;
+                }
+
+                double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+                double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+                var result = new
+                {
+                    EstimatedTime = priceQuoteTime,
+                    ActualTime = actualTime,
+                    TimeDifference = timeDifference
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        //מביא את המערך של כל נקודות ההפרשים
+        [HttpGet]
+        [Route("api/TaskDetailsPrediction")]
+        public List<double> GetTaskDetailsPrediction()
+        {
+            try
+            {
+                var tasks = db.Tasks.ToList();
+
+                List<double> clusterPoints = new List<double>();
+
+                foreach (var task in tasks)
+                {
+                    double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+                    var activities = db.Activity
+                        .Where(a => a.TaskID == task.TaskID)
+                        .ToList();
+
+                    TimeSpan totalWorkHours = TimeSpan.Zero;
+
+                    foreach (var activity in activities)
+                    {
+                        totalWorkHours += activity.EndDate - activity.StartDate;
+                    }
+
+                    double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+                    double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+                    clusterPoints.Add(timeDifference);
+                }
+
+                return clusterPoints;
+            }
+            catch (Exception ex)
+            {
+                // טיפול בשגיאות
+                throw new Exception("Error predicting cluster points.", ex);
+            }
+        }
+
+
+        //מחזיר את הערך 6 כמו בקוד המקורי של ניר
+        [HttpGet]
+        [Route("api/TaskDetailsPredictionsTheEnd")]
+        public int GetTaskDetailsPredictionTheEnd()
+        {
+            try
+            {
+                var tasks = db.Tasks.ToList();
+
+                List<double> clusterPoints = new List<double>();
+
+                foreach (var task in tasks)
+                {
+                    double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+                    var activities = db.Activity
+                        .Where(a => a.TaskID == task.TaskID)
+                        .ToList();
+
+                    TimeSpan totalWorkHours = TimeSpan.Zero;
+
+                    foreach (var activity in activities)
+                    {
+                        totalWorkHours += activity.EndDate - activity.StartDate;
+                    }
+
+                    double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+                    double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+                    clusterPoints.Add(timeDifference);
+                }
+
+                double newDataPoint = 1.0; // הנקודה שאנו רוצים לזהות
+
+                List<double> distances = clusterPoints.Select(point => Math.Abs(point - newDataPoint)).ToList();
+                double minDistance = distances.Min();
+                int clusterIndex = distances.IndexOf(minDistance);
+
+                return clusterIndex;
+                
+            }
+            catch (Exception ex)
+            {
+                // טיפול בשגיאות
+                throw new Exception("Error predicting cluster index.", ex);
+            }
+        }
+
+
 
 
 

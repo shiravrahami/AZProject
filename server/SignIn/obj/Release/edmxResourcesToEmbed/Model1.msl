@@ -134,6 +134,7 @@
           <ScalarProperty Name="Deadline" ColumnName="Deadline" />
           <ScalarProperty Name="isDone" ColumnName="isDone" />
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="PriceQuoteTime" ColumnName="PriceQuoteTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
