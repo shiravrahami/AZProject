@@ -8,7 +8,7 @@ export default function FCHeader() {
   return (
     <div >
       <div style={{marginRight:"280px",marginTop:'15px', alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img height={'100px'} src={process.env.PUBLIC_URL + '/‏‏LogoNoText.jpg'} alt="Logo" onClick={() => (window.location.href = '/home')} />
+        <img height={'100px'} src={process.env.PUBLIC_URL + '/‏‏LogoNoText.jpg'} alt="Logo" onClick={() => (window.location.href = 'http://localhost:3000/cgroup95/prod/build/home')} />
       </div>
 
       {/* <Row>

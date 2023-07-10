@@ -4,15 +4,17 @@ import { Paper, TextField, Button } from '@mui/material';
 import { Box } from '@mui/material';
 import axios from 'axios';
 import '../Styles/Notes.css';
+import { useUserContext } from './UserContext';
 
 export default function FCNotes() {
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState();
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [noteForm, setNoteForm] = useState({});
+  const { user, path } = useUserContext();
 
   useEffect(() => {
-    axios.get('/cgroup95/prod/api/Notes').then(res => {
+    axios.get(`${path}Notes`).then(res => {
       setNotes(res.data);
     });
   }, []);
@@ -35,7 +37,7 @@ export default function FCNotes() {
         Description
       };
       if(ID) {
-        axios.put(`/cgroup95/prod/api/Notes/${ID}`, {...note}).then((res) => {
+        axios.put(`${path}Notes/${ID}`, {...note}).then((res) => {
           const newNote = res.data;
           const updatedNotes = [...notes];
           const thisNote = updatedNotes.filter(note => note.ID === selectedNote)[0];
@@ -47,7 +49,7 @@ export default function FCNotes() {
           console.log(e);
         })
       } else {
-        axios.post('/cgroup95/prod/api/Notes', {...note}).then((res) => {
+        axios.post(`${path}Notes`, {...note}).then((res) => {
           setNotes(prev => [...prev, res.data]);
           toggleAddingNote();
         }).catch(e => {
@@ -86,8 +88,8 @@ export default function FCNotes() {
 
   return (
     <div className='fullpade'>
-      <div className="header">
-        <FaArrowLeft className="icon" /> <h2>פתקים</h2>
+      <div className="header" style={{ alignItems: 'left', fontSize: '20px' }}>
+         <h2>פתקים</h2>
       </div>
       <div>
         <div className='notes-wrapper'>
