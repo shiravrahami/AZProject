@@ -15,6 +15,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import Toast from 'react-bootstrap/Toast';
 import { TextField } from '@mui/material';
+import FCPopup from './FCPopup';
 
 export default function FCproject() {
     const { user, path } = useUserContext();
@@ -25,7 +26,7 @@ export default function FCproject() {
     const project = location.state;
     console.log(project.ProjectName + ' ' + project.ProjectID);
 
-console.log("desc",project.ProjectDescription, project.Deadline);
+    console.log("desc", project.ProjectDescription, project.Deadline);
 
     const [projectUpdate, setprojectUpdate] = useState();
     const [projectGet, setprojectGet] = useState({ CustomerName: '' });
@@ -65,6 +66,7 @@ console.log("desc",project.ProjectDescription, project.Deadline);
             setButtonColor('secondary');
         }
     };
+    
     useEffect(() => {
         async function fetchProject() {
             try {
@@ -150,39 +152,37 @@ console.log("desc",project.ProjectDescription, project.Deadline);
         }
     };
 
-
-
-    console.log("deadline in ",deadline);
+    console.log("deadline in ", deadline);
 
     const handleEditClick = async () => {
         const updatedproject = {
-          Description: projectDescription,
-          Deadline: deadline,
-          isDone: false
+            Description: projectDescription,
+            Deadline: deadline,
+            isDone: false
         };
         setIsEditing(!isEditing);
         if (isEditing) {
-          try {
-            console.log("////////////////////////////////////");
-            console.log("updatedproject", updatedproject);
-            const response = await fetch(`${path}projectUpdate/${project.ProjectID}`, {
-              method: "PUT",
-              body: JSON.stringify(updatedproject),
-              headers: new Headers({
-                'Accept': 'application/json; charset=UTF-8',
-                'Content-type': 'application/json; charset=UTF-8'
-              })
-            });
-            const json = await response.json();
-            setprojectUpdate(json);
-            console.log("json", json);
-          } catch (error) {
-            console.log("error", error);
-          }
-          setShow(true);
+            try {
+                console.log("////////////////////////////////////");
+                console.log("updatedproject", updatedproject);
+                const response = await fetch(`${path}projectUpdate/${project.ProjectID}`, {
+                    method: "PUT",
+                    body: JSON.stringify(updatedproject),
+                    headers: new Headers({
+                        'Accept': 'application/json; charset=UTF-8',
+                        'Content-type': 'application/json; charset=UTF-8'
+                    })
+                });
+                const json = await response.json();
+                setprojectUpdate(json);
+                console.log("json", json);
+            } catch (error) {
+                console.log("error", error);
+            }
+            setShow(true);
         }
-      };
-      
+    };
+
     function handleProgressBar(totalTimeDiff) {
         if (totalTimeDiff) {
             const total = 15;
@@ -195,33 +195,31 @@ console.log("desc",project.ProjectDescription, project.Deadline);
         }
     }
 
-    const handleShowImages = () => {
-        const storageRef = firebase.storage().ref();
-        const imagesRef = storageRef.child('images');
+    // const handleShowImages = () => {
+    //     const storageRef = firebase.storage().ref();
+    //     const imagesRef = storageRef.child('images');
 
-        imagesRef.listAll().then((res) => {
-            const urls = [];
-            res.items.forEach((itemRef) => {
-                itemRef.getDownloadURL().then((url) => {
-                    urls.push(url);
-                });
-            });
-            setImageURLs(urls);
-        });
-    };
+    //     imagesRef.listAll().then((res) => {
+    //         const urls = [];
+    //         res.items.forEach((itemRef) => {
+    //             itemRef.getDownloadURL().then((url) => {
+    //                 urls.push(url);
+    //             });
+    //         });
+    //         setImageURLs(urls);
+    //     });
+    // };
+
     const getPhotosFromStorage = async () => {
         const storageRef = storage.ref();
-        const imagesRef = storageRef.child('images');
-
+        const imagesRef = storageRef.child(project.ProjectName);
         const imagesSnapshot = await imagesRef.listAll();
-
         const imageUrls = await Promise.all(
             imagesSnapshot.items.map(async (itemRef) => {
                 const url = await itemRef.getDownloadURL();
                 return url;
             })
         );
-
         return imageUrls;
     };
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -236,61 +234,71 @@ console.log("desc",project.ProjectDescription, project.Deadline);
     const closePopup = () => {
         setIsPopupOpen(false);
     };
-
-    const Popup = ({ photos, onClose }) => {
-        const [hoveredImage, setHoveredImage] = useState(null);
-
-        const handleImageHover = (imageUrl) => {
-            setHoveredImage(imageUrl);
-        };
-
-        const handleImageLeave = () => {
-            setHoveredImage(null);
-        };
-
-        const deleteImage = async (imageUrl, event) => {
-            event.preventDefault();
-            try {
-                // Delete the image from Firebase storage
-                const imageRef = storage.refFromURL(imageUrl);
-                await imageRef.delete();
-
-                // Remove the image from the state
-                setPhotos((prevPhotos) => prevPhotos.filter((url) => url !== imageUrl));
-            } catch (error) {
-                console.log("Error deleting image:", error);
-            }
-        };
-        return (
-            <div className="popup">
-                <div className="popup-inner">
-                    <button className="close-button" onClick={onClose}>
-                        <i className="fas fa-times"></i>
-                    </button>
-                    <div className="gallery">
-                        {photos.map((url) => (
-                            <div
-                                key={url}
-                                className="image-container"
-                                onMouseEnter={() => handleImageHover(url)}
-                                onMouseLeave={handleImageLeave}
-                            >
-                                <img src={url} alt="Photo" className="photo" />
-                                {hoveredImage === url && (
-                                    <button
-                                        className="delete-button"
-                                        onClick={(event) => deleteImage(url, event)}
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
+    const handleImageHover = () => {
+        // Handle image hover logic
     };
+
+    const handleImageLeave = () => {
+        // Handle image leave logic
+    };
+
+    const deleteImage = () => {
+        // Delete image logic
+    };
+    // const Popup = ({ photos, onClose }) => {
+    //     const [hoveredImage, setHoveredImage] = useState(null);
+
+    //     const handleImageHover = (imageUrl) => {
+    //         setHoveredImage(imageUrl);
+    //     };
+
+    //     const handleImageLeave = () => {
+    //         setHoveredImage(null);
+    //     };
+
+    //     const deleteImage = async (imageUrl, event) => {
+    //         event.preventDefault();
+    //         try {
+    //             // Delete the image from Firebase storage
+    //             const imageRef = storage.refFromURL(imageUrl);
+    //             await imageRef.delete();
+
+    //             // Remove the image from the state
+    //             setPhotos((prevPhotos) => prevPhotos.filter((url) => url !== imageUrl));
+    //         } catch (error) {
+    //             console.log("Error deleting image:", error);
+    //         }
+    //     };
+    //     return (
+    //         <div className="popup">
+    //             <div className="popup-inner">
+    //                 <button className="close-button" onClick={onClose}>
+    //                     <i className="fas fa-times"></i>
+    //                 </button>
+    //                 <div className="gallery">
+    //                     {photos.map((url) => (
+    //                         <div
+    //                             key={url}
+    //                             className="image-container"
+    //                             onMouseEnter={() => handleImageHover(url)}
+    //                             onMouseLeave={handleImageLeave}
+    //                         >
+    //                             <img src={url} alt="Photo" className="photo" />
+    //                             {hoveredImage === url && (
+    //                                 <button
+    //                                     className="delete-button"
+    //                                     onClick={(event) => deleteImage(url, event)}
+    //                                 >
+    //                                     <FontAwesomeIcon icon={faTrash} />
+    //                                 </button>
+    //                             )}
+    //                         </div>
+    //                     ))}
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // };
     return (
         <div>
             <Row>
@@ -317,13 +325,13 @@ console.log("desc",project.ProjectDescription, project.Deadline);
                                 <Col lg={2}>
                                     <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicPassword">
                                         <Form.Label>תאריך הכנסה</Form.Label>
-                                        <Form.Control disabled className='datePicker' type="date" defaultValue={InsertDate}/>
+                                        <Form.Control disabled className='datePicker' type="date" defaultValue={InsertDate} />
                                     </Form.Group>
                                 </Col>
                                 <Col lg={2}>
                                     <Form.Group style={{ textAlign: 'right' }} className="" controlId="formBasicPassword">
                                         <Form.Label>תאריך הגשה</Form.Label>
-                                        <Form.Control disabled={!isEditing} className='datePicker' type="date" defaultValue={Deadline} onChange={(e) => setdeadline(e.target.value)}/>
+                                        <Form.Control disabled={!isEditing} className='datePicker' type="date" defaultValue={Deadline} onChange={(e) => setdeadline(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -345,7 +353,14 @@ console.log("desc",project.ProjectDescription, project.Deadline);
                                         style={{ display: 'none' }}
                                         onChange={handleFileInputChange}
                                     />
-                                    {isPopupOpen && <Popup photos={photos} onClose={closePopup} />}
+                                    {isPopupOpen && <FCPopup
+                                        photos={photos}
+                                        onClose={closePopup}
+                                        handleImageHover={handleImageHover}
+                                        handleImageLeave={handleImageLeave}
+                                        deleteImage={deleteImage}
+                                        getPhotosFromStorage={getPhotosFromStorage}
+                                    />}
                                 </Col>
                                 <Col style={{ display: 'flex', textalign: 'left', justifyContent: 'end' }}>
                                     <Button className="trash" onClick={() => { deleteProject(project.ProjectID) }}>
