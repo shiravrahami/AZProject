@@ -1,12 +1,14 @@
-﻿using System.Web.Http;
-using WebApplication1.DTO;
-using SignIn;
+﻿using SignIn;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
+using WebApplication1.DTO;
+using Newtonsoft.Json.Linq;
+using System.Net.Mail;
 
 
 namespace WebApplication1.Controllers
@@ -74,12 +76,12 @@ namespace WebApplication1.Controllers
 
         // לקובץ של הצעת מחיר לפי הלקוח 
         [HttpGet]
-        [Route("api/PriceQuote/{customerId}")]
-        public IHttpActionResult GetPriceQuoteByCustomer(int customerId)
+        [Route("api/PriceQuote/{ID}")]
+        public IHttpActionResult GetPriceQuoteByCustomer(int ID)
         {
             try
             {
-                var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == customerId);
+                var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == ID);
                 if (priceQuote == null)
                 {
                     return NotFound();
@@ -104,6 +106,70 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //מתודת שליחת מייל הצעת מחיר ללקוח
+        [HttpGet]
+        [Route("api/PriceQuoteSendMail/{ID}")]
+        public IHttpActionResult GetPriceQuoteByCustomerSendMail(int ID)
+        {
+            try
+            {
+                var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == ID);
+                if (priceQuote == null)
+                {
+                    return NotFound();
+                }
+
+                var customer = db.Customers.FirstOrDefault(c => c.ID == priceQuote.CustomerPK);
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+
+                var priceDTO = new PriceDTO
+                {
+                    PriceQuoteId = priceQuote.PriceQuoteID,
+                    CustomerPK = priceQuote.CustomerPK,
+                    CustomerName = customer.CustomerName,
+                    CustomerEmail = customer.CustomerEmail,
+                    ProjectId = priceQuote.ProjectID,
+                    TotalWorkHours = priceQuote.TotalWorkHours,
+                    DiscoutPercent = priceQuote.DiscoutPercent,
+                    TotalPrice = priceQuote.TotalPrice,
+                    PriceQuoteFile = priceQuote.PriceQuoteFile
+                };
+
+                string subject = "הצעת מחיר";
+                string body = $"שלום {customer.CustomerName} ,\n תודה שבחרת בנו ! \n להלן הצעת המחיר שלך\n סך הכל שעות עבודה- {priceQuote.TotalWorkHours}\n אחוז הנחה- {priceQuote.DiscoutPercent}\n מחיר סופי- {priceQuote.TotalPrice}\n קובץ הצעת מחיר- {priceQuote.PriceQuoteFile}";
+
+                SendEmail(customer.CustomerEmail, subject, body);
+
+                return Ok(priceDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        private void SendEmail(string toMail, string subjects, string bodys)
+        {
+            Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress("remotlat@outlook.com");
+            message.To.Add(toMail);
+            message.Subject = subjects;
+            message.Body = bodys;
+
+            SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
+            smtpClient.EnableSsl = true;
+
+            smtpClient.Send(message);
+        }
 
     }
+
 }
+

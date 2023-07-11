@@ -20,5 +20,8 @@ namespace WebApplication1.DTO
         public int TotalPrice { get; set; }
 
         public string PriceQuoteFile { get; set; }
+        public string CustomerName { get; internal set; }
+
+        public string CustomerEmail { get; set; }
     }
 }

@@ -46,6 +46,40 @@ namespace WebApplication1.Controllers
         //}
 
         //מציגה שם לקוח, דד ליין ותיאור
+        //מקורית
+        //[HttpGet]
+        //[Route("api/ProjectDetails/{id}")]
+        //public IHttpActionResult GetProject(int id)
+        //{
+        //    try
+        //    {
+        //        // מציאת הפרויקט לפי ה-ID שנשלח בבקשה
+        //        var project = db.Projects.FirstOrDefault(p => p.ProjectID == id);
+
+        //        if (project == null)
+        //            return NotFound(); // אם הפרויקט לא קיים, מחזירים תשובת 404
+
+        //        // מציאת שם הלקוח של הפרויקט
+        //        var customerName = db.Customers.FirstOrDefault(c => c.ID == project.CustomerPK)?.CustomerName;
+
+        //        // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח
+        //        var projectDetails = new
+        //        {
+        //            InsertDate = project.InsertDate,
+        //            Deadline = (DateTime)project.Deadline,
+        //            Description = project.Description,
+        //            CustomerName = customerName
+        //        };
+
+        //        return Ok(projectDetails);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+        //אותה אחת כמו למעלה חדשה
         [HttpGet]
         [Route("api/ProjectDetails/{id}")]
         public IHttpActionResult GetProject(int id)
@@ -61,13 +95,17 @@ namespace WebApplication1.Controllers
                 // מציאת שם הלקוח של הפרויקט
                 var customerName = db.Customers.FirstOrDefault(c => c.ID == project.CustomerPK)?.CustomerName;
 
-                // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח
+                // מציאת כמות השעות הכוללת מטבלת PriceQuotes
+                var totalWorkHours = db.PriceQuotes.Where(pq => pq.ProjectID == id).Sum(pq => pq.TotalWorkHours);
+
+                // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח וכמות השעות הכוללת
                 var projectDetails = new
                 {
                     InsertDate = project.InsertDate,
                     Deadline = (DateTime)project.Deadline,
                     Description = project.Description,
-                    CustomerName = customerName
+                    CustomerName = customerName,
+                    TotalWorkHours = totalWorkHours
                 };
 
                 return Ok(projectDetails);
@@ -77,6 +115,11 @@ namespace WebApplication1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
+
+
 
 
 
@@ -410,8 +453,31 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //אותה מתודה כמו למעלה כולל הפרש שעות
-       
+        //אותה מתודה כמו למעלה כולל שעות מטבלת הצעת מחיר
+        [HttpGet]
+        [Route("api/ProjectWorkHours")]
+        public IHttpActionResult GetProjectWorkHours()
+        {
+            try
+            {
+                var projectWorkHours = db.Projects
+                    .Where(p => !p.isDeleted)
+                    .Select(p => new
+                    {
+                        ProjectID = p.ProjectID,
+                        ProjectName = p.ProjectName,
+                        TotalWorkHours = p.PriceQuotes.Sum(pq => pq.TotalWorkHours)
+                    }).ToList();
+
+                return Ok(projectWorkHours);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
 
