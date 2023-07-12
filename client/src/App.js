@@ -14,7 +14,7 @@ import FCTest from './FunctionalComponents/FCTest';
 import FCProjects from './FunctionalComponents/Projects/FCProjects';
 import FCProject from './FunctionalComponents/Projects/FCProject';
 import FCTask from './FunctionalComponents/Tasks/FCTask';
-import FCInsertCustomer from './FunctionalComponents/Customers/FCInsertCustomer';
+import FCInsertPriceQuote from './FunctionalComponents/Customers/FCInsertPriceQuote';
 import FCInsertEmployee from './FunctionalComponents/Employees/FCInsertEmployee';
 import FCInsertProject from './FunctionalComponents/Projects/FCInsertProject';
 import FCNotes from './FunctionalComponents/FCNotes';
@@ -36,7 +36,7 @@ function App() {
             <Route path="/employees" element={<FCLayout><FCemployees /></FCLayout>} />
             <Route path="/test" element={<FCTest />} />
             <Route path="/project" element={<FCLayout><FCProject /></FCLayout>} />
-            <Route path="/newcustomer" element={<FCLayout><FCInsertCustomer /></FCLayout>} />
+            <Route path="/newcustomer" element={<FCLayout><FCInsertPriceQuote /></FCLayout>} />
             <Route path="/newproject" element={<FCLayout><FCInsertProject /></FCLayout>} />
             <Route path="/newemployee" element={<FCLayout><FCInsertEmployee /></FCLayout>} />
             <Route path="/notes" element={<FCLayout><FCNotes /></FCLayout>} />

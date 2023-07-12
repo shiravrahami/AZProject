@@ -132,6 +132,7 @@ export default function FCInsertProject() {
                   <Form.Group style={{ textAlign: 'right' }} controlId="CustType">
                     <Form.Label>שם הלקוח</Form.Label>
                     <Form.Select style={{ fontSize: '20px', textAlign: 'right' }} onChange={(e) => setNewCustomerID(e.target.value)}>
+                    <option>בחר לקוח</option>
                       {customersNames.map((customerName) => (
                         <option key={customerName.ID} value={customerName.ID}>
                           {customerName.CustomerName}
