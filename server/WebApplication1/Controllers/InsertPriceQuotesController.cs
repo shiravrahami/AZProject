@@ -169,6 +169,98 @@ namespace WebApplication1.Controllers
             smtpClient.Send(message);
         }
 
+
+
+        //אלמנט חכם
+
+        //מתודה שתקבל מזהה של לקוח תציג את סכום הצעת המחיר, כל סכום כזה הוא נקודה במערך
+
+        [HttpGet]
+        [Route("api/TotalPrice/{ID}")]
+        public IHttpActionResult GetTotalPrice(int ID)
+        {
+            try
+            {
+                var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == ID);
+                if (priceQuote == null)
+                {
+                    return NotFound();
+                }
+
+                decimal totalPrice = priceQuote.TotalPrice;
+
+                return Ok(totalPrice);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //מתודה שתחזיר כנק את כל הצעות המחיר
+        [HttpGet]
+        [Route("api/TotalPriceQuotes")]
+        public IHttpActionResult GetTotalPriceQuotes()
+        {
+            try
+            {
+                var customers = db.Customers.ToList();
+
+                List<decimal> totalPriceQuotes = new List<decimal>();
+
+                foreach (var customer in customers)
+                {
+                    var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == customer.ID);
+
+                    if (priceQuote != null)
+                    {
+                        decimal totalPrice = priceQuote.TotalPrice;
+                        totalPriceQuotes.Add(totalPrice);
+                    }
+                }
+
+                return Ok(totalPriceQuotes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error retrieving total price quotes: " + ex.Message);
+            }
+        }
+
+        //מחזירה את ההצעת מחיר הקרובה ביותר לערך שהוזן
+        [HttpGet]
+        [Route("api/ClosestPriceQuote/{value}")]
+        public IHttpActionResult GetClosestPriceQuote(decimal value)
+        {
+            try
+            {
+                var customers = db.Customers.ToList();
+
+                List<decimal> totalPriceQuotes = new List<decimal>();
+
+                foreach (var customer in customers)
+                {
+                    var priceQuote = db.PriceQuotes.FirstOrDefault(pq => pq.CustomerPK == customer.ID);
+
+                    if (priceQuote != null)
+                    {
+                        decimal totalPrice = priceQuote.TotalPrice;
+                        totalPriceQuotes.Add(totalPrice);
+                    }
+                }
+
+                // מציאת הנקודה הקרובה ביותר לערך שהמשתמש הזין
+                decimal closestPoint = totalPriceQuotes.OrderBy(x => Math.Abs(x - value)).FirstOrDefault();
+
+                return Ok(closestPoint);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error retrieving closest price quote: " + ex.Message);
+            }
+        }
+
+
     }
 
 }

@@ -210,6 +210,7 @@ namespace WebApplication1.Controllers
         }
 
         //המתודה כולל ההפרש בין המשוער לבפועל 
+        //לא רלוונטי
         [HttpGet]
         [Route("api/TaskDetailsHourCHECK/{id}")]
         public IHttpActionResult GetTaskDetailsHourCHECK(int id)
@@ -300,9 +301,60 @@ namespace WebApplication1.Controllers
 
 
         //מחזיר את הערך 6 כמו בקוד המקורי של ניר
+        //[HttpGet]
+        //[Route("api/TaskDetailsPredictionsTheEnd")]
+        //public int GetTaskDetailsPredictionTheEnd()
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks.ToList();
+
+        //        List<double> clusterPoints = new List<double>();
+
+        //        foreach (var task in tasks)
+        //        {
+        //            double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+        //            var activities = db.Activity
+        //                .Where(a => a.TaskID == task.TaskID)
+        //                .ToList();
+
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //            foreach (var activity in activities)
+        //            {
+        //                totalWorkHours += activity.EndDate - activity.StartDate;
+        //            }
+
+        //            double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+        //            double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+        //            clusterPoints.Add(timeDifference);
+        //        }
+
+        //        double newDataPoint = 1.0; // הנקודה שאנו רוצים לזהות
+
+        //        List<double> distances = clusterPoints.Select(point => Math.Abs(point - newDataPoint)).ToList();
+        //        double minDistance = distances.Min();
+        //        int clusterIndex = distances.IndexOf(minDistance);
+
+        //        return clusterIndex;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // טיפול בשגיאות
+        //        throw new Exception("Error predicting cluster index.", ex);
+        //    }
+        //}
+
+
+        //המתודה הסופית
+        //מעודכנת שתקבל פרמטר
         [HttpGet]
-        [Route("api/TaskDetailsPredictionsTheEnd")]
-        public int GetTaskDetailsPredictionTheEnd()
+        [Route("api/TaskDetailsPredictionsTheEnd/{value}")]
+        public int GetTaskDetailsPredictionTheEnd(double value)
         {
             try
             {
@@ -332,14 +384,11 @@ namespace WebApplication1.Controllers
                     clusterPoints.Add(timeDifference);
                 }
 
-                double newDataPoint = 1.0; // הנקודה שאנו רוצים לזהות
-
-                List<double> distances = clusterPoints.Select(point => Math.Abs(point - newDataPoint)).ToList();
+                List<double> distances = clusterPoints.Select(point => Math.Abs(point - value)).ToList();
                 double minDistance = distances.Min();
                 int clusterIndex = distances.IndexOf(minDistance);
 
                 return clusterIndex;
-                
             }
             catch (Exception ex)
             {
@@ -347,7 +396,6 @@ namespace WebApplication1.Controllers
                 throw new Exception("Error predicting cluster index.", ex);
             }
         }
-
 
 
 

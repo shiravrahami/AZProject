@@ -1,13 +1,10 @@
 ﻿using SignIn;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 using WebApplication1.DTO;
-using Newtonsoft.Json.Linq;
 
 namespace WebApplication1.Controllers
 {
@@ -614,24 +611,56 @@ namespace WebApplication1.Controllers
 
         //מחזיר פעילות לפי משימה ספציפית 
         //יצרתי אותה מתודה בתוספת שם לקוח
+        [HttpGet]
+        [Route("api/Tasks/{taskId}/Activities")]
+        public IHttpActionResult GetActivitiesByTaskId(int taskId)
+        {
+            try
+            {
+                var activities = db.Activity
+                    .Where(a => a.TaskID == taskId)
+                    .Select(a => new ActivityDTO
+                    {
+                        ActivityID = a.ActivityID,
+                        TaskID = a.TaskID,
+                        EmployeePK = a.EmployeePK,
+                        StartDate = a.StartDate
+                    })
+                    .ToList();
+
+                return Ok(activities);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+        //מקבלת שם משימה ומחחזירה את סהכ השעות שעבדו עליה
         //[HttpGet]
-        //[Route("api/Tasks/{taskId}/Activities")]
-        //public IHttpActionResult GetActivitiesByTaskId(int taskId)
+        //[Route("api/TaskWorkedHours/{taskName}")]
+        //public IHttpActionResult GetTaskWorkedHours(string taskName)
         //{
         //    try
         //    {
-        //        var activities = db.Activity
-        //            .Where(a => a.TaskID == taskId)
-        //            .Select(a => new ActivityDTO
-        //            {
-        //                Activity_ID = a.ActivityID,
-        //                Task_ID = a.TaskID,
-        //                Employee_PK = a.EmployeePK,
-        //                Start_Date = a.StartDate
-        //            })
-        //            .ToList();
+        //        var task = db.Tasks
+        //            .FirstOrDefault(t => t.TaskName == taskName);
 
-        //        return Ok(activities);
+        //        if (task == null)
+        //            return NotFound();
+
+        //        TimeSpan totalWorkHours = (TimeSpan)(task.Deadline - task.InsertTaskDate);
+
+        //        var result = new
+        //        {
+        //            TotalWorkHours = totalWorkHours.TotalHours
+        //        };
+
+        //        return Ok(result);
         //    }
         //    catch (Exception ex)
         //    {
@@ -640,17 +669,245 @@ namespace WebApplication1.Controllers
         //}
 
 
-        
-       
+        //[HttpGet]
+        //[Route("api/TaskWorkedHours/{taskName}")]
+        //public IHttpActionResult GetTaskWorkedHours(string taskName)
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks
+        //            .Where(t => t.TaskName.Contains(taskName))
+        //            .ToList();
 
-        
+        //        if (tasks.Count == 0 || tasks == null)
+        //            return NotFound();
+
+        //        TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //        foreach (var task in tasks)
+        //        {
+        //            totalWorkHours += task.Deadline - task.InsertTaskDate;
+        //        }
+
+        //        var result = new
+        //        {
+        //            TotalWorkHours = totalWorkHours.TotalHours
+        //        };
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+
+        //מחזירה שעות לפי הסטרינג של משימה
+        //[HttpGet]
+        //[Route("api/TaskWorkedHour/{taskName}")]
+        //public IHttpActionResult GetTaskWorkedHour(string taskName)
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks
+        //            .Where(t => t.TaskName.Contains(taskName))
+        //            .Select(t => t.TaskID)
+        //            .ToList();
+
+        //        var activities = db.Activity
+        //            .Where(a => tasks.Contains(a.TaskID))
+        //            .ToList();
+
+        //        TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //        foreach (var activity in activities)
+        //        {
+        //            totalWorkHours += activity.EndDate - activity.StartDate;
+        //        }
+
+        //        var result = new
+        //        {
+        //            TotalWorkHours = totalWorkHours.TotalHours
+        //        };
+
+        //        if (tasks == null || tasks.Count == 0)
+        //            return NotFound();
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+        //מחזירה מערך בו מזהה משימה ולכל מזהה את סך השעות שעבדו על אותה משימה
+        //[HttpGet]
+        //[Route("api/TaskWorkedHour/{taskName}")]
+        //public IHttpActionResult GetTaskWorkedHour(string taskName)
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks
+        //            .Where(t => t.TaskName.Contains(taskName))
+        //            .Select(t => t.TaskID)
+        //            .ToList();
+
+        //        var activities = db.Activity
+        //            .Where(a => tasks.Contains(a.TaskID))
+        //            .ToList();
+
+        //        var taskWorkHours = new Dictionary<int, double>();
+
+        //        foreach (var taskID in tasks)
+        //        {
+        //            var taskActivities = activities.Where(a => a.TaskID == taskID);
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //            foreach (var activity in taskActivities)
+        //            {
+        //                totalWorkHours += activity.EndDate - activity.StartDate;
+        //            }
+
+        //            taskWorkHours[taskID] = totalWorkHours.TotalHours;
+        //        }
+
+        //        var result = new
+        //        {
+        //            TaskWorkHours = taskWorkHours
+        //        };
+
+        //        if (tasks == null || tasks.Count == 0)
+        //            return NotFound();
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+        //תקבל סוג ושם משימה ותחזיר את סוג המשימה, הממצוע שעות שעבדו עליה ומזהה המשימה
+        //[HttpGet]
+        //[Route("api/TaskWorkedHour/{taskType}/{taskName}")]
+        //public IHttpActionResult GetTaskWorkedHour(int taskType, string taskName)
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks
+        //            .Where(t => t.TaskName.Contains(taskName) && t.TaskType == taskType)
+        //            .Select(t => t.TaskID)
+        //            .ToList();
+
+        //        var activities = db.Activity
+        //            .Where(a => tasks.Contains(a.TaskID))
+        //            .ToList();
+
+        //        var taskWorkHours = new Dictionary<int, double>();
+
+        //        foreach (var taskID in tasks)
+        //        {
+        //            var taskActivities = activities.Where(a => a.TaskID == taskID);
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //            foreach (var activity in taskActivities)
+        //            {
+        //                totalWorkHours += activity.EndDate - activity.StartDate;
+        //            }
+
+        //            taskWorkHours[taskID] = totalWorkHours.TotalHours;
+        //        }
+
+        //        var averageWorkHours = taskWorkHours.Values.Average();
+
+        //        var result = new
+        //        {
+        //            TaskWorkHours = taskWorkHours,
+        //            TaskType = taskType,
+        //            AverageWorkHours = averageWorkHours
+
+
+        //        };
+
+        //        if (tasks == null || tasks.Count == 0)
+        //            return NotFound();
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+        //תקבל סוג , שם משימה ושעות הצעת מחיר ותחזיר את סוג המשימה, הממצוע שעות שעבדו עליה, מזהה המשימה והאם סך השעות קטן או גדול
+        [HttpGet]
+        [Route("api/TaskWorkedHour/{taskType}/{taskName}/{pqHours}")]       
+        public IHttpActionResult GetTaskWorkedHour(int taskType, string taskName, double pqHours)
+        {
+            try
+            {
+                var tasks = db.Tasks
+                    .Where(t => t.TaskName.Contains(taskName) && t.TaskType == taskType)
+                    .Select(t => t.TaskID)
+                    .ToList();
+
+                var activities = db.Activity
+                    .Where(a => tasks.Contains(a.TaskID))
+                    .ToList();
+
+                var taskWorkHours = new Dictionary<int, double>();
+
+                foreach (var taskID in tasks)
+                {
+                    var taskActivities = activities.Where(a => a.TaskID == taskID);
+                    TimeSpan totalWorkHours = TimeSpan.Zero;
+
+                    foreach (var activity in taskActivities)
+                    {
+                        totalWorkHours += activity.EndDate - activity.StartDate;
+                    }
+
+                    taskWorkHours[taskID] = totalWorkHours.TotalHours;
+                }
+
+                var averageWorkHours = taskWorkHours.Values.Average();
+                var difference = pqHours - averageWorkHours;
+                var isPQHoursBigger = pqHours > averageWorkHours;
+
+                var result = new
+                {
+                    TaskWorkHours = taskWorkHours,
+                    TaskType = taskType,
+                    AverageWorkHours = averageWorkHours,
+                    PQHours = pqHours,
+                    Difference = difference,
+                    IsPQHoursBigger = isPQHoursBigger
+                };
+
+                if (tasks == null || tasks.Count == 0)
+                    return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
-        
 
-        
-             
 
-   
 }
 
 

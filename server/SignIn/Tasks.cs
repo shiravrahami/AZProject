@@ -28,7 +28,8 @@ namespace SignIn
         public int TaskType { get; set; }
         public string TaskDescription { get; set; }
         public System.DateTime InsertTaskDate { get; set; }
-        public Nullable<System.DateTime> Deadline { get; set; }
+        //public Nullable<System.DateTime> Deadline { get; set; }
+        public DateTime Deadline { get; set; }
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
         public int PriceQuoteTime { get; set; }
@@ -42,5 +43,8 @@ namespace SignIn
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
         public virtual TaskType TaskType1 { get; set; }
+        public DateTime EndDate { get; set; }
+        
+        //public DateTime EndDate { get; set; }
     }
 }
