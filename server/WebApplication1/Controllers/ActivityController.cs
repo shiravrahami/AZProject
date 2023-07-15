@@ -210,7 +210,6 @@ namespace WebApplication1.Controllers
         }
 
         //המתודה כולל ההפרש בין המשוער לבפועל 
-        //לא רלוונטי
         [HttpGet]
         [Route("api/TaskDetailsHourCHECK/{id}")]
         public IHttpActionResult GetTaskDetailsHourCHECK(int id)
@@ -397,6 +396,70 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //נחלק לשלוש קטגוריות- קל, בנוני וקשה
+        //טווח קל החל ממינוס שתיים ומטה
+        //טווח בינוני ממינוס אחד ומעלה
+        //טווח קשה שתיים ומעלה
+        [HttpGet]
+        [Route("api/TaskDetailsPredictionWithDifficulty")]
+        public Dictionary<string, List<double>> GetTaskDetailsPredictionWithDifficulty()
+        {
+            try
+            {
+                var tasks = db.Tasks.ToList();
+
+                List<double> easyTasks = new List<double>();
+                List<double> mediumTasks = new List<double>();
+                List<double> hardTasks = new List<double>();
+
+                foreach (var task in tasks)
+                {
+                    double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+                    var activities = db.Activity
+                        .Where(a => a.TaskID == task.TaskID)
+                        .ToList();
+
+                    TimeSpan totalWorkHours = TimeSpan.Zero;
+
+                    foreach (var activity in activities)
+                    {
+                        totalWorkHours += activity.EndDate - activity.StartDate;
+                    }
+
+                    double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+                    double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+                    if (timeDifference < -1) // קטגוריה קלה (הפרש שלילי גדול מ-1)
+                    {
+                        easyTasks.Add(timeDifference);
+                    }
+                    else if (timeDifference >= -1 && timeDifference <= 1) // קטגוריה בינונית (הפרש בין -1 ל-1 כולל)
+                    {
+                        mediumTasks.Add(timeDifference);
+                    }
+                    else // קטגוריה קשה (הפרש חיובי גדול מ-1)
+                    {
+                        hardTasks.Add(timeDifference);
+                    }
+                }
+
+                var result = new Dictionary<string, List<double>>()
+        {
+            { "Easy", easyTasks },
+            { "Medium", mediumTasks },
+            { "Hard", hardTasks }
+        };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // טיפול בשגיאות
+                throw new Exception("Error predicting task difficulties.", ex);
+            }
+        }
 
 
 
