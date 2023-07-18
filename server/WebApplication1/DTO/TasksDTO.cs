@@ -25,10 +25,11 @@ namespace WebApplication1.DTO
 
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
-        public object EmployeeName { get; internal set; }
+        public object EmployeeName { get;  set; }
         //public string CustomerName { get; internal set; }
 
         //public DateTime EndDate { get; internal set; }//התווסף
+        public string EmployeeEmail { get; set; }
 
         public int PriceQuoteTime { get; set; }//new
 

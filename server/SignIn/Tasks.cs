@@ -44,7 +44,9 @@ namespace SignIn
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
         public virtual TaskType TaskType1 { get; set; }
         public DateTime EndDate { get; set; }
-        
+        public object EmployeeName { get; set; }
+        public object EmployeeEmail { get; set; }
+
         //public DateTime EndDate { get; set; }
     }
 }

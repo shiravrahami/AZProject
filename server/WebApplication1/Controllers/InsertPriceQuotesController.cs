@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
             try //בודק שכל הפרמטרים הנדרשים קיימים
             {
                 if (priceDTO.CustomerPK == 0 ||
-                    priceDTO.ProjectId == 0 ||
+                    //priceDTO.ProjectId == 0 ||
                     priceDTO.TotalWorkHours == 0 ||
                     priceDTO.TotalPrice == 0)
                 {
@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
                 PriceQuotes newPriceQuote = new PriceQuotes() //Inside the action, a new PriceQuotes object is created based on the PriceDTO object sent in the request.
                 {
                     CustomerPK = priceDTO.CustomerPK,
-                    ProjectID = priceDTO.ProjectId,
+                    //ProjectID = priceDTO.ProjectId,
                     TotalWorkHours = priceDTO.TotalWorkHours,
                     DiscoutPercent = priceDTO.DiscoutPercent,
                     TotalPrice = priceDTO.TotalPrice,

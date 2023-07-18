@@ -1,10 +1,14 @@
 ﻿using SignIn;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using WebApplication1.DTO;
+using Newtonsoft.Json.Linq;
+using System.Net.Mail;
 
 
 namespace WebApplication1.Controllers
@@ -173,6 +177,65 @@ namespace WebApplication1.Controllers
                 return BadRequest($"Error saving Task details: {ex.Message}");
             }
         }
+
+        //הכנסת משימה חדשה כולל יצירת אובייקט פעילות ריק
+        [HttpPost]
+        [Route("api/InsertTask/{employeeID}")]
+        public IHttpActionResult InsertTask(int employeeID, [FromBody] TasksDTO task)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
+                        string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
+                        task.ProjectID == 0)
+                    {
+                        return BadRequest("One or more parameters are missing or invalid");
+                    }
+
+                    Tasks newTask = new Tasks()
+                    {
+                        TaskName = task.TaskName,
+                        ProjectID = task.ProjectID,
+                        TaskType = task.TaskType,
+                        TaskDescription = task.TaskDescription,
+                        InsertTaskDate = task.InsertTaskDate,
+                        Deadline = task.Deadline
+                    };
+
+                    db.Tasks.Add(newTask);
+                    db.SaveChanges();
+
+                    // הוספת אקטיביטי ריק למשימה החדשה
+                    Activity newActivity = new Activity()
+                    {
+                        TaskID = newTask.TaskID,
+                        EmployeePK = employeeID, // מספר העובד מה-URL
+                        Description = "סיווג עובד למשימה",
+                        StartDate = newTask.Deadline,
+                        EndDate = newTask.Deadline
+                    };
+
+                    db.Activity.Add(newActivity);
+                    db.SaveChanges();
+
+                    transaction.Commit();
+                    return Ok("Task details and empty activity saved successfully");
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return BadRequest($"Error saving Task details: {ex.Message}");
+                }
+            }
+        }
+
+
+
+
+
+
 
         //מקורית
         //[HttpGet]
@@ -904,6 +967,132 @@ namespace WebApplication1.Controllers
         }
 
 
+        //ברגע שנוצרת משימה חדשה יישלח מייל לעובד שיבצע אותה
+        //שם , מייל, מזהה
+        //[HttpPost]
+        //[Route("api/InsertTaskMailToEmployee")]
+        //public IHttpActionResult InsertTaskMailToEmployee([FromBody] TasksDTO task)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
+        //            string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
+        //            task.ProjectID == 0)
+        //        {
+        //            return BadRequest("One or more parameters are missing or projty");
+        //        }
+
+        //        Tasks Task = new Tasks()
+        //        {
+        //            TaskName = task.TaskName,
+        //            ProjectID = task.ProjectID,
+        //            TaskType = task.TaskType,
+        //            TaskDescription = task.TaskDescription,
+        //            InsertTaskDate = task.InsertTaskDate,
+        //            Deadline = task.Deadline,
+        //            EmployeeName = task.EmployeeName,
+        //            EmployeeEmail = task.EmployeeEmail
+        //        };
+
+
+        //        db.Tasks.Add(Task);
+        //        db.SaveChanges();
+
+        //        string subject = "משימה חדשה התקבלה";
+        //        string body = $"שלום {task.EmployeeName} ,\n התקבלה משימה חדשה ! \n להלן פרטי המשימה \n שם משימה{task.TaskName} \n סוג משימה {task.TaskType}\n תיאור משימה {task.TaskDescription} \nתאריך קבלת משימה {task.InsertTaskDate} \nתאריך סיום משימה {task.Deadline}";
+
+        //        SendEmail(task.EmployeeEmail, subject, body);
+
+        //        return Ok("Task details saved successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"Error saving Task details: {ex.Message}");
+        //    }
+        //}
+
+        //private void SendEmail(string toMail, string subjects, string bodys)
+        //{
+        //    Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
+
+        //    MailMessage message = new MailMessage();
+        //    message.From = new MailAddress("remotlat@outlook.com");
+        //    message.To.Add(toMail);
+        //    message.Subject = subjects;
+        //    message.Body = bodys;
+
+        //    SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
+        //    smtpClient.UseDefaultCredentials = false;
+        //    smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
+        //    smtpClient.EnableSsl = true;
+
+        //    smtpClient.Send(message);
+        //}
+
+
+
+        //ברגע שנוצרת משימה חדשה יישלח מייל לעובד שיבצע אותה
+        //שם , מייל, מזהה
+        [HttpPost]
+        [Route("api/InsertTaskMailToEmployee")]
+        public IHttpActionResult InsertTaskMailToEmployee([FromBody] TasksDTO task)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
+                    string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
+                    task.ProjectID == 0 ||
+                    string.IsNullOrEmpty(task.EmployeeName?.ToString()) ||
+                    string.IsNullOrEmpty(task.EmployeeEmail?.ToString()))
+                {
+                    return BadRequest("One or more parameters are missing or invalid");
+                }
+
+                Tasks Task = new Tasks()
+                {
+                    TaskName = task.TaskName,
+                    ProjectID = task.ProjectID,
+                    TaskType = task.TaskType,
+                    TaskDescription = task.TaskDescription,
+                    InsertTaskDate = task.InsertTaskDate,
+                    Deadline = task.Deadline,
+                    EmployeeName = task.EmployeeName,
+                    EmployeeEmail = task.EmployeeEmail
+                };
+
+                db.Tasks.Add(Task);
+                db.SaveChanges();
+
+                string subject = "משימה חדשה התקבלה";
+                string body = $"שלום {task.EmployeeName},\nהתקבלה משימה חדשה!\nלהלן פרטי המשימה:\nשם משימה: {task.TaskName}\nסוג משימה: {task.TaskType}\nתיאור משימה: {task.TaskDescription}\nתאריך קבלת משימה: {task.InsertTaskDate}\nתאריך סיום משימה: {task.Deadline}\n בהצלחה!";
+
+                SendEmail(task.EmployeeEmail, subject, body);
+
+                return Ok("Task details saved successfully and email sent successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error saving Task details: {ex.Message}");
+            }
+        }
+
+        private void SendEmail(string toMail, string subjects, string bodys)
+        {
+            Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress("remotlat@outlook.com");
+            message.To.Add(toMail);
+            message.Subject = subjects;
+            message.Body = bodys;
+
+            SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
+            smtpClient.EnableSsl = true;
+
+            smtpClient.Send(message);
+        }
 
 
     }
