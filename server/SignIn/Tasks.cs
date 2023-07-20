@@ -46,6 +46,7 @@ namespace SignIn
         public DateTime EndDate { get; set; }
         public object EmployeeName { get; set; }
         public object EmployeeEmail { get; set; }
+        public string CustomerName { get; set; }
 
         //public DateTime EndDate { get; set; }
     }

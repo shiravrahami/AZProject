@@ -17,6 +17,7 @@ namespace WebApplication1.Controllers
     {
         igroup195_DB_Prod db = new igroup195_DB_Prod();
 
+
         // הוספת פעילות
         //לא טוב
         [HttpPost]
@@ -35,7 +36,7 @@ namespace WebApplication1.Controllers
                 // יצירת אובייקט פעילות חדשה
                 var activity = new Activity
                 {
-                    
+
                     TaskID = newActivity.TaskID,
                     EmployeePK = newActivity.EmployeePK,
                     StartDate = newActivity.StartDate,
@@ -49,10 +50,10 @@ namespace WebApplication1.Controllers
                 // יצירת תשובת ה HTTP 200 OK עם הפעילות החדשה
                 var activityDTO = new ActivityDTO
                 {
-                   //ActivityID = activity.ActivityID,
+                    //ActivityID = activity.ActivityID,
                     TaskID = activity.TaskID,
                     EmployeePK = activity.EmployeePK,
-                    Description= activity.Description,
+                    Description = activity.Description,
                     StartDate = activity.StartDate,
                     EndDate = (DateTime)activity.EndDate
                 };
@@ -66,53 +67,53 @@ namespace WebApplication1.Controllers
 
         //קוד נוסף להוספת פעילות
         //לא טוב
-        [HttpPost]
-        [Route("api/ActivitiesAddNEW")]
-        public IHttpActionResult ActivitiesAddNEW(ActivityDTO newActivity)
-        {
-            try
-            {
-                // בדיקה שהפעילות לא קיימת
-                var existingActivity = db.Activity.FirstOrDefault(a => a.ActivityID == newActivity.ActivityID);
-                if (existingActivity != null)
-                {
-                    return BadRequest("Activity already exists");
-                }
+        //[HttpPost]
+        //[Route("api/ActivitiesAddNEW")]
+        //public IHttpActionResult ActivitiesAddNEW(ActivityDTO newActivity)
+        //{
+        //    try
+        //    {
+        //        // בדיקה שהפעילות לא קיימת
+        //        var existingActivity = db.Activity.FirstOrDefault(a => a.ActivityID == newActivity.ActivityID);
+        //        if (existingActivity != null)
+        //        {
+        //            return BadRequest("Activity already exists");
+        //        }
 
-                // יצירת אובייקט פעילות חדשה
-                var activity = new Activity
-                {
-                    TaskID = newActivity.TaskID,
-                    EmployeePK = newActivity.EmployeePK,
-                    Description = newActivity.Description,
-                    StartDate = newActivity.StartDate,
-                    EndDate = newActivity.EndDate
-                };
+        //        // יצירת אובייקט פעילות חדשה
+        //        var activity = new Activity
+        //        {
+        //            TaskID = newActivity.TaskID,
+        //            EmployeePK = newActivity.EmployeePK,
+        //            Description = newActivity.Description,
+        //            StartDate = newActivity.StartDate,
+        //            EndDate = newActivity.EndDate
+        //        };
 
-                // הוספת הפעילות למסד הנתונים
-                db.Activity.Add(activity);
-                db.SaveChanges();
+        //        // הוספת הפעילות למסד הנתונים
+        //        db.Activity.Add(activity);
+        //        db.SaveChanges();
 
-                // יצירת תשובת ה HTTP 200 OK עם הפעילות החדשה
-                var activityDTO = new ActivityDTO
-                {
-                    ActivityID = activity.ActivityID,
-                    TaskID = activity.TaskID,
-                    EmployeePK = activity.EmployeePK,
-                    Description = activity.Description,
-                    StartDate = activity.StartDate,
-                    EndDate = (DateTime)activity.EndDate
-                };
+        //        // יצירת תשובת ה HTTP 200 OK עם הפעילות החדשה
+        //        var activityDTO = new ActivityDTO
+        //        {
+        //            ActivityID = activity.ActivityID,
+        //            TaskID = activity.TaskID,
+        //            EmployeePK = activity.EmployeePK,
+        //            Description = activity.Description,
+        //            StartDate = activity.StartDate,
+        //            EndDate = (DateTime)activity.EndDate
+        //        };
 
-                return Ok(activityDTO);
-            }
-            catch (Exception ex)
-            {
-                // הדפס את השגיאה הפנימית בקונסולת המפתח (debug console)
-                Console.WriteLine("Inner Exception: " + ex.InnerException?.Message);
-                return BadRequest("An error occurred while updating the entries.");
-            }
-        }
+        //        return Ok(activityDTO);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // הדפס את השגיאה הפנימית בקונסולת המפתח (debug console)
+        //        Console.WriteLine("Inner Exception: " + ex.InnerException?.Message);
+        //        return BadRequest("An error occurred while updating the entries.");
+        //    }
+        //}
 
 
 
@@ -140,11 +141,13 @@ namespace WebApplication1.Controllers
         //    }
         //}
 
-
+        //קוד נוסף למחיקת פעילות
         [HttpDelete]
         [Route("api/DeleteActivity/{activityID}")]
+
         public IHttpActionResult DeleteActivity(int activityID)
         {
+
             try
             {
                 // בדיקה אם הפעילות קיימת

@@ -226,7 +226,7 @@ public class EmployeeDetailsController : ApiController
 
 
     //מתודה המוסיפה עובד חדש למערכת ושולחת לו ססמא ראשונית במייל
-    [HttpPut]
+    [HttpPost]
     [Route("api/InsertEmployeeSendMail")]
     public IHttpActionResult InsertEmployeeSendMail([FromBody] EmployeeDeatailsDTO emp)
     {
@@ -374,7 +374,7 @@ public class EmployeeDetailsController : ApiController
     //}
 
 
-    [HttpPut]
+    [HttpPost]
     [Route("api/InsertEmployeePassword")]
     public IHttpActionResult InsertEmployeePassword([FromBody] EmployeeDeatailsDTO emp)
     {

@@ -83,7 +83,7 @@ namespace WebApplication1.Controllers
         }
 
         //InsertCustomer
-        [HttpPut]
+        [HttpPost]
         [Route("api/InsertCustomer")]
 
         public IHttpActionResult InsertCustomer([FromBody] CustomerDetailsDTO cust)

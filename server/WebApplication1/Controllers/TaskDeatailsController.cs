@@ -9,7 +9,7 @@ using System.Web.Http;
 using WebApplication1.DTO;
 using Newtonsoft.Json.Linq;
 using System.Net.Mail;
-
+using System.Data.Entity.Validation;
 
 namespace WebApplication1.Controllers
 {
@@ -48,14 +48,18 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //עדכון משימה לפי מזהה משימה קוד חדש
+        //עדכון משימה כולל שם עובד ולקוח
         [HttpPut]
         [Route("api/TaskUpdate/{taskId}")]
         public IHttpActionResult UpdateTask(int taskId, [FromBody] TasksDTO updatedTask)
         {
-
             try
             {
+                if (taskId <= 0)
+                {
+                    return BadRequest("Invalid TaskID");
+                }
+
                 var task = db.Tasks.FirstOrDefault(ts => ts.TaskID == taskId);
 
                 if (task == null)
@@ -63,7 +67,7 @@ namespace WebApplication1.Controllers
                     return BadRequest("Task not found");
                 }
 
-                task.TaskID = updatedTask.TaskID;
+                // עדכון פרטי המשימה
                 task.TaskName = updatedTask.TaskName;
                 task.ProjectID = updatedTask.ProjectID;
                 task.TaskType = updatedTask.TaskType;
@@ -72,6 +76,41 @@ namespace WebApplication1.Controllers
                 task.Deadline = updatedTask.Deadline;
                 task.isDone = updatedTask.isDone;
                 task.isDeleted = updatedTask.isDeleted;
+                task.PriceQuoteTime = updatedTask.PriceQuoteTime;
+
+                // עדכון שם הלקוח אם הוא קיים בבקשה
+                if (!string.IsNullOrEmpty(updatedTask.CustomerName))
+                {
+                    var customer = db.Customers.FirstOrDefault(c => c.CustomerName == updatedTask.CustomerName);
+                    if (customer != null)
+                    {
+                        task.Projects.Customers = customer;
+                    }
+                    else
+                    {
+                        customer = new Customers { CustomerName = updatedTask.CustomerName };
+                        task.Projects.Customers = customer;
+                    }
+                }
+
+                // עדכון שם העובד אם הוא קיים בבקשה
+                if (!string.IsNullOrEmpty(updatedTask.EmployeeName))
+                {
+                    var employee = db.Employees.FirstOrDefault(e => e.EmployeeName == updatedTask.EmployeeName);
+                    if (employee != null)
+                    {
+                        var taskEmployeeActivity = db.Task_Employee_Activity.FirstOrDefault(tea => tea.TaskID == taskId);
+                        if (taskEmployeeActivity != null)
+                        {
+                            taskEmployeeActivity.EmployeePK = employee.ID;
+                        }
+                        else
+                        {
+                            taskEmployeeActivity = new Task_Employee_Activity { TaskID = taskId, EmployeePK = employee.ID };
+                            db.Task_Employee_Activity.Add(taskEmployeeActivity);
+                        }
+                    }
+                }
 
                 db.SaveChanges();
 
@@ -79,10 +118,50 @@ namespace WebApplication1.Controllers
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("Failed to update task details");
             }
         }
 
+
+
+        //כרגע מסדרת אותה
+        //[HttpPut]
+        //[Route("api/TaskUpdate/{taskId}")]
+        //public IHttpActionResult UpdateTaskBAD(int taskId, [FromBody] TasksDTO updatedTask)
+        //{
+        //    try
+        //    {
+        //        if (taskId <= 0)
+        //        {
+        //            return BadRequest("Invalid TaskID");
+        //        }
+
+        //        var task = db.Tasks.FirstOrDefault(ts => ts.TaskID == taskId);
+
+        //        if (task == null)
+        //        {
+        //            return BadRequest("Task not found");
+        //        }
+
+        //        // עדכון הפרטים של המשימה
+        //        task.TaskName = updatedTask.TaskName;
+        //        task.ProjectID = updatedTask.ProjectID;
+        //        task.TaskType = updatedTask.TaskType;
+        //        task.TaskDescription = updatedTask.TaskDescription;
+        //        task.InsertTaskDate = updatedTask.InsertTaskDate;
+        //        task.Deadline = updatedTask.Deadline;
+        //        task.isDone = updatedTask.isDone;
+        //        task.isDeleted = updatedTask.isDeleted;
+
+        //        db.SaveChanges();
+
+        //        return Ok("Task details updated successfully");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest("Failed to update task details");
+        //    }
+        //}
 
 
         //עדכון משימה קוד ישן 
@@ -144,19 +223,18 @@ namespace WebApplication1.Controllers
 
         //InsertTask
         [HttpPost]
-        [Route("api/InsertTask")]
-        public IHttpActionResult InsertTask([FromBody] TasksDTO task)
+        [Route("api/AddTask")]
+        public IHttpActionResult AddTask([FromBody] TasksDTO task)
         {
             try
             {
-                if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
-                    string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
-                    task.ProjectID == 0)
+                if (string.IsNullOrEmpty(task.TaskName) || task.ProjectID == 0 || string.IsNullOrEmpty(task.TaskDescription))
                 {
-                    return BadRequest("One or more parameters are missing or projty");
+                    return BadRequest("One or more parameters are missing or invalid");
                 }
 
-                Tasks Task = new Tasks()
+                // יצירת אובייקט משימה חדשה
+                Tasks newTask = new Tasks
                 {
                     TaskName = task.TaskName,
                     ProjectID = task.ProjectID,
@@ -164,72 +242,79 @@ namespace WebApplication1.Controllers
                     TaskDescription = task.TaskDescription,
                     InsertTaskDate = task.InsertTaskDate,
                     Deadline = task.Deadline,
+                    isDone = task.isDone,
+                    isDeleted = task.isDeleted,
+                    PriceQuoteTime = task.PriceQuoteTime
                 };
 
-
-                db.Tasks.Add(Task);
+                // הוספת המשימה למסד הנתונים
+                db.Tasks.Add(newTask);
                 db.SaveChanges();
 
-                return Ok("Task details saved successfully");
+                return Ok("Task added successfully");
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error saving Task details: {ex.Message}");
+                return BadRequest($"Error adding task: {ex.Message}");
             }
         }
+
+
 
         //הכנסת משימה חדשה כולל יצירת אובייקט פעילות ריק
         [HttpPost]
         [Route("api/InsertTaskActivity")]
         public IHttpActionResult InsertTaskActivity([FromBody] TasksDTO task)
         {
-            using (var transaction = db.Database.BeginTransaction())
+            try
             {
-                try
+                if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
+                    string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
+                    task.ProjectID == 0)
                 {
-                    if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
-                        string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
-                        task.ProjectID == 0)
-                    {
-                        return BadRequest("One or more parameters are missing or invalid");
-                    }
-
-                    Tasks newTask = new Tasks()
-                    {
-                        TaskName = task.TaskName,
-                        ProjectID = task.ProjectID,
-                        TaskType = task.TaskType,
-                        TaskDescription = task.TaskDescription,
-                        InsertTaskDate = task.InsertTaskDate,
-                        Deadline = task.Deadline
-                    };
-
-                    db.Tasks.Add(newTask);
-                    db.SaveChanges();
-
-                    // הוספת אקטיביטי ריק למשימה החדשה
-                    Activity newActivity = new Activity()
-                    {
-                        TaskID = newTask.TaskID,
-                        EmployeePK = task.EmployeeID, // מזהה העובד מתוך תוך אובייקט המשימה
-                        Description = "סיווג עובד למשימה",
-                        StartDate = newTask.Deadline,
-                        EndDate = newTask.Deadline
-                    };
-
-                    db.Activity.Add(newActivity);
-                    db.SaveChanges();
-
-                    transaction.Commit();
-                    return Ok("Task details and empty activity saved successfully");
+                    return BadRequest("One or more parameters are missing or invalid");
                 }
-                catch (Exception ex)
+
+                Tasks newTask = new Tasks()
                 {
-                    transaction.Rollback();
-                    return BadRequest($"Error saving Task details: {ex.Message}");
-                }
+                    TaskName = task.TaskName,
+                    ProjectID = task.ProjectID,
+                    TaskType = task.TaskType,
+                    TaskDescription = task.TaskDescription,
+                    InsertTaskDate = task.InsertTaskDate,
+                    Deadline = task.Deadline,
+                    isDone = task.isDone,
+                    isDeleted = task.isDeleted,
+                    PriceQuoteTime = task.PriceQuoteTime
+                };
+
+                db.Tasks.Add(newTask);
+                db.SaveChanges();
+
+                // הוספת רשומת פעילות ריקה למשימה החדשה
+                Activity newActivity = new Activity()
+                {
+                    TaskID = newTask.TaskID,
+                    EmployeePK = task.EmployeeID,
+                    Description = "סיווג עובד למשימה",
+                    StartDate = newTask.Deadline,
+                    EndDate = newTask.Deadline
+                };
+
+                db.Activity.Add(newActivity);
+                db.SaveChanges();
+
+                return Ok("Task details and activity saved successfully");
+            }
+            catch (Exception ex)
+            {
+                // הוספת תגובה עם השגיאה הספציפית והשגיאה הפנימית (אם קיימת)
+                return BadRequest($"Error saving Task details: {ex.Message}\nInner Exception: {ex.InnerException?.Message}");
             }
         }
+
+
+
 
 
 

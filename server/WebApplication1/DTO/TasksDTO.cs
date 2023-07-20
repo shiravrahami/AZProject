@@ -7,7 +7,7 @@ namespace WebApplication1.DTO
 {
     public class TasksDTO
     {
-        internal string CustomerName;
+        //internal string CustomerName;
 
         public int TaskID { get; set; }
 
@@ -25,8 +25,8 @@ namespace WebApplication1.DTO
 
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
-        public object EmployeeName { get;  set; }
-        //public string CustomerName { get; internal set; }
+        public string EmployeeName { get;  set; }
+       public string CustomerName { get;  set; }
 
         //public DateTime EndDate { get; internal set; }//התווסף
         public string EmployeeEmail { get; set; }
