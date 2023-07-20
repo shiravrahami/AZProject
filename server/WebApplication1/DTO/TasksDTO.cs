@@ -32,6 +32,6 @@ namespace WebApplication1.DTO
         public string EmployeeEmail { get; set; }
 
         public int PriceQuoteTime { get; set; }//new
-
+        public int EmployeeID { get; internal set; }
     }
 }

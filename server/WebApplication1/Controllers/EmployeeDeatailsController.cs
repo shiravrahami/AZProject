@@ -123,7 +123,7 @@ public class EmployeeDetailsController : ApiController
     //    }
     //}
 
-    
+
 
     //ListEmployees
     [HttpGet]
@@ -160,7 +160,7 @@ public class EmployeeDetailsController : ApiController
     //ListEmployees/{id}
     [HttpPut]
     [Route("api/ListEmployees/{id}")]
-    public IHttpActionResult PutListEmployees (int id)
+    public IHttpActionResult PutListEmployees(int id)
     {
         var employee = db.Employees.FirstOrDefault(e => e.ID == id);
         if (employee == null)
@@ -265,7 +265,7 @@ public class EmployeeDetailsController : ApiController
 
             string subject = "פרטי התחברות למערכת";
             string body = $"שלום {employeeName} ,\n ברוך הבא למערכת שלנו ! \n הססמא הראשונית שלך היא {employeePassword}";
-            
+
             SendEmail(employeeEmail, subject, body);
 
             return Ok("Employee details saved successfully");
@@ -275,7 +275,7 @@ public class EmployeeDetailsController : ApiController
             return BadRequest($"Error saving employee details: {ex.Message}");
         }
     }
-  
+
     private void SendEmail(string toMail, string subjects, string bodys)
     {
         Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
@@ -321,8 +321,59 @@ public class EmployeeDetailsController : ApiController
     //}
 
 
-    //יצירת עובד חדש עם הצפנה
-    //מעידה שיש שגיאה בטיפוס..לא יודעת למה
+
+
+    ////יצירת עובד חדש עם הצפנה
+    ////מעידה שיש שגיאה בטיפוס..לא יודעת למה
+    //[HttpPut]
+    //[Route("api/InsertEmployeePassword")]
+    //public IHttpActionResult InsertEmployeePassword([FromBody] EmployeeDeatailsDTO emp)
+    //{
+
+    //    try
+    //    {
+    //        // בדיקה האם כל השדות מולאו
+    //        if (string.IsNullOrEmpty(emp.EmployeeEmail) ||
+    //            string.IsNullOrEmpty(emp.EmployeeName) ||
+    //            string.IsNullOrEmpty(emp.EmployeePassword) ||
+    //            string.IsNullOrEmpty(emp.EmployeeID) ||
+    //            string.IsNullOrEmpty(emp.EmployeeTitle) ||
+    //            string.IsNullOrEmpty(emp.EmployeePhone))
+    //        {
+    //            return BadRequest("One or more parameters are missing or empty");
+    //        }
+
+    //        // הצפנת הסיסמה
+    //        string encryptedPassword = EncryptPassword(emp.EmployeePassword);
+
+    //        // בדיקה האם כבר קיים עובד עם אותה ת"ז
+    //        var existingEmployee = db.Employees.FirstOrDefault(e => e.EmployeeID == emp.EmployeeID);
+    //        if (existingEmployee != null)
+    //        {
+    //            return BadRequest("An employee with this ID already exists");
+    //        }
+
+    //        Employees employee = new Employees();
+    //        employee.EmployeeEmail = emp.EmployeeEmail;
+    //        employee.EmployeeName = emp.EmployeeName;
+    //        employee.EmployeeID = emp.EmployeeID;
+    //        employee.EmployeePhone = emp.EmployeePhone;
+    //        employee.EmployeeTitle = emp.EmployeeTitle;
+    //        employee.EmployeePassword = encryptedPassword; // שמירת הסיסמה המוצפנת במסד הנתונים
+
+    //        db.Employees.Add(employee);
+    //        db.SaveChanges();
+
+    //        return Ok("Employee details saved successfully");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Debug.WriteLine("My text");
+    //        return BadRequest($"Error saving employee details: {ex.Message}");
+    //    }
+    //}
+
+
     [HttpPut]
     [Route("api/InsertEmployeePassword")]
     public IHttpActionResult InsertEmployeePassword([FromBody] EmployeeDeatailsDTO emp)
@@ -363,41 +414,53 @@ public class EmployeeDetailsController : ApiController
 
             return Ok("Employee details saved successfully");
         }
+        catch (DbEntityValidationException ex)
+        {
+            // Get validation error details
+            var errorMessages = ex.EntityValidationErrors
+                .SelectMany(x => x.ValidationErrors)
+                .Select(x => x.ErrorMessage);
+
+            // Concatenate the error messages into a single string
+            var fullErrorMessage = string.Join("; ", errorMessages);
+
+            // You can log the validation errors or print them for debugging
+            Debug.WriteLine("Validation errors: " + fullErrorMessage);
+
+            return BadRequest($"Error saving employee details: {fullErrorMessage}");
+        }
         catch (Exception ex)
         {
+            Debug.WriteLine("My text");
             return BadRequest($"Error saving employee details: {ex.Message}");
         }
     }
-
     private static string EncryptPassword(string password)
     {
-        // בדיקה שהסיסמה תהיה לפחות 8 תווים
-        if (password.Length < 8)
-        {
-            throw new ArgumentException("Password must be at least 8 characters long.");
-        }
 
-        using (SHA256 sha256Hash = SHA256.Create())
-        {
-            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
+        
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                builder.Append(bytes[i].ToString("x2"));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
-            return builder.ToString();
-        }
+        
     }
-
-
-
-
-
 
 
 
 
 }
+
+
+
+
+
 
 
 

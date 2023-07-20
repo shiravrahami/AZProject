@@ -11,7 +11,7 @@ namespace WebApplication1.DTO
 
         public int CustomerPK { get; set; }
 
-        public int ProjectId { get; set; }
+        //public int ProjectId { get; set; }
 
         public int TotalWorkHours { get; set; }
 

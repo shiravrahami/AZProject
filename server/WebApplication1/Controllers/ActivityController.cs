@@ -67,7 +67,7 @@ namespace WebApplication1.Controllers
         //קוד נוסף להוספת פעילות
         //לא טוב
         [HttpPost]
-        [Route("api/Activities/ActivitiesAddNEW")]
+        [Route("api/ActivitiesAddNEW")]
         public IHttpActionResult ActivitiesAddNEW(ActivityDTO newActivity)
         {
             try
@@ -116,11 +116,9 @@ namespace WebApplication1.Controllers
 
 
 
-
-
         //מתודה שמוחקת פעילות לפי מזהה פעילות
         //[HttpDelete]
-        //[Route("api/Activity/DeleteActivity/{activityID}")]
+        //[Route("api/DeleteActivity/{activityID}")]
         //public IHttpActionResult DeleteActivity(int activityID)
         //{
         //    try

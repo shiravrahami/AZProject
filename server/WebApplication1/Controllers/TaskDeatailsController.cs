@@ -180,8 +180,8 @@ namespace WebApplication1.Controllers
 
         //הכנסת משימה חדשה כולל יצירת אובייקט פעילות ריק
         [HttpPost]
-        [Route("api/InsertTask/{employeeID}")]
-        public IHttpActionResult InsertTask(int employeeID, [FromBody] TasksDTO task)
+        [Route("api/InsertTaskActivity")]
+        public IHttpActionResult InsertTaskActivity([FromBody] TasksDTO task)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -211,7 +211,7 @@ namespace WebApplication1.Controllers
                     Activity newActivity = new Activity()
                     {
                         TaskID = newTask.TaskID,
-                        EmployeePK = employeeID, // מספר העובד מה-URL
+                        EmployeePK = task.EmployeeID, // מזהה העובד מתוך תוך אובייקט המשימה
                         Description = "סיווג עובד למשימה",
                         StartDate = newTask.Deadline,
                         EndDate = newTask.Deadline

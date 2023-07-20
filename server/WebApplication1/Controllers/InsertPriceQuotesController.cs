@@ -91,7 +91,7 @@ namespace WebApplication1.Controllers
                 {
                     PriceQuoteId = priceQuote.PriceQuoteID,
                     CustomerPK = priceQuote.CustomerPK,
-                    ProjectId = priceQuote.ProjectID,
+                    //ProjectId = priceQuote.ProjectID,
                     TotalWorkHours = priceQuote.TotalWorkHours,
                     DiscoutPercent = priceQuote.DiscoutPercent,
                     TotalPrice = priceQuote.TotalPrice,
@@ -131,7 +131,7 @@ namespace WebApplication1.Controllers
                     CustomerPK = priceQuote.CustomerPK,
                     CustomerName = customer.CustomerName,
                     CustomerEmail = customer.CustomerEmail,
-                    ProjectId = priceQuote.ProjectID,
+                    //ProjectId = priceQuote.ProjectID,
                     TotalWorkHours = priceQuote.TotalWorkHours,
                     DiscoutPercent = priceQuote.DiscoutPercent,
                     TotalPrice = priceQuote.TotalPrice,
