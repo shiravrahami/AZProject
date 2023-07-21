@@ -18,7 +18,7 @@ import FCInsertPriceQuote from './FunctionalComponents/Customers/FCInsertPriceQu
 import FCInsertEmployee from './FunctionalComponents/Employees/FCInsertEmployee';
 import FCInsertProject from './FunctionalComponents/Projects/FCInsertProject';
 import FCNotes from './FunctionalComponents/FCNotes';
-
+//import Test from './FunctionalComponents/Customers/test';
 function App() {
   return (
     <div className="App">
@@ -34,12 +34,13 @@ function App() {
             <Route path="/task" element={<FCLayout><FCTask /></FCLayout>} />
             <Route path="/projects" element={<FCLayout><FCProjects /></FCLayout>} />
             <Route path="/employees" element={<FCLayout><FCemployees /></FCLayout>} />
-            <Route path="/test" element={<FCTest />} />
+            {/* <Route path="/test" element={<FCTest />} /> */}
             <Route path="/project" element={<FCLayout><FCProject /></FCLayout>} />
             <Route path="/newcustomer" element={<FCLayout><FCInsertPriceQuote /></FCLayout>} />
             <Route path="/newproject" element={<FCLayout><FCInsertProject /></FCLayout>} />
             <Route path="/newemployee" element={<FCLayout><FCInsertEmployee /></FCLayout>} />
             <Route path="/notes" element={<FCLayout><FCNotes /></FCLayout>} />
+            {/* <Route path="/test" element={<FCLayout><Test /></FCLayout>} /> */}
           </Routes>
         </BrowserRouter>
       </UserProvider>

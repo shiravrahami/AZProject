@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { saveUserToLocalStorage, getUserFromLocalStorage } from '../utils/localStorageUtils';
+import { getUserFromLocalStorage } from '../utils/localStorageUtils';
 
 const UserContext = createContext();
 
@@ -19,7 +19,7 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const path = "https://proj.ruppin.ac.il/cgroup95/prod/api/";
+  const path = "http://194.90.158.74/cgroup95/prod/api/";
 
   function signinUser(user) {
     setUser(user);

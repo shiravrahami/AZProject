@@ -38,12 +38,10 @@
     box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
 
-#CustType {
+#CustType, #TaskType {
     border: none;
     border-bottom: 2px solid #00000050;
     border-radius: 0;
-
-
 }
 
 #CustType.hover {

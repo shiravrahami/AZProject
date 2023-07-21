@@ -6,6 +6,7 @@ import { Accordion, Button, InputGroup, FormControl, Collapse } from 'react-boot
 import { useNavigate } from 'react-router-dom';
 import { usePopper } from 'react-popper';
 import Form from 'react-bootstrap/Form';
+import '../Styles/Home.css';
 
 function HomeScreen() {
   const navigate = useNavigate();
@@ -43,7 +44,6 @@ function HomeScreen() {
       <br />
       {open && (
         <div
-
           ref={dropdownRef}
           style={{
             ...styles.popper,
@@ -51,14 +51,14 @@ function HomeScreen() {
             padding: '10px',
             borderRadius: '10px',
             boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.1)',
-            backgroundColor:'#f7f7f7',
+            backgroundColor: '#f7f7f7',
           }}
           {...attributes.popper}>
           <div ref={setArrowElement} style={styles.arrow} className='menuBox' />
-          <Form.Label onClick={newTask}>הוספת משימה</Form.Label><br />
-          <Form.Label onClick={newCustomer}>הוספת לקוח</Form.Label><br />
-          <Form.Label onClick={newProj}>הוספת פרויקט</Form.Label><br />
-          <Form.Label onClick={newEmployee}>הוספת עובד</Form.Label><br />
+          <Form.Label className="hover-label" onClick={newTask}>הוספת משימה</Form.Label><br />
+          <Form.Label className="hover-label" onClick={newCustomer}>הוספת לקוח</Form.Label><br />
+          <Form.Label className="hover-label" onClick={newProj}>הוספת פרויקט</Form.Label><br />
+          <Form.Label className="hover-label" onClick={newEmployee}>הוספת עובד</Form.Label><br />
         </div>
       )}
       <SunburstDiagram />

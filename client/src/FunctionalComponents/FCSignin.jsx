@@ -13,6 +13,7 @@ import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 
 function SignInScreen() {
+  const { path } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,7 +29,7 @@ function SignInScreen() {
 
   const handleSubmit = () => {
     setIsLoading(true);
-    fetch('https://proj.ruppin.ac.il/cgroup95/prod/api/signin', {
+    fetch(`http://194.90.158.74/cgroup95/prod/api/signin`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: new Headers({

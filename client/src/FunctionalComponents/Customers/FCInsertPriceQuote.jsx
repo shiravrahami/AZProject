@@ -10,6 +10,7 @@ import Toast from 'react-bootstrap/Toast';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import '../../Styles/FCInsertPriceQuote.css';
 import { useUserContext } from '../UserContext';
+import html2pdf from 'html2pdf.js';
 
 export default function FCInsertPriceQuote() {
   const { path } = useUserContext();
@@ -31,17 +32,47 @@ export default function FCInsertPriceQuote() {
   const [taskTypes, setTaskTypes] = useState([]);
   const [addedRows, setAddedRows] = useState([]);
   const [inputValues, setInputValues] = useState([]);
-  const [priceBeforeTax, setPriceBeforeTax] = useState(0);
-  const [persentDiscount, setpersentDiscount] = useState();
-  const [totalPrice, setotalPrice] = useState();
-  const [mulPrice, setMulPrice] = useState(0);
-  const secondColumnInputRef = useRef(null);
+  const [persentDiscount, setpersentDiscount] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [mulPrice, setMulPrice] = useState([]);
   const custTypeSelectRef = useRef(null);
   const [row1Visible, setRow1Visible] = useState(false);
   const [row2Visible, setRow2Visible] = useState(false);
+  const [totalMulPrice, setTotalMulPrice] = useState(0);
+  const [selectedValues, setSelectedValues] = useState([]);
   // Add more state variables for additional rows if needed
-  const [CustomerTypeSelect, setCustomerTypeSelect] = useState(1);
-
+  const [customerTypeSelect, setCustomerTypeSelect] = useState(1);
+  const formRef = useRef(null);
+  
+  const handleDownloadPDF = () => {
+    const formElement = formRef.current;
+  
+    // Custom CSS styles for PDF export
+    const pdfStyles = `
+      body {
+        font-size: 12px; /* Adjust the font size as needed for the PDF */
+        /* Add other CSS styles here to adjust the content appearance in the PDF */
+      }
+      .accordionCust {
+        /* Add any specific styles for the accordion elements in the PDF */
+      }
+    `;
+  
+    // Generate the PDF with custom styles
+    html2pdf()
+      .set({
+        filename: `${CustomerNameInput} הצעת מחיר.pdf`,
+        margin: 10,
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        // Add custom styles for the PDF
+        // You can also load external CSS file if needed: css: ['/path/to/custom-styles.css'],
+        css: pdfStyles,
+      })
+      .from(formElement)
+      .save();
+  };
+    
   useEffect(() => {
     async function fetchCustomerNames() {
       try {
@@ -80,36 +111,37 @@ export default function FCInsertPriceQuote() {
   };
 
   const InsertCustomer = async () => {
-    console.log("starting func");
-    console.log(isPotentialInput);
-    const NewCustomer = {
-      CustomerID: CustomerIDInput,
-      CustomerName: CustomerNameInput,
-      CustomerEmail: CustomerEmailInput,
-      CustomerAdress: CustomerAddressInput,
-      CustomerPhone: CustomerPhoneInput,
-      CustomerType: CustomerTypeInput,
-      isPotential: isPotentialInput
+    if (customerTypeSelect === 1) {
+      console.log("isChecked",isChecked);
+      console.log("starting func");
+      console.log(isPotentialInput);
+      const NewCustomer = {
+        CustomerID: CustomerIDInput,
+        CustomerName: CustomerNameInput,
+        CustomerEmail: CustomerEmailInput,
+        CustomerAdress: CustomerAddressInput,
+        CustomerPhone: CustomerPhoneInput,
+        CustomerType: CustomerTypeInput,
+        isPotential: isChecked
+      };
+      console.log(NewCustomer);
+      try {
+        const response = await fetch(`${path}InsertCustomer`, {
+          method: "PUT",
+          body: JSON.stringify(NewCustomer),
+          headers: new Headers({
+            'Accept': 'application/json; charset=UTF-8',
+            'Content-type': 'application/json; charset=UTF-8'
+          })
+        });
+        const json = await response.json();
+        setcustomer(json);
+      } catch (error) {
+        console.log("error", error);
+      }
+      setShow(true);
     };
-    console.log(NewCustomer);
-
-    try {
-      const response = await fetch(`${path}InsertCustomer`, {
-        method: "PUT",
-        body: JSON.stringify(NewCustomer),
-        headers: new Headers({
-          'Accept': 'application/json; charset=UTF-8',
-          'Content-type': 'application/json; charset=UTF-8'
-        })
-      });
-      const json = await response.json();
-      setcustomer(json);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setShow(true);
-  };
-
+  }
   const contractButton = () => {
     const newRow = (
       <Row>
@@ -122,25 +154,13 @@ export default function FCInsertPriceQuote() {
           </Form.Group>
         </Col>
         <Col lg={1}>
-          <Form.Group style={{ textAlign: 'right' }} className='hourOfWork'>
-            <Form.Label>שעות עבודה</Form.Label>
-            <InputGroup>
-              <FormControl
-                className='input'
-                type="text"
-                onChange={(e) => {
-                  handleInputChange(addedRows.length, e.target.value);
-                  calculateMul();
-                }}
-                defaultValue={"0"} />
-            </InputGroup>
-          </Form.Group>
-        </Col>
-        <Col lg={1}>
           <Form.Group style={{ textAlign: 'right' }} controlId="TaskType">
             <Form.Label>סוג משימה</Form.Label>
             <Form.Select style={{ fontSize: '20px', textAlign: 'right' }} ref={custTypeSelectRef}
-              onChange={calculateMul}>
+              onChange={(e) => {
+                handleSelectChange(addedRows.length, e.target.value);
+                //calculateMul();
+              }}>
               <option>בחר</option>
               {taskTypes.map(taskType => {
                 let value = "";
@@ -156,7 +176,22 @@ export default function FCInsertPriceQuote() {
             </Form.Select>
           </Form.Group>
         </Col>
-      </Row>
+        <Col lg={1}>
+          <Form.Group style={{ textAlign: 'right' }} className='hourOfWork'>
+            <Form.Label>שעות עבודה</Form.Label>
+            <InputGroup>
+              <FormControl
+                className='input'
+                type="text"
+                onChange={(e) => {
+                  handleInputChange(addedRows.length, e.target.value);
+                  //calculateMul();
+                }}
+                defaultValue={"0"} />
+            </InputGroup>
+          </Form.Group>
+        </Col>
+      </Row >
     );
     setAddedRows(prevRows => [...prevRows, newRow]);
   };
@@ -174,21 +209,60 @@ export default function FCInsertPriceQuote() {
     return sumOfInputValues;
   };
 
-  const calculateMul = () => {
-    const hours = parseFloat(inputValues[addedRows.length - 1] || 0);
-    const selectedValue = parseFloat(custTypeSelectRef.current?.value || 0);
-    const result = hours * selectedValue;
-    console.log("result", result);
-    setMulPrice(result);
+  const handleSelectChange = (index, value) => {
+    setSelectedValues(prevValues => {
+      const updatedValues = [...prevValues];
+      updatedValues[index] = value;
+      return updatedValues;
+    });
   };
 
   useEffect(() => {
-    calculateMul();
-  }, [inputValues[addedRows.length - 1], custTypeSelectRef.current && custTypeSelectRef.current.value]);
+    const index = inputValues.length === 0 ? 1 : inputValues.length - 1;
+    console.log("selectedValues", selectedValues);
+    //const selectedValue = selectedValues[index];
+    if (inputValues.length != 'undefined') {
+      calculateMul(index, selectedValues);
+    }
+  }, [inputValues, selectedValues]);
+
+  const [totalResult, setTotalResult] = useState(0);
+
+  const calculateMul = (index, selectedValues) => {
+    setMulPrice(prevMulPrice => {
+      console.log("inputValues", inputValues);
+      const updatedMulPrice = [...prevMulPrice];
+      const hours = parseFloat(inputValues[index] || 0);
+      const result = hours * (selectedValues[index] || 0);
+      console.log("calculateMul: ", `Row ${index}: hours=${hours}, selectedValue=${selectedValues[index]}, result=${result}`);
+      updatedMulPrice[index] = result;
+
+      // Calculate the accumulated result
+      const totalResult = updatedMulPrice.reduce((a, b) => a + b, 0);
+      console.log("Total Result: ", totalResult);
+      // Update totalResult in the state
+      setTotalResult(totalResult);
+      return updatedMulPrice;
+    });
+  };
+
+  // useEffect(() => {
+  //   const sumOfMulPrice = inputValues.reduce((sum, value, index) => {
+  //     const hours = parseFloat(value || 0);
+  //     const selectedValue = parseFloat(custTypeSelectRef.current?.value || 0);
+  //     const result = hours * selectedValue;
+  //     console.log("useEffect: ", `Row ${index}: hours=${hours}, selectedValue=${selectedValue}, result=${result}`);
+  //     console.log("index", index);
+  //     return sum + (result || 0);
+  //   }, 0);
+  //   console.log("Total Sum:", sumOfMulPrice);
+  //   setTotalMulPrice(sumOfMulPrice);
+  // }, [inputValues]);
+
+
   const handleCustomerTypeChange = (event) => {
     const selectedType = parseInt(event.target.value);
     setCustomerTypeSelect(selectedType);
-
     // Toggle the visibility of rows based on selectedType
     if (selectedType === 1) {
       setRow1Visible(true);
@@ -199,6 +273,27 @@ export default function FCInsertPriceQuote() {
       setRow2Visible(false);
       // Set visibility for additional rows if needed
     }
+  };
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [totalResult, persentDiscount]);
+
+  const calculateTotalPrice = () => {
+    const parsedTotalResult = parseFloat(totalResult);
+    const parsedPersentDiscount = parseFloat(persentDiscount);
+
+    if (!isNaN(parsedTotalResult) && !isNaN(parsedPersentDiscount)) {
+      const discountedAmount = parsedTotalResult * (parsedPersentDiscount / 100);
+      const finalPrice = parsedTotalResult - discountedAmount;
+      setTotalPrice(finalPrice);
+    } else {
+      setTotalPrice(0);
+    }
+  };
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
   };
 
   return (
@@ -213,7 +308,7 @@ export default function FCInsertPriceQuote() {
           </Toast>
         </Col>
       </Row>
-      <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px', width: '95%' }}>
+      <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px', width: '95%' }}ref={formRef}>
         <Accordion alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }}>
           <Accordion.Item>
             <Accordion.Header style={{ alignItems: 'left', fontSize: '20px' }}>הצעת מחיר</Accordion.Header>
@@ -223,7 +318,7 @@ export default function FCInsertPriceQuote() {
                   <Form.Label>לקוח</Form.Label>
                   <Form.Select style={{ fontSize: '20px', textAlign: 'right' }} onChange={handleCustomerTypeChange}>
                     <option>בחר לקוח</option>
-                    <option value={1}>לקוח חדש+</option>
+                    <option value={1}>+לקוח חדש</option>
                     {customersNames.map((customerName) => (
                       <option key={customerName.ID} value={customerName.ID}>
                         {customerName.CustomerName}
@@ -232,7 +327,6 @@ export default function FCInsertPriceQuote() {
                   </Form.Select>
                 </Form.Group>
               </Row>
-
               {row1Visible && (
                 <>
                   <Row >
@@ -289,7 +383,7 @@ export default function FCInsertPriceQuote() {
                       <Form.Check
                         type="checkbox"
                         checked={isChecked}
-                      // onChange={handleCheckboxChange}
+                        onChange={handleCheckboxChange}
                       />
                     </Col>
                     <Col lg={10} style={{ padding: "0px" }}>
@@ -299,7 +393,6 @@ export default function FCInsertPriceQuote() {
                 </>
               )
               }
-
               {/* <Row >
                 <Col lg={10}>
                   <Form.Group style={{ textAlign: 'right' }}>
@@ -376,15 +469,15 @@ export default function FCInsertPriceQuote() {
                   <Form.Group style={{ textAlign: 'right' }} className='priceBeforeTax'>
                     <Form.Label >מחיר לפני מע"מ</Form.Label>
                     <InputGroup>
-                      <FormControl className='input' type="text" value={priceBeforeTax} readOnly />
+                      <FormControl className='input' type="text" value={isNaN(totalResult) ? "0" : totalResult} defaultValue={"0"} readOnly />
                     </InputGroup>
                   </Form.Group>
                 </Col>
                 <Col lg={2}>
                   <Form.Group style={{ textAlign: 'right' }}>
                     <Form.Label >הנחה באחוזים</Form.Label>
-                    <InputGroup>
-                      <FormControl className='input' type="text" onChange={(e) => setpersentDiscount(e.target.value)} defaultValue={"%"} />
+                    <InputGroup style={{ fontFamily: 'Calibri', fontSize: '20px', alignItems: 'center' }}>%
+                      <FormControl className='input' type="text" onChange={(e) => setpersentDiscount(e.target.value)} value={persentDiscount} />
                     </InputGroup>
                   </Form.Group>
                 </Col>
@@ -399,7 +492,7 @@ export default function FCInsertPriceQuote() {
               </Row >
               <Row style={{ paddingTop: "15px" }}>
                 <Col lg={1} style={{ textAlign: "left" }}>
-                  <Button onClick={contractButton} color={buttonColor} className='btn-contract' type="button">ייצוא לPDF</Button>
+                  <Button color={buttonColor} onClick={handleDownloadPDF} className='btn-contract' type="button">ייצוא לPDF</Button>
                   <input
                     type="file"
                     ref={contractFileInputRef}
