@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
 {
     public class ActivityController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
 
         // הוספת פעילות
@@ -193,14 +193,14 @@ namespace WebApplication1.Controllers
             try
             {
                 var activities = db.Activity
-                    .Where(a => a.TaskID == id)
-                    .Select(a => new
-                    {
-                        StartDate = a.StartDate.Hour,
-                        EndDate = a.EndDate.Hour
+     .Where(a => a.TaskID == id)
+     .Select(a => new
+     {
+         StartDate = a.StartDate.Hour,
+         EndDate = a.EndDate.HasValue ? a.EndDate.Value.Hour :0
+     })
+     .ToList();
 
-                    })
-                    .ToList();
 
                 if (activities.Count == 0)
                     return NotFound();
@@ -221,8 +221,8 @@ namespace WebApplication1.Controllers
             try
             {
                 var activities = db.Activity
-                    .Where(a => a.TaskID == id)
-                    .ToList();
+     .Where(a => a.TaskID == id)
+     .ToList();
 
                 if (activities.Count == 0)
                     return NotFound();
@@ -231,7 +231,9 @@ namespace WebApplication1.Controllers
 
                 foreach (var activity in activities)
                 {
-                    totalWorkHours += activity.EndDate - activity.StartDate;
+                    // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable TimeSpan
+                    TimeSpan? timeDifference = activity.EndDate - activity.StartDate;
+                    totalWorkHours += timeDifference ?? TimeSpan.Zero;
                 }
 
                 var result = new
@@ -240,6 +242,7 @@ namespace WebApplication1.Controllers
                 };
 
                 return Ok(result);
+
             }
             catch (Exception ex)
             {
@@ -259,20 +262,24 @@ namespace WebApplication1.Controllers
                 if (task == null)
                     return NotFound();
 
-                double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+                double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
 
                 var activities = db.Activity
                     .Where(a => a.TaskID == id)
                     .ToList();
 
-                if (activities.Count == 0)
-                    return NotFound();
-
                 TimeSpan totalWorkHours = TimeSpan.Zero;
 
                 foreach (var activity in activities)
                 {
-                    totalWorkHours += activity.EndDate - activity.StartDate;
+                    // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
+                    DateTime? startDate = activity.StartDate;
+                    DateTime? endDate = activity.EndDate;
+
+                    if (startDate != null && endDate != null)
+                    {
+                        totalWorkHours += endDate.Value - startDate.Value;
+                    }
                 }
 
                 double actualTime = totalWorkHours.TotalHours; // זמן בפועל
@@ -303,12 +310,11 @@ namespace WebApplication1.Controllers
             try
             {
                 var tasks = db.Tasks.ToList();
-
                 List<double> clusterPoints = new List<double>();
 
                 foreach (var task in tasks)
                 {
-                    double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+                    double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
 
                     var activities = db.Activity
                         .Where(a => a.TaskID == task.TaskID)
@@ -318,7 +324,14 @@ namespace WebApplication1.Controllers
 
                     foreach (var activity in activities)
                     {
-                        totalWorkHours += activity.EndDate - activity.StartDate;
+                        // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
+                        DateTime? startDate = activity.StartDate;
+                        DateTime? endDate = activity.EndDate;
+
+                        if (startDate != null && endDate != null)
+                        {
+                            totalWorkHours += endDate.Value - startDate.Value;
+                        }
                     }
 
                     double actualTime = totalWorkHours.TotalHours; // זמן בפועל
@@ -329,6 +342,7 @@ namespace WebApplication1.Controllers
                 }
 
                 return clusterPoints;
+
             }
             catch (Exception ex)
             {
@@ -397,12 +411,11 @@ namespace WebApplication1.Controllers
             try
             {
                 var tasks = db.Tasks.ToList();
-
                 List<double> clusterPoints = new List<double>();
 
                 foreach (var task in tasks)
                 {
-                    double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+                    double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
 
                     var activities = db.Activity
                         .Where(a => a.TaskID == task.TaskID)
@@ -412,7 +425,14 @@ namespace WebApplication1.Controllers
 
                     foreach (var activity in activities)
                     {
-                        totalWorkHours += activity.EndDate - activity.StartDate;
+                        // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
+                        DateTime? startDate = activity.StartDate;
+                        DateTime? endDate = activity.EndDate;
+
+                        if (startDate != null && endDate != null)
+                        {
+                            totalWorkHours += endDate.Value - startDate.Value;
+                        }
                     }
 
                     double actualTime = totalWorkHours.TotalHours; // זמן בפועל
@@ -427,6 +447,7 @@ namespace WebApplication1.Controllers
                 int clusterIndex = distances.IndexOf(minDistance);
 
                 return clusterIndex;
+
             }
             catch (Exception ex)
             {
@@ -453,7 +474,7 @@ namespace WebApplication1.Controllers
 
                 foreach (var task in tasks)
                 {
-                    double priceQuoteTime = task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+                    double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
 
                     var activities = db.Activity
                         .Where(a => a.TaskID == task.TaskID)
@@ -463,7 +484,14 @@ namespace WebApplication1.Controllers
 
                     foreach (var activity in activities)
                     {
-                        totalWorkHours += activity.EndDate - activity.StartDate;
+                        // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
+                        DateTime? startDate = activity.StartDate;
+                        DateTime? endDate = activity.EndDate;
+
+                        if (startDate != null && endDate != null)
+                        {
+                            totalWorkHours += endDate.Value - startDate.Value;
+                        }
                     }
 
                     double actualTime = totalWorkHours.TotalHours; // זמן בפועל
@@ -485,13 +513,14 @@ namespace WebApplication1.Controllers
                 }
 
                 var result = new Dictionary<string, List<double>>()
-        {
-            { "Easy", easyTasks },
-            { "Medium", mediumTasks },
-            { "Hard", hardTasks }
-        };
+{
+    { "Easy", easyTasks },
+    { "Medium", mediumTasks },
+    { "Hard", hardTasks }
+};
 
                 return result;
+
             }
             catch (Exception ex)
             {

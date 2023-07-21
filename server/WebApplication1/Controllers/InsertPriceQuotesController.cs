@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
     public class InsertPriceQuotesController : ApiController
     {
         // הכנסת הקשר לבסיס הנתונים
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         [HttpPost]
         [Route("api/InsertPriceQuote")]

@@ -15,7 +15,7 @@ using System.Data.Entity.Validation;
 
 public class EmployeeDetailsController : ApiController
 {
-    igroup195_DB_Prod db = new igroup195_DB_Prod();
+    igroup195_prodEntities db = new igroup195_prodEntities();
     //פרטי עובדים
     [HttpGet]
     [Route("api/EmployeeDetails/{id}")]

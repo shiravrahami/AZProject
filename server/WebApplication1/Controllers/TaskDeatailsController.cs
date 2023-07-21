@@ -15,8 +15,7 @@ namespace WebApplication1.Controllers
 {
     public class TaskDeatailsController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
-
+        igroup195_prodEntities db = new igroup195_prodEntities();
         //פרטי משימה 
         [HttpGet]
         [Route("api/TaskDeatails/{id}")]
@@ -76,7 +75,7 @@ namespace WebApplication1.Controllers
                 task.Deadline = updatedTask.Deadline;
                 task.isDone = updatedTask.isDone;
                 task.isDeleted = updatedTask.isDeleted;
-                task.PriceQuoteTime = updatedTask.PriceQuoteTime;
+                task.PriceQuoteTime =(int) updatedTask.PriceQuoteTime;
 
                 // עדכון שם הלקוח אם הוא קיים בבקשה
                 if (!string.IsNullOrEmpty(updatedTask.CustomerName))
@@ -244,7 +243,7 @@ namespace WebApplication1.Controllers
                     Deadline = task.Deadline,
                     isDone = task.isDone,
                     isDeleted = task.isDeleted,
-                    PriceQuoteTime = task.PriceQuoteTime
+                    PriceQuoteTime = (int)task.PriceQuoteTime
                 };
 
                 // הוספת המשימה למסד הנתונים
@@ -285,7 +284,7 @@ namespace WebApplication1.Controllers
                     Deadline = task.Deadline,
                     isDone = task.isDone,
                     isDeleted = task.isDeleted,
-                    PriceQuoteTime = task.PriceQuoteTime
+                    PriceQuoteTime =(int) task.PriceQuoteTime
                 };
 
                 db.Tasks.Add(newTask);
@@ -297,7 +296,7 @@ namespace WebApplication1.Controllers
                     TaskID = newTask.TaskID,
                     EmployeePK = task.EmployeeID,
                     Description = "סיווג עובד למשימה",
-                    StartDate = newTask.Deadline,
+                    StartDate =(DateTime) newTask.Deadline,
                     EndDate = newTask.Deadline
                 };
 
@@ -1020,11 +1019,14 @@ namespace WebApplication1.Controllers
 
                     foreach (var activity in taskActivities)
                     {
-                        totalWorkHours += activity.EndDate - activity.StartDate;
+                       
+                        TimeSpan? timeDifference = activity.EndDate - activity.StartDate;
+                        totalWorkHours += timeDifference ?? TimeSpan.Zero;
                     }
 
                     taskWorkHours[taskID] = totalWorkHours.TotalHours;
                 }
+
 
                 var averageWorkHours = taskWorkHours.Values.Average();
                 var difference = pqHours - averageWorkHours;

@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
     //מתודה חדשה ששיר ביקשה
     public class Activity_Task_CusNameController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
        // private static Logger logger = LogManager.GetCurrentClassLogger();
         [HttpGet]
         [Route("api/GetActivity_Task_CusName/{taskId}")]

@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
     //כל הקבצים
     public class FileController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         [HttpGet]
         [Route("api/File")]

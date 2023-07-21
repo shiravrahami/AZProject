@@ -14,7 +14,7 @@ namespace WebApplication1.Controllers
     //מחזירה רשימה של כל הפרויקטים (רק את המזהה שלהם)ולכל פרויקט את המשימות שלו ( מזהה ושם ומשימה)
     public class TsaksInProjectController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         [HttpGet]
         [Route("api/InProjects")]

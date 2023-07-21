@@ -22,6 +22,7 @@ namespace SignIn
     
         public int TaskTypeID { get; set; }
         public string TaskKind { get; set; }
+        public Nullable<int> TypeValue { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tasks> Tasks { get; set; }

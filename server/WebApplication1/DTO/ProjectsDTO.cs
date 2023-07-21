@@ -23,7 +23,9 @@ namespace WebApplication1.DTO
 
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
-       
 
+        
+
+       
     }
 }

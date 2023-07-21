@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
 
     public class CustomerTasksController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
         [HttpGet]
         [Route("api/CustomerTasks/GetCustomerTasks")]
         public IHttpActionResult GetCustomerTasks()

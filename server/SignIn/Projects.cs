@@ -17,7 +17,6 @@ namespace SignIn
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Projects()
         {
-            this.PriceQuotes = new HashSet<PriceQuotes>();
             this.Tasks = new HashSet<Tasks>();
         }
     
@@ -29,10 +28,12 @@ namespace SignIn
         public Nullable<System.DateTime> Deadline { get; set; }
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
+        public Nullable<int> PriceQuoteID { get; set; }
     
         public virtual Customers Customers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PriceQuotes> PriceQuotes { get; set; }
+        public virtual PriceQuotes PriceQuotes { get; set; }
+        public virtual Projects Projects1 { get; set; }
+        public virtual Projects Projects2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tasks> Tasks { get; set; }
     }

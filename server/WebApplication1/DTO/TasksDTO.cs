@@ -31,7 +31,7 @@ namespace WebApplication1.DTO
         //public DateTime EndDate { get; internal set; }//התווסף
         public string EmployeeEmail { get; set; }
 
-        public int PriceQuoteTime { get; set; }//new
+        public double PriceQuoteTime { get; set; }//new
         public int EmployeeID { get; internal set; }
     }
 }

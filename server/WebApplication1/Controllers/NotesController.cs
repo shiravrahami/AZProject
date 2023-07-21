@@ -15,8 +15,7 @@ namespace WebApplication1.Controllers
   
     public class NotesController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
-
+        igroup195_prodEntities db = new igroup195_prodEntities();
         //הצגה של כל הפתקים
         //תקין בפוסטמן
         [HttpGet]

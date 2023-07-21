@@ -76,12 +76,9 @@
         <EntityType Name="PriceQuotes">
           <Key>
             <PropertyRef Name="PriceQuoteID" />
-            <PropertyRef Name="CustomerPK" />
-            <PropertyRef Name="ProjectID" />
           </Key>
           <Property Name="PriceQuoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerPK" Type="int" Nullable="false" />
-          <Property Name="ProjectID" Type="int" Nullable="false" />
           <Property Name="TotalWorkHours" Type="int" Nullable="false" />
           <Property Name="DiscoutPercent" Type="int" Nullable="false" />
           <Property Name="TotalPrice" Type="int" Nullable="false" />
@@ -99,6 +96,7 @@
           <Property Name="Deadline" Type="datetime" />
           <Property Name="isDone" Type="bit" Nullable="false" />
           <Property Name="isDeleted" Type="bit" Nullable="false" />
+          <Property Name="PriceQuoteID" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -141,6 +139,7 @@
           </Key>
           <Property Name="TaskTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TaskKind" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeValue" Type="int" />
         </EntityType>
         <Association Name="FK_Activity_Employee">
           <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
@@ -214,18 +213,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PriceQuotes_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="PriceQuotes" Type="Self.PriceQuotes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="PriceQuotes">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Projects_Customers">
           <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
           <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
@@ -235,6 +222,30 @@
             </Principal>
             <Dependent Role="Projects">
               <PropertyRef Name="CustomerPK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_PriceQoute">
+          <End Role="PriceQuotes" Type="Self.PriceQuotes" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceQuotes">
+              <PropertyRef Name="PriceQuoteID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="PriceQuoteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Projects1" Type="Self.Projects" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="Projects1">
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -335,13 +346,17 @@
             <End Role="Customers" EntitySet="Customers" />
             <End Role="PriceQuotes" EntitySet="PriceQuotes" />
           </AssociationSet>
-          <AssociationSet Name="FK_PriceQuotes_Projects" Association="Self.FK_PriceQuotes_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="PriceQuotes" EntitySet="PriceQuotes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Projects_Customers" Association="Self.FK_Projects_Customers">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_PriceQoute" Association="Self.FK_Projects_PriceQoute">
+            <End Role="PriceQuotes" EntitySet="PriceQuotes" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Projects" Association="Self.FK_Projects_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Projects1" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Task_Employee_Activity_Activity" Association="Self.FK_Task_Employee_Activity_Activity">
             <End Role="Activity" EntitySet="Activity" />
@@ -452,18 +467,15 @@
         <EntityType Name="PriceQuotes">
           <Key>
             <PropertyRef Name="PriceQuoteID" />
-            <PropertyRef Name="CustomerPK" />
-            <PropertyRef Name="ProjectID" />
           </Key>
           <Property Name="PriceQuoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerPK" Type="Int32" Nullable="false" />
-          <Property Name="ProjectID" Type="Int32" Nullable="false" />
           <Property Name="TotalWorkHours" Type="Int32" Nullable="false" />
           <Property Name="DiscoutPercent" Type="Int32" Nullable="false" />
           <Property Name="TotalPrice" Type="Int32" Nullable="false" />
           <Property Name="PriceQuoteFile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Customers" Relationship="Self.FK_PriceQuotes_Customers" FromRole="PriceQuotes" ToRole="Customers" />
-          <NavigationProperty Name="Projects" Relationship="Self.FK_PriceQuotes_Projects" FromRole="PriceQuotes" ToRole="Projects" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Projects_PriceQoute" FromRole="PriceQuotes" ToRole="Projects" />
         </EntityType>
         <EntityType Name="Projects">
           <Key>
@@ -477,8 +489,11 @@
           <Property Name="Deadline" Type="DateTime" Precision="3" />
           <Property Name="isDone" Type="Boolean" Nullable="false" />
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="PriceQuoteID" Type="Int32" />
           <NavigationProperty Name="Customers" Relationship="Self.FK_Projects_Customers" FromRole="Projects" ToRole="Customers" />
-          <NavigationProperty Name="PriceQuotes" Relationship="Self.FK_PriceQuotes_Projects" FromRole="Projects" ToRole="PriceQuotes" />
+          <NavigationProperty Name="PriceQuotes" Relationship="Self.FK_Projects_PriceQoute" FromRole="Projects" ToRole="PriceQuotes" />
+          <NavigationProperty Name="Projects1" Relationship="Self.FK_Projects_Projects" FromRole="Projects" ToRole="Projects1" />
+          <NavigationProperty Name="Projects2" Relationship="Self.FK_Projects_Projects" FromRole="Projects1" ToRole="Projects" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Projects" FromRole="Projects" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -530,6 +545,7 @@
           </Key>
           <Property Name="TaskTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TaskKind" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeValue" Type="Int32" />
           <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Types" FromRole="TaskType" ToRole="Tasks" />
         </EntityType>
         <Association Name="FK_Activity_Employee">
@@ -640,14 +656,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PriceQuotes_Projects">
+        <Association Name="FK_Projects_PriceQoute">
+          <End Role="PriceQuotes" Type="Self.PriceQuotes" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceQuotes">
+              <PropertyRef Name="PriceQuoteID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="PriceQuoteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Projects">
           <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="PriceQuotes" Type="Self.PriceQuotes" Multiplicity="*" />
+          <End Role="Projects1" Type="Self.Projects" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Projects">
               <PropertyRef Name="ProjectID" />
             </Principal>
-            <Dependent Role="PriceQuotes">
+            <Dependent Role="Projects1">
               <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
@@ -688,7 +716,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="igroup195_DB_Prod" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="igroup195_prodEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activity" EntityType="Self.Activity" />
           <EntitySet Name="Comments" EntityType="Self.Comments" />
           <EntitySet Name="Customers" EntityType="Self.Customers" />
@@ -737,9 +765,13 @@
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Task_Employee_Activity" EntitySet="Task_Employee_Activity" />
           </AssociationSet>
-          <AssociationSet Name="FK_PriceQuotes_Projects" Association="Self.FK_PriceQuotes_Projects">
-            <End Role="Projects" EntitySet="Projects" />
+          <AssociationSet Name="FK_Projects_PriceQoute" Association="Self.FK_Projects_PriceQoute">
             <End Role="PriceQuotes" EntitySet="PriceQuotes" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Projects" Association="Self.FK_Projects_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Projects1" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Tasks_Projects" Association="Self.FK_Tasks_Projects">
             <End Role="Projects" EntitySet="Projects" />
@@ -759,7 +791,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="igroup195_prodModelStoreContainer" CdmEntityContainer="igroup195_DB_Prod">
+        <EntityContainerMapping StorageEntityContainer="igroup195_prodModelStoreContainer" CdmEntityContainer="igroup195_prodEntities">
           <EntitySetMapping Name="Activity">
             <EntityTypeMapping TypeName="igroup195_prodModel.Activity">
               <MappingFragment StoreEntitySet="Activity">
@@ -839,7 +871,6 @@
               <MappingFragment StoreEntitySet="PriceQuotes">
                 <ScalarProperty Name="PriceQuoteID" ColumnName="PriceQuoteID" />
                 <ScalarProperty Name="CustomerPK" ColumnName="CustomerPK" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="TotalWorkHours" ColumnName="TotalWorkHours" />
                 <ScalarProperty Name="DiscoutPercent" ColumnName="DiscoutPercent" />
                 <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
@@ -858,6 +889,7 @@
                 <ScalarProperty Name="Deadline" ColumnName="Deadline" />
                 <ScalarProperty Name="isDone" ColumnName="isDone" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="PriceQuoteID" ColumnName="PriceQuoteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -902,6 +934,7 @@
               <MappingFragment StoreEntitySet="TaskType">
                 <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
                 <ScalarProperty Name="TaskKind" ColumnName="TaskKind" />
+                <ScalarProperty Name="TypeValue" ColumnName="TypeValue" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

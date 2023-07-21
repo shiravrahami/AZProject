@@ -23,5 +23,6 @@ namespace WebApplication1.DTO
         public string CustomerName { get; internal set; }
 
         public string CustomerEmail { get; set; }
+       // public double TotalWorkHours { get; set; }
     }
 }

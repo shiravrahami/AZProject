@@ -14,7 +14,7 @@ namespace WebApplication1.Controllers
 {
     public class SignInController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
         [HttpPost]
         [Route("api/signin")]
         public IHttpActionResult PostEmployeeSignIn ([FromBody] EmployeeSignInDTO user)

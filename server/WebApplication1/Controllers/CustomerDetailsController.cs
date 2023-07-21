@@ -14,9 +14,8 @@ namespace WebApplication1.Controllers
 {
     public class CustomerDetailsController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
-        
 
         //פרטי לקוחות
         [HttpGet]

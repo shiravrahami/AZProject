@@ -133,7 +133,7 @@ namespace WebApplication1.Controllers
     //הקוד מביא ללקוח את הפרויקטים שלו, לכל פרוייקט את המשימות שלו. במידה ויש לפרויקט מספר משימות הן מוצגות באותו אובייקט תחת שם הפרויקט, לא מוצג כל פרטי המשימה
     public class Project_Cus_TaskController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         [HttpGet]
         [Route("api/Project_Cus_Task/GetProjectsAndTasks/{customerId}")]

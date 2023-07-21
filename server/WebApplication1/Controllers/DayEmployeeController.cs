@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
 
     public class EmployeeTasksController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         [HttpGet]
         [Route("api/tasks/{employeeId}/{date}")]
@@ -25,7 +25,7 @@ namespace WebApplication1.Controllers
         {
             List<TasksDTO> tasks = new List<TasksDTO>();
 
-            using (var db = new igroup195_DB_Prod())
+            using (var db = new igroup195_prodEntities())
             {
                 var employeeTasks = db.Tasks
                     .Where(t => t.ProjectID == employeeId && t.InsertTaskDate.Date == date.Date)

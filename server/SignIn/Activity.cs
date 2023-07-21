@@ -25,8 +25,7 @@ namespace SignIn
         public int EmployeePK { get; set; }
         public string Description { get; set; }
         public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
-        //public Nullable<System.DateTime> EndDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
     
         public virtual Employees Employees { get; set; }
         public virtual Tasks Tasks { get; set; }

@@ -13,10 +13,10 @@ namespace SignIn
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class igroup195_DB_Prod : DbContext
+    public partial class igroup195_prodEntities : DbContext
     {
-        public igroup195_DB_Prod()
-            : base("name=igroup195_DB_Prod")
+        public igroup195_prodEntities()
+            : base("name=igroup195_prodEntities")
         {
         }
     

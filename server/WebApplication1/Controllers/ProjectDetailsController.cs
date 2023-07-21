@@ -13,7 +13,7 @@ namespace WebApplication1.Controllers
 {
     public class ProjectDetailsController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         ////פרטי פרויקט ישן
         //[HttpGet]
@@ -97,6 +97,7 @@ namespace WebApplication1.Controllers
 
                 // מציאת כמות השעות הכוללת מטבלת PriceQuotes
                 var totalWorkHours = db.PriceQuotes.Where(pq => pq.ProjectID == id).Sum(pq => pq.TotalWorkHours);
+                //לחבר עם יינר לטבלת פרויקטים
 
                 // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח וכמות השעות הכוללת
                 var projectDetails = new
@@ -454,28 +455,28 @@ namespace WebApplication1.Controllers
         }
 
         //אותה מתודה כמו למעלה כולל שעות מטבלת הצעת מחיר
-        [HttpGet]
-        [Route("api/ProjectWorkHours")]
-        public IHttpActionResult GetProjectWorkHours()
-        {
-            try
-            {
-                var projectWorkHours = db.Projects
-                    .Where(p => !p.isDeleted)
-                    .Select(p => new
-                    {
-                        ProjectID = p.ProjectID,
-                        ProjectName = p.ProjectName,
-                        TotalWorkHours = p.PriceQuotes.Sum(pq => pq.TotalWorkHours)
-                    }).ToList();
+        //[HttpGet]
+        //[Route("api/ProjectWorkHours")]
+        //public IHttpActionResult GetProjectWorkHours()
+        //{
+        //    try
+        //    {
+        //        var projectWorkHours = db.Projects
+        //            .Where(p => !p.isDeleted)
+        //            .Select(p => new
+        //            {
+        //                ProjectID = p.ProjectID,
+        //                ProjectName = p.ProjectName,
+        //                TotalWorkHours = p.PriceQuotes.Sum(pq => pq.TotalWorkHours)
+        //            }).ToList();
 
-                return Ok(projectWorkHours);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok(projectWorkHours);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
 
     }

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="igroup195_prodModelStoreContainer" CdmEntityContainer="igroup195_DB_Prod">
+  <EntityContainerMapping StorageEntityContainer="igroup195_prodModelStoreContainer" CdmEntityContainer="igroup195_prodEntities">
     <EntitySetMapping Name="Activity">
       <EntityTypeMapping TypeName="igroup195_prodModel.Activity">
         <MappingFragment StoreEntitySet="Activity">
@@ -80,7 +80,6 @@
         <MappingFragment StoreEntitySet="PriceQuotes">
           <ScalarProperty Name="PriceQuoteID" ColumnName="PriceQuoteID" />
           <ScalarProperty Name="CustomerPK" ColumnName="CustomerPK" />
-          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
           <ScalarProperty Name="TotalWorkHours" ColumnName="TotalWorkHours" />
           <ScalarProperty Name="DiscoutPercent" ColumnName="DiscoutPercent" />
           <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
@@ -99,6 +98,7 @@
           <ScalarProperty Name="Deadline" ColumnName="Deadline" />
           <ScalarProperty Name="isDone" ColumnName="isDone" />
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="PriceQuoteID" ColumnName="PriceQuoteID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -143,6 +143,7 @@
         <MappingFragment StoreEntitySet="TaskType">
           <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
           <ScalarProperty Name="TaskKind" ColumnName="TaskKind" />
+          <ScalarProperty Name="TypeValue" ColumnName="TypeValue" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
