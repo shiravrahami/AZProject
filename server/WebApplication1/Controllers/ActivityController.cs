@@ -26,125 +26,43 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                // בדיקה שהפעילות לא קיימת
-                var existingActivity = db.Activity.FirstOrDefault(a => a.ActivityID == newActivity.ActivityID);
-                if (existingActivity != null)
-                {
-                    return BadRequest("Activity already exists");
-                }
 
-                // יצירת אובייקט פעילות חדשה
-                var activity = new Activity
+                Activity activity = new Activity()
                 {
-
                     TaskID = newActivity.TaskID,
                     EmployeePK = newActivity.EmployeePK,
+                    Description= newActivity.Description,
                     StartDate = newActivity.StartDate,
                     EndDate = newActivity.EndDate
                 };
 
-                // הוספת הפעילות למסד הנתונים
+                var exisTasks = db.Tasks.FirstOrDefault(a => a.TaskID == newActivity.TaskID);
+                var exisEmployee = db.Employees.FirstOrDefault(h => h.ID == newActivity.EmployeePK);
+
+                if (exisTasks == null && exisEmployee == null)
+                {
+                    return BadRequest("Task And Employee Not Exists");
+                }
+
                 db.Activity.Add(activity);
                 db.SaveChanges();
 
-                // יצירת תשובת ה HTTP 200 OK עם הפעילות החדשה
-                var activityDTO = new ActivityDTO
-                {
-                    //ActivityID = activity.ActivityID,
-                    TaskID = activity.TaskID,
-                    EmployeePK = activity.EmployeePK,
-                    Description = activity.Description,
-                    StartDate = activity.StartDate,
-                    EndDate = (DateTime)activity.EndDate
-                };
-                return Ok(activityDTO);
+                return Ok("Activity details saved successfully");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Error saving Project details: {ex.Message}");
             }
+
+
+
         }
-
-        //קוד נוסף להוספת פעילות
-        //לא טוב
-        //[HttpPost]
-        //[Route("api/ActivitiesAddNEW")]
-        //public IHttpActionResult ActivitiesAddNEW(ActivityDTO newActivity)
-        //{
-        //    try
-        //    {
-        //        // בדיקה שהפעילות לא קיימת
-        //        var existingActivity = db.Activity.FirstOrDefault(a => a.ActivityID == newActivity.ActivityID);
-        //        if (existingActivity != null)
-        //        {
-        //            return BadRequest("Activity already exists");
-        //        }
-
-        //        // יצירת אובייקט פעילות חדשה
-        //        var activity = new Activity
-        //        {
-        //            TaskID = newActivity.TaskID,
-        //            EmployeePK = newActivity.EmployeePK,
-        //            Description = newActivity.Description,
-        //            StartDate = newActivity.StartDate,
-        //            EndDate = newActivity.EndDate
-        //        };
-
-        //        // הוספת הפעילות למסד הנתונים
-        //        db.Activity.Add(activity);
-        //        db.SaveChanges();
-
-        //        // יצירת תשובת ה HTTP 200 OK עם הפעילות החדשה
-        //        var activityDTO = new ActivityDTO
-        //        {
-        //            ActivityID = activity.ActivityID,
-        //            TaskID = activity.TaskID,
-        //            EmployeePK = activity.EmployeePK,
-        //            Description = activity.Description,
-        //            StartDate = activity.StartDate,
-        //            EndDate = (DateTime)activity.EndDate
-        //        };
-
-        //        return Ok(activityDTO);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // הדפס את השגיאה הפנימית בקונסולת המפתח (debug console)
-        //        Console.WriteLine("Inner Exception: " + ex.InnerException?.Message);
-        //        return BadRequest("An error occurred while updating the entries.");
-        //    }
-        //}
-
-
-
-        //מתודה שמוחקת פעילות לפי מזהה פעילות
-        //[HttpDelete]
-        //[Route("api/DeleteActivity/{activityID}")]
-        //public IHttpActionResult DeleteActivity(int activityID)
-        //{
-        //    try
-        //    {
-        //        // בדיקה אם הפעילות קיימת
-        //        Activity activity = db.Activity.Where(a => a.ActivityID == activityID).First();
-        //        if (activity == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        // מחיקת הפעילות ממסד הנתונים
-        //        db.Activity.Remove(activity);
-        //        db.SaveChanges();
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+           
+        
 
         //קוד נוסף למחיקת פעילות
         [HttpDelete]
         [Route("api/DeleteActivity/{activityID}")]
-
         public IHttpActionResult DeleteActivity(int activityID)
         {
 
@@ -154,26 +72,20 @@ namespace WebApplication1.Controllers
                 var activity = db.Activity.FirstOrDefault(a => a.ActivityID == activityID);
                 if (activity == null)
                 {
-                    return NotFound();
+                    return BadRequest("Activity is not found");
                 }
 
                 // מחיקת הפעילות ממסד הנתונים
                 db.Activity.Remove(activity);
                 db.SaveChanges();
 
-                return Ok();
+                return Ok("Activity Remove");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-
-
-
 
 
 

@@ -26,12 +26,14 @@ namespace WebApplication1.DTO
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
         public string EmployeeName { get;  set; }
-       public string CustomerName { get;  set; }
+        public string CustomerName { get;  set; }
+        public string CustomerID { get; set; }
 
         //public DateTime EndDate { get; internal set; }//התווסף
         public string EmployeeEmail { get; set; }
 
-        public double PriceQuoteTime { get; set; }//new
-        public int EmployeeID { get; internal set; }
+        public double PriceQuoteTime { get; set; }
+        public string EmployeeID { get; internal set; }
+       
     }
 }

@@ -22,7 +22,7 @@ namespace SignIn
     
         public int ActivityID { get; set; }
         public int TaskID { get; set; }
-        public int EmployeePK { get; set; }
+        public int EmployeeID { get; set; }
         public string Description { get; set; }
         public System.DateTime StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
@@ -31,5 +31,8 @@ namespace SignIn
         public virtual Tasks Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
+        public int EmployeePK { get; set; }
+
+        
     }
 }

@@ -31,10 +31,5 @@ namespace SignIn
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Projects> Projects { get; set; }
         public int ProjectID { get; set; }
-
-        //public object Sum(Func<object, object> p)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

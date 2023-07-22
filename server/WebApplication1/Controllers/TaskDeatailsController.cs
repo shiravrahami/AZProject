@@ -78,16 +78,16 @@ namespace WebApplication1.Controllers
                 task.PriceQuoteTime =(int) updatedTask.PriceQuoteTime;
 
                 // עדכון שם הלקוח אם הוא קיים בבקשה
-                if (!string.IsNullOrEmpty(updatedTask.CustomerName))
+                if (!string.IsNullOrEmpty(updatedTask.CustomerID))
                 {
-                    var customer = db.Customers.FirstOrDefault(c => c.CustomerName == updatedTask.CustomerName);
+                    var customer = db.Customers.FirstOrDefault(c => c.CustomerID == updatedTask.CustomerID);
                     if (customer != null)
                     {
                         task.Projects.Customers = customer;
                     }
                     else
                     {
-                        customer = new Customers { CustomerName = updatedTask.CustomerName };
+                        customer = new Customers { CustomerID = updatedTask.CustomerID };
                         task.Projects.Customers = customer;
                     }
                 }
@@ -95,7 +95,7 @@ namespace WebApplication1.Controllers
                 // עדכון שם העובד אם הוא קיים בבקשה
                 if (!string.IsNullOrEmpty(updatedTask.EmployeeName))
                 {
-                    var employee = db.Employees.FirstOrDefault(e => e.EmployeeName == updatedTask.EmployeeName);
+                    var employee = db.Employees.FirstOrDefault(e => e.EmployeeID == updatedTask.EmployeeID);
                     if (employee != null)
                     {
                         var taskEmployeeActivity = db.Task_Employee_Activity.FirstOrDefault(tea => tea.TaskID == taskId);
@@ -198,6 +198,7 @@ namespace WebApplication1.Controllers
         //}
 
         //סוגי משימה
+
         [HttpGet]
         [Route("api/TaskTypes")]
         public IHttpActionResult GetAllTaskTypes()
@@ -274,6 +275,8 @@ namespace WebApplication1.Controllers
                     return BadRequest("One or more parameters are missing or invalid");
                 }
 
+                int employeePK = int.Parse(task.EmployeeID);
+
                 Tasks newTask = new Tasks()
                 {
                     TaskName = task.TaskName,
@@ -283,21 +286,20 @@ namespace WebApplication1.Controllers
                     InsertTaskDate = task.InsertTaskDate,
                     Deadline = task.Deadline,
                     isDone = task.isDone,
-                    isDeleted = task.isDeleted,
-                    PriceQuoteTime =(int) task.PriceQuoteTime
+                    isDeleted = task.isDeleted
+                    
                 };
 
                 db.Tasks.Add(newTask);
                 db.SaveChanges();
 
-                // הוספת רשומת פעילות ריקה למשימה החדשה
                 Activity newActivity = new Activity()
                 {
                     TaskID = newTask.TaskID,
-                    EmployeePK = task.EmployeeID,
+                    EmployeePK = employeePK,
                     Description = "סיווג עובד למשימה",
-                    StartDate =(DateTime) newTask.Deadline,
-                    EndDate = newTask.Deadline
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today 
                 };
 
                 db.Activity.Add(newActivity);
@@ -307,18 +309,11 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                // הוספת תגובה עם השגיאה הספציפית והשגיאה הפנימית (אם קיימת)
                 return BadRequest($"Error saving Task details: {ex.Message}\nInner Exception: {ex.InnerException?.Message}");
             }
         }
 
-
-
-
-
-
-
-
+       
 
 
         //מקורית
@@ -387,7 +382,10 @@ namespace WebApplication1.Controllers
         //                Deadline = (DateTime)(x.Deadline),
         //                isDone = x.isDone,
         //                isDeleted = x.isDeleted,
-        //                CustomerName = x.CustomerName
+        //                CustomerName = x.CustomerName,
+
+
+
         //            }).ToList();
 
         //            return Ok(TasksList);
@@ -421,8 +419,8 @@ namespace WebApplication1.Controllers
                             Deadline = (DateTime)(x.Deadline),
                             isDone = x.isDone,
                             isDeleted = x.isDeleted,
-                            CustomerName = x.Projects.Customers.CustomerName,
-                            EmployeeName = ""
+                            CustomerName = x.Projects.Customers.CustomerName
+                            //EmployeeName = ""
                         }).ToList();
                     return Ok(MangerTasksList);
                 }
@@ -476,7 +474,6 @@ namespace WebApplication1.Controllers
                 return BadRequest("Error");
             }
         }
-
 
 
 
@@ -561,10 +558,6 @@ namespace WebApplication1.Controllers
 
 
 
-
-
-
-
         //כולל הוספת המיון
         //ListTasks/{employeeID}
         //[HttpGet]
@@ -645,6 +638,7 @@ namespace WebApplication1.Controllers
         //}
 
         //אותה מתודה עם התאריך העתידי
+
         [HttpGet]
         [Route("api/ListTasksNextDay/{employeeID}")]
         public IHttpActionResult GetListTasksNextDay(int employeeID)

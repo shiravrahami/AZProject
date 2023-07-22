@@ -324,55 +324,6 @@ public class EmployeeDetailsController : ApiController
 
 
     ////יצירת עובד חדש עם הצפנה
-    ////מעידה שיש שגיאה בטיפוס..לא יודעת למה
-    //[HttpPut]
-    //[Route("api/InsertEmployeePassword")]
-    //public IHttpActionResult InsertEmployeePassword([FromBody] EmployeeDeatailsDTO emp)
-    //{
-
-    //    try
-    //    {
-    //        // בדיקה האם כל השדות מולאו
-    //        if (string.IsNullOrEmpty(emp.EmployeeEmail) ||
-    //            string.IsNullOrEmpty(emp.EmployeeName) ||
-    //            string.IsNullOrEmpty(emp.EmployeePassword) ||
-    //            string.IsNullOrEmpty(emp.EmployeeID) ||
-    //            string.IsNullOrEmpty(emp.EmployeeTitle) ||
-    //            string.IsNullOrEmpty(emp.EmployeePhone))
-    //        {
-    //            return BadRequest("One or more parameters are missing or empty");
-    //        }
-
-    //        // הצפנת הסיסמה
-    //        string encryptedPassword = EncryptPassword(emp.EmployeePassword);
-
-    //        // בדיקה האם כבר קיים עובד עם אותה ת"ז
-    //        var existingEmployee = db.Employees.FirstOrDefault(e => e.EmployeeID == emp.EmployeeID);
-    //        if (existingEmployee != null)
-    //        {
-    //            return BadRequest("An employee with this ID already exists");
-    //        }
-
-    //        Employees employee = new Employees();
-    //        employee.EmployeeEmail = emp.EmployeeEmail;
-    //        employee.EmployeeName = emp.EmployeeName;
-    //        employee.EmployeeID = emp.EmployeeID;
-    //        employee.EmployeePhone = emp.EmployeePhone;
-    //        employee.EmployeeTitle = emp.EmployeeTitle;
-    //        employee.EmployeePassword = encryptedPassword; // שמירת הסיסמה המוצפנת במסד הנתונים
-
-    //        db.Employees.Add(employee);
-    //        db.SaveChanges();
-
-    //        return Ok("Employee details saved successfully");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.WriteLine("My text");
-    //        return BadRequest($"Error saving employee details: {ex.Message}");
-    //    }
-    //}
-
 
     [HttpPost]
     [Route("api/InsertEmployeePassword")]
@@ -402,55 +353,41 @@ public class EmployeeDetailsController : ApiController
             }
 
             Employees employee = new Employees();
-            employee.EmployeeEmail = emp.EmployeeEmail;
-            employee.EmployeeName = emp.EmployeeName;
             employee.EmployeeID = emp.EmployeeID;
+            employee.EmployeeName = emp.EmployeeName;
+            employee.EmployeeEmail = emp.EmployeeEmail;
             employee.EmployeePhone = emp.EmployeePhone;
             employee.EmployeeTitle = emp.EmployeeTitle;
             employee.EmployeePassword = encryptedPassword; // שמירת הסיסמה המוצפנת במסד הנתונים
+            employee.EmployeePhoto = emp.EmployeePhoto;
+            employee.isDeleted = emp.isDeleted;
 
             db.Employees.Add(employee);
             db.SaveChanges();
 
             return Ok("Employee details saved successfully");
         }
-        catch (DbEntityValidationException ex)
-        {
-            // Get validation error details
-            var errorMessages = ex.EntityValidationErrors
-                .SelectMany(x => x.ValidationErrors)
-                .Select(x => x.ErrorMessage);
-
-            // Concatenate the error messages into a single string
-            var fullErrorMessage = string.Join("; ", errorMessages);
-
-            // You can log the validation errors or print them for debugging
-            Debug.WriteLine("Validation errors: " + fullErrorMessage);
-
-            return BadRequest($"Error saving employee details: {fullErrorMessage}");
-        }
         catch (Exception ex)
         {
-            Debug.WriteLine("My text");
+
             return BadRequest($"Error saving employee details: {ex.Message}");
         }
     }
     private static string EncryptPassword(string password)
     {
-
-        
-            using (SHA256 sha256Hash = SHA256.Create())
+        using (SHA256 sha256Hash = SHA256.Create())
+        {
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                builder.Append(bytes[i].ToString("x2"));
             }
-        
+            return builder.ToString();
+        }
+
     }
+
 
 
 
