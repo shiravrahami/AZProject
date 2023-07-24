@@ -17,6 +17,7 @@ import FCTask from './FunctionalComponents/Tasks/FCTask';
 import FCInsertCustomer from './FunctionalComponents/Customers/FCInsertCustomer';
 import FCInsertEmployee from './FunctionalComponents/Employees/FCInsertEmployee';
 import FCInsertProject from './FunctionalComponents/Projects/FCInsertProject';
+import FCInsertTask from './FunctionalComponents/Tasks/FCInsertTask';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/newcustomer" element={<FCLayout><FCInsertCustomer /></FCLayout>} />
             <Route path="/newproject" element={<FCLayout><FCInsertProject /></FCLayout>} />
             <Route path="/newemployee" element={<FCLayout><FCInsertEmployee /></FCLayout>} />
+            <Route path="/newTask" element={<FCLayout><FCInsertTask /></FCLayout>} />            
           </Routes>
         </BrowserRouter>
       </UserProvider>

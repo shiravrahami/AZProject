@@ -17,6 +17,7 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../UserContext';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -66,6 +67,7 @@ export default function FCTasks() {
                 });
                 const json = await response.json();
                 settasks(json || []); // make sure tasks is always an array
+                console.log( tasks[0]);
             } catch (error) {
                 console.error(error);
             }
@@ -112,10 +114,17 @@ export default function FCTasks() {
     const passTask = (task) => {
         navigate('/task', { state: task });
     }
+    function newTask() {
+        navigate('/newTask')
+    }
 
 
     return (
         <div className='custtable'>
+              <Button className="floating-button"
+                onClick={newTask}>
+                <FontAwesomeIcon icon={faPlus} title="הוספת משימה" />
+            </Button>
             <Row>
                 <Form className='projclass' style={{ width: '95%', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     <Accordion defaultActiveKey={['0']} alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }} flush>
@@ -172,7 +181,7 @@ export default function FCTasks() {
                     </Accordion>
                 </Form>
             </Row>
-            <Row className='titles'>
+            <Row className='titles' style={{ fontSize: '23px'}}>
                 <Col lg={6}>
                     שם משימה
                 </Col>
@@ -182,7 +191,7 @@ export default function FCTasks() {
                 <Col lg={1}>
                 </Col>
             </Row>
-            <Row className='contentTasks'>
+            <Row className='contentTasks' style={{ fontSize: '20px'}}>
                 {switchon && tasksDay
                     .filter((task) => task.TaskName.includes(searchValue))
                     .map((task) => (

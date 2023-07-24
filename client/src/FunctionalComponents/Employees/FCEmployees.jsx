@@ -113,7 +113,7 @@ export default function FCemployees() {
                         </Accordion>
                     </Form>
                 </Row>
-                <Row className='titles' style={{ textAlign: 'center' }}>
+                <Row className='titles' style={{ textAlign: 'center', fontSize: '23px' }}>
                     <Col style={{ textAlign: 'center' }} lg={2}>
                         שם העובד
                     </Col>
@@ -135,7 +135,7 @@ export default function FCemployees() {
                     <Col style={{ textAlign: 'center' }} lg={1}>
                     </Col>
                 </Row>
-                <Row style={{ textAlign: 'right', marginRight: '10px' }}>
+                <Row style={{ textAlign: 'right', marginRight: '10px' ,fontSize: '20px' }}>
                     {employees
                         .filter((employee) => employee.EmployeeName.includes(searchValue))
                         .map((employee) => (

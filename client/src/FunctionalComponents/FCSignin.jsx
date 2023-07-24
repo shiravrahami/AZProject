@@ -10,7 +10,7 @@ import { useUserContext } from './UserContext';
 import { useNavigate } from 'react-router-dom';
 
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-
+ 
 
 function SignInScreen() {
   const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ function SignInScreen() {
 
   const handleSubmit = () => {
     setIsLoading(true);
-    fetch('https://proj.ruppin.ac.il/cgroup95/prod/api/signin', {
+    fetch(`http://194.90.158.74/cgroup95/prod/api/signin`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: new Headers({
@@ -70,11 +70,68 @@ function SignInScreen() {
         console.log("Error fetching user data: ", error);
       });
   };
+
+
+  // const handleSubmit = () => {
+    
+  //   setIsLoading(true);
+  //   fetch('https://cors-anywhere.herokuapp.com/https://proj.ruppin.ac.il/cgroup95/prod/api/signin', {
+  //     method: 'POST',
+  //     body: JSON.stringify(user),
+  //     headers: new Headers({
+  //       'Accept': 'application/json; charset=UTF-8',
+  //       'Content-type': 'application/json; charset=UTF-8'
+  //     })
+  //   })
+  //   fetch('https://proj.ruppin.ac.il/cgroup95/prod/api/signin', {
+  //     method: 'POST',
+  //     body: JSON.stringify(user),
+  //     headers: new Headers({
+  //       'Accept': 'application/json; charset=UTF-8',
+  //       'Content-type': 'application/json; charset=UTF-8'
+  //     })
+  //   })
+  //     .then(res => {
+  //       console.log('res=', res);
+  //       console.log(res.status);
+  //       if (res.status === 200) {
+  //         return res.json(); // Parse response body as JSON
+  //       }
+  //       else {
+  //         setErrorMessage("אחד מהפרטים אינו נכון");
+  //         setIsLoading(false);
+  //         throw new Error("Server returned status " + res.status);
+  //       }
+  //     })
+  //     .then(data => {
+  //       // Create a new object with the response data
+  //       const userDetails = {
+  //         EmployeePK: data.ID,
+  //         EmployeeID: data.EmployeeID,
+  //         EmployeeName: data.EmployeeName,
+  //         EmployeeEmail: data.EmployeeEmail,
+  //         EmployeePhone: data.EmployeePhone,
+  //         EmployeeTitle: data.EmployeeTitle,
+  //         EmployeePassword: data.EmployeePassword,
+  //         EmployeePhoto: data.EmployeePhoto
+  //         // Add more properties as needed
+  //       };
+  //       console.log("userDetails =", userDetails);
+  //       signinUser(userDetails); // Set the user object in context
+  //       navigate('/home', { state: userDetails }); // Navigate to the home screen
+
+  //     })
+  //     .catch(error => {
+  //       console.log("Error fetching user data: ", error);
+  //     });
+      
+  // };
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
   });
 
+  
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };

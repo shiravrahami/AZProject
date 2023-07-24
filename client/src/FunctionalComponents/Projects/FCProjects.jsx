@@ -155,7 +155,7 @@ export default function FCprojects() {
                     </Accordion>
                 </Form>
             </Row>
-            <Row className='titles'>
+            <Row className='titles' style={{ fontSize: '25px'}}>
                 <Col lg={6}>
                     שם הפרויקט
                 </Col>
@@ -165,7 +165,7 @@ export default function FCprojects() {
                 <Col lg={1}>
                 </Col>
             </Row>
-            <Row className='contentProjects'>
+            <Row className='contentProjects' style={{ fontSize: '20px'}}>
                 {switchon && projectsDay
                     .filter((project) => project.ProjectName.includes(searchValue))
                     .map((project) => (
