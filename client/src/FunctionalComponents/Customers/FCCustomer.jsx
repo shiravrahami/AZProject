@@ -41,6 +41,8 @@ export default function FCCustomer() {
             console.log(customerDetailsUpdate);
         }
     }
+
+    
     useEffect(() => {
         async function fetchCustomer() {
             try {
@@ -189,7 +191,7 @@ export default function FCCustomer() {
                     </Accordion.Item>
                 </Accordion>
             </Form>
-            <Row style={{ width: '95%', margin: '0 auto', }}>
+            <Row style={{ width: '95%', margin: '0 auto', fontSize: '20px'  }}>
                 <Col className='projclass' style={{ width: '95%', borderRadius: '20px ', margin: '20px', padding: '20px' }}>
                     פרויקטים
                     {projectGet

@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   const path = "http://194.90.158.74/cgroup95/prod/api/";
-
+  
   function signinUser(user) {
     setUser(user);
   }

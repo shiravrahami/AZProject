@@ -38,7 +38,7 @@ export default function FCInsertEmployee() {
 
         try {
             const response = await fetch(`${path}InsertEmployee`, {
-                method: "PUT",
+                method: "POST",
                 body: JSON.stringify(NewEmployee),
                 headers: new Headers({
                     'Accept': 'application/json; charset=UTF-8',

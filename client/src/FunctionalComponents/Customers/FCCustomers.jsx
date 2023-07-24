@@ -144,7 +144,7 @@ export default function FCCustomers(actions) {
                         </Accordion>
                     </Form>
                 </Row>
-                <Row className='titles'>
+                <Row className='titles'  style={{ fontSize: '23px' }}>
                     <Col lg={4}>
                         שם הלקוח
                     </Col>
@@ -156,7 +156,7 @@ export default function FCCustomers(actions) {
                     </Col>
                     <Col lg={1}></Col>
                 </Row>
-                <Row>
+                <Row  style={{ fontSize: '23px' }}>
                     {switchon && customersNoTasks
                         .filter((customer) => customer.CustomerName.includes(searchValue))
                         .map((customer) => (
