@@ -10,6 +10,7 @@ using WebApplication1.DTO;
 using Newtonsoft.Json.Linq;
 using System.Net.Mail;
 using System.Data.Entity.Validation;
+using System.Data.Entity;
 
 namespace WebApplication1.Controllers
 {
@@ -47,7 +48,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //עדכון משימה כולל שם עובד ולקוח
+        //עדכון משימה כולל שם עובד 
         [HttpPut]
         [Route("api/TaskUpdate/{taskId}")]
         public IHttpActionResult UpdateTask(int taskId, [FromBody] TasksDTO updatedTask)
@@ -75,9 +76,87 @@ namespace WebApplication1.Controllers
                 task.Deadline = updatedTask.Deadline;
                 task.isDone = updatedTask.isDone;
                 task.isDeleted = updatedTask.isDeleted;
-                task.PriceQuoteTime =(int) updatedTask.PriceQuoteTime;
+                task.PriceQuoteTime = (int)updatedTask.PriceQuoteTime;
 
                 // עדכון שם הלקוח אם הוא קיים בבקשה
+                //if (!string.IsNullOrEmpty(updatedTask.CustomerID))
+                //{
+                //    var customer = db.Customers.FirstOrDefault(c => c.ID == updatedTask.ID);
+                //    if (customer != null)
+                //    {
+                //        task.Projects.Customers = customer;
+                //    }
+                //    else
+                //    {
+                //        customer = new Customers { CustomerID = updatedTask.CustomerID };
+                //        task.Projects.Customers = customer;
+                //    }
+                //}
+
+                // עדכון שם העובד אם הוא קיים בבקשה
+                if (!string.IsNullOrEmpty(updatedTask.EmployeeID))
+                {
+                    var employee = db.Employees.FirstOrDefault(e => e.ID == updatedTask.ID);
+                    if (employee != null)
+                    {
+                        var taskEmployeeActivity = db.Task_Employee_Activity.FirstOrDefault(tea => tea.TaskID == taskId);
+                        if (taskEmployeeActivity != null)
+                        {
+                            taskEmployeeActivity.EmployeePK = employee.ID;
+                        }
+                        else
+                        {
+                            taskEmployeeActivity = new Task_Employee_Activity { TaskID = taskId, EmployeePK = employee.ID };
+                            db.Task_Employee_Activity.Add(taskEmployeeActivity);
+                        }
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Ok("Task details updated successfully");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed to update task details");
+            }
+        }
+
+
+        //מזהה עובד ולקוח
+        [HttpPut]
+        [Route("api/TaskUpdateID/{taskId}")]
+        public IHttpActionResult UpdateTaskID(int taskId, [FromBody] TasksDTO updatedTask)
+        {
+            try
+            {
+                if (taskId <= 0)
+                {
+                    return BadRequest("Invalid TaskID");
+                }
+
+                var task = db.Tasks
+                              .Include(t => t.Projects)
+                              .Include(t => t.Projects.Customers)
+                              .FirstOrDefault(ts => ts.TaskID == taskId);
+
+                if (task == null)
+                {
+                    return BadRequest("Task not found");
+                }
+
+                // עדכון פרטי המשימה
+                task.TaskName = updatedTask.TaskName;
+                task.ProjectID = updatedTask.ProjectID;
+                task.TaskType = updatedTask.TaskType;
+                task.TaskDescription = updatedTask.TaskDescription;
+                task.InsertTaskDate = updatedTask.InsertTaskDate;
+                task.Deadline = updatedTask.Deadline;
+                task.isDone = updatedTask.isDone;
+                task.isDeleted = updatedTask.isDeleted;
+                task.PriceQuoteTime = (int)updatedTask.PriceQuoteTime;
+
+                // עדכון מזהה הלקוח אם הוא קיים בבקשה
                 if (!string.IsNullOrEmpty(updatedTask.CustomerID))
                 {
                     var customer = db.Customers.FirstOrDefault(c => c.CustomerID == updatedTask.CustomerID);
@@ -92,8 +171,8 @@ namespace WebApplication1.Controllers
                     }
                 }
 
-                // עדכון שם העובד אם הוא קיים בבקשה
-                if (!string.IsNullOrEmpty(updatedTask.EmployeeName))
+                // עדכון מזהה העובד אם הוא קיים בבקשה
+                if (!string.IsNullOrEmpty(updatedTask.EmployeeID))
                 {
                     var employee = db.Employees.FirstOrDefault(e => e.EmployeeID == updatedTask.EmployeeID);
                     if (employee != null)
@@ -123,10 +202,13 @@ namespace WebApplication1.Controllers
 
 
 
-        //כרגע מסדרת אותה
+
+
+
+        ////כרגע מסדרת אותה
         //[HttpPut]
         //[Route("api/TaskUpdate/{taskId}")]
-        //public IHttpActionResult UpdateTaskBAD(int taskId, [FromBody] TasksDTO updatedTask)
+        //public IHttpActionResult UpdateTask(int taskId, [FromBody] TasksDTO updatedTask)
         //{
         //    try
         //    {
@@ -135,14 +217,17 @@ namespace WebApplication1.Controllers
         //            return BadRequest("Invalid TaskID");
         //        }
 
-        //        var task = db.Tasks.FirstOrDefault(ts => ts.TaskID == taskId);
+        //        var task = db.Tasks
+        //                      .Include(t => t.Projects)
+        //                      .Include(t => t.Projects.Customers)
+        //                      .FirstOrDefault(ts => ts.TaskID == taskId);
 
         //        if (task == null)
         //        {
-        //            return BadRequest("Task not found");
+        //            return NotFound();
         //        }
 
-        //        // עדכון הפרטים של המשימה
+        //        // Update the task details
         //        task.TaskName = updatedTask.TaskName;
         //        task.ProjectID = updatedTask.ProjectID;
         //        task.TaskType = updatedTask.TaskType;
@@ -151,6 +236,41 @@ namespace WebApplication1.Controllers
         //        task.Deadline = updatedTask.Deadline;
         //        task.isDone = updatedTask.isDone;
         //        task.isDeleted = updatedTask.isDeleted;
+        //        task.PriceQuoteTime = updatedTask.PriceQuoteTime;
+
+        //        // Update the customer name if it exists in the request
+        //        if (!string.IsNullOrEmpty(updatedTask.CustomerID))
+        //        {
+        //            var customer = db.Customers.FirstOrDefault(c => c.CustomerID == updatedTask.CustomerID);
+        //            if (customer != null)
+        //            {
+        //                task.Projects.Customers = customer;
+        //            }
+        //            else
+        //            {
+        //                customer = new Customers { CustomerID = updatedTask.CustomerID };
+        //                task.Projects.Customers = customer;
+        //            }
+        //        }
+
+        //        // Update the employee name if it exists in the request
+        //        if (!string.IsNullOrEmpty(updatedTask.EmployeeName))
+        //        {
+        //            var employee = db.Employees.FirstOrDefault(e => e.ID == updatedTask.ID);
+        //            if (employee != null)
+        //            {
+        //                var taskEmployeeActivity = db.Task_Employee_Activity.FirstOrDefault(tea => tea.TaskID == taskId);
+        //                if (taskEmployeeActivity != null)
+        //                {
+        //                    taskEmployeeActivity.EmployeePK = employee.ID;
+        //                }
+        //                else
+        //                {
+        //                    taskEmployeeActivity = new Task_Employee_Activity { TaskID = taskId, EmployeePK = employee.ID };
+        //                    db.Task_Employee_Activity.Add(taskEmployeeActivity);
+        //                }
+        //            }
+        //        }
 
         //        db.SaveChanges();
 
@@ -161,6 +281,14 @@ namespace WebApplication1.Controllers
         //        return BadRequest("Failed to update task details");
         //    }
         //}
+
+
+
+
+
+
+
+
 
 
         //עדכון משימה קוד ישן 
@@ -221,10 +349,51 @@ namespace WebApplication1.Controllers
             }
         }
 
+        ////InsertTask
+        //[HttpPost]
+        //[Route("api/AddTask")]
+        //public IHttpActionResult AddTask([FromBody] TasksDTO task)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(task.TaskName) || task.ProjectID == 0 || string.IsNullOrEmpty(task.TaskDescription))
+        //        {
+        //            return BadRequest("One or more parameters are missing or invalid");
+        //        }
+
+        //        // יצירת אובייקט משימה חדשה
+        //        Tasks newTask = new Tasks
+        //        {
+        //            TaskName = task.TaskName,
+        //            ProjectID = task.ProjectID,
+        //            TaskType = task.TaskType,
+        //            TaskDescription = task.TaskDescription,
+        //            InsertTaskDate = task.InsertTaskDate,
+        //            Deadline = task.Deadline,
+        //            isDone = task.isDone,
+        //            isDeleted = task.isDeleted
+        //           // PriceQuoteTime = (int)task.PriceQuoteTime
+        //        };
+
+        //        // הוספת המשימה למסד הנתונים
+        //        db.Tasks.Add(newTask);
+        //        db.SaveChanges();
+
+        //        return Ok("Task added successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"Error adding task: {ex.Message}");
+        //    }
+        //}
+
+
+        //מתודת הכנסת משימה עם אובייקט פעילות ריק סופי ועובד!
+        //new method after a talk with the chat 
         //InsertTask
         [HttpPost]
-        [Route("api/AddTask")]
-        public IHttpActionResult AddTask([FromBody] TasksDTO task)
+        [Route("api/AddTask/{employeeID}")]
+        public IHttpActionResult AddTask([FromBody] TasksDTO task, int employeeID)
         {
             try
             {
@@ -244,11 +413,28 @@ namespace WebApplication1.Controllers
                     Deadline = task.Deadline,
                     isDone = task.isDone,
                     isDeleted = task.isDeleted,
-                    PriceQuoteTime = (int)task.PriceQuoteTime
+
+                    // PriceQuoteTime = (int)task.PriceQuoteTime
                 };
 
                 // הוספת המשימה למסד הנתונים
                 db.Tasks.Add(newTask);
+                db.SaveChanges();
+
+                Activity newActivity = new Activity()
+                {
+                    TaskID = newTask.TaskID,
+                    EmployeePK = employeeID,
+                    Description = "סיווג עובד למשימה",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                };
+
+                db.Activity.Add(newActivity);
+                db.SaveChanges();
+
+                var taskEmployeeActivity = new Task_Employee_Activity { TaskID = newTask.TaskID, EmployeePK = employeeID, ActivityID = newActivity.ActivityID };
+                db.Task_Employee_Activity.Add(taskEmployeeActivity);
                 db.SaveChanges();
 
                 return Ok("Task added successfully");
@@ -261,59 +447,190 @@ namespace WebApplication1.Controllers
 
 
 
+        //התחלה עם שיר ואסתר
         //הכנסת משימה חדשה כולל יצירת אובייקט פעילות ריק
-        [HttpPost]
-        [Route("api/InsertTaskActivity")]
-        public IHttpActionResult InsertTaskActivity([FromBody] TasksDTO task)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
-                    string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
-                    task.ProjectID == 0)
-                {
-                    return BadRequest("One or more parameters are missing or invalid");
-                }
+        //[HttpPost]
+        //[Route("api/InsertTaskActivity")]
+        //public IHttpActionResult InsertTaskActivity([FromBody] TasksDTO task)
+        //{
+        //    try
+        //    {
+        //        //if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
+        //        //    string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
+        //        //    task.ProjectID == 0)
+        //        //{
+        //        //    return BadRequest("One or more parameters are missing or invalid");
+        //        //}
 
-                int employeePK = int.Parse(task.EmployeeID);
+        //        int employeePK = task.ID;
 
-                Tasks newTask = new Tasks()
-                {
-                    TaskName = task.TaskName,
-                    ProjectID = task.ProjectID,
-                    TaskType = task.TaskType,
-                    TaskDescription = task.TaskDescription,
-                    InsertTaskDate = task.InsertTaskDate,
-                    Deadline = task.Deadline,
-                    isDone = task.isDone,
-                    isDeleted = task.isDeleted
-                    
-                };
+        //        var employeeID = db.Employees.FirstOrDefault(c => c.ID == task.ID);
 
-                db.Tasks.Add(newTask);
-                db.SaveChanges();
+        //        Tasks newTask = new Tasks()
+        //        {
+        //            TaskName = task.TaskName,
+        //            ProjectID = task.ProjectID,
+        //            TaskType = task.TaskType,
+        //            TaskDescription = task.TaskDescription,
+        //            InsertTaskDate = task.InsertTaskDate,
+        //            Deadline = task.Deadline,
+        //            isDone = task.isDone,
+        //            isDeleted = task.isDeleted,
+        //            //ID = employeePK,
+        //           // CustomerPK = task.CustomerPK
 
-                Activity newActivity = new Activity()
-                {
-                    TaskID = newTask.TaskID,
-                    EmployeePK = employeePK,
-                    Description = "סיווג עובד למשימה",
-                    StartDate = DateTime.Today,
-                    EndDate = DateTime.Today 
-                };
+        //        };
 
-                db.Activity.Add(newActivity);
-                db.SaveChanges();
+        //        db.Tasks.Add(newTask);
+        //        db.SaveChanges();
 
-                return Ok("Task details and activity saved successfully");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Error saving Task details: {ex.Message}\nInner Exception: {ex.InnerException?.Message}");
-            }
-        }
+        //        //if (!string.IsNullOrEmpty(task.EmployeeID))
+        //        //{
+        //        //  //  var employee = db.Employees.FirstOrDefault(e => e.ID == task.ID);
+        //        //  //  if (employee != null)
+        //        //   // {
+        //        //        var taskEmployeeActivity = db.Task_Employee_Activity.FirstOrDefault(tea => tea.TaskID == newTask.TaskID);
+        //        //        //if (taskEmployeeActivity != null)
+        //        //        //{
+        //        //        //    taskEmployeeActivity.EmployeePK = employee.ID;
+        //        //        //}
+        //        //        //else
+        //        //       // {
+        //        //            taskEmployeeActivity = new Task_Employee_Activity { TaskID = taskId, EmployeePK = employee.ID };
+        //        //            db.Task_Employee_Activity.Add(taskEmployeeActivity);
+        //        //       // }
+        //        //   // }
+        //        //}
 
-       
+        //        var task1 = db.Tasks
+        //                      .Include(t => t.Projects)
+        //                      .Include(t => t.Projects.Customers)
+        //                      .FirstOrDefault(ts => ts.CustomerID == taskId);
+
+
+        //        if (!string.IsNullOrEmpty(task.CustomerID))
+        //        {
+        //            var customer = db.Customers.FirstOrDefault(c => c.CustomerID == task.CustomerID);
+        //            if (customer != null)
+        //            {
+        //                task1.Projects.Customers = customer;
+        //            }
+        //            else
+        //            {
+        //                customer = new Customers { CustomerID = task.CustomerID };
+        //                task1.Projects.Customers = customer;
+        //            }
+        //        }
+
+
+        //        if (!string.IsNullOrEmpty(task.EmployeeName))
+        //        {
+        //            var employee = db.Employees.FirstOrDefault(e => e.ID == task.ID);
+        //            if (employee != null)
+        //            {
+        //                var taskEmployeeActivity = db.Task_Employee_Activity.FirstOrDefault(tea => tea.TaskID == taskId);
+        //                if (taskEmployeeActivity != null)
+        //                {
+        //                    taskEmployeeActivity.EmployeePK = employee.ID;
+        //                }
+        //                else
+        //                {
+        //                    taskEmployeeActivity = new Task_Employee_Activity { TaskID = taskId, EmployeePK = employee.ID };
+        //                    db.Task_Employee_Activity.Add(taskEmployeeActivity);
+        //                }
+        //            }
+        //        }
+
+        //        db.SaveChanges();
+
+        //        Activity newActivity = new Activity()
+        //        {
+        //            TaskID = newTask.TaskID,
+        //            EmployeePK = employeePK,
+        //            Description = "סיווג עובד למשימה",
+        //            StartDate = DateTime.Today,
+        //            EndDate = DateTime.Today
+        //        };
+
+        //        db.Activity.Add(newActivity);
+        //        db.SaveChanges();
+
+        //        return Ok("Task details and activity saved successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"Error saving Task details: {ex.Message}\nInner Exception: {ex.InnerException?.Message}");
+        //    }
+        //}
+
+
+        ////פעילותריק
+        //[HttpPost]
+        //[Route("api/InsertTaskActivity")]
+        //public IHttpActionResult InsertTaskActivity([FromBody] TasksDTO task)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(task.TaskName?.ToString()) ||
+        //            string.IsNullOrEmpty(task.TaskDescription?.ToString()) ||
+        //            task.ProjectID == 0)
+        //        {
+        //            return BadRequest("One or more parameters are missing or invalid");
+        //        }
+
+        //      int employeePK = task.ID;
+
+        //        var employee = db.Employees.FirstOrDefault(e => e.ID == task.ID);
+        //        if (employee == null)
+        //        {
+        //            return BadRequest("Employee not found");
+        //        }
+
+        //        var customer = db.Customers.FirstOrDefault(c => c.CustomerID == task.CustomerID);
+        //        if (customer == null)
+        //        {
+        //            return BadRequest("Customer not found");
+        //        }
+
+        //        Tasks newTask = new Tasks()
+        //        {
+        //            TaskName = task.TaskName,
+        //            ProjectID = task.ProjectID,
+        //            TaskType = task.TaskType,
+        //            TaskDescription = task.TaskDescription,
+        //            InsertTaskDate = task.InsertTaskDate,
+        //            Deadline = task.Deadline,
+        //            isDone = task.isDone,
+        //            isDeleted = task.isDeleted,
+        //            EmployeeID = task.ID,
+        //           CustomerID = task.CustomerID
+        //        };
+
+        //        db.Tasks.Add(newTask);
+        //        db.SaveChanges();
+
+        //        // Create the activity
+        //        //Activity newActivity = new Activity()
+        //        //{
+        //        //    TaskID = newTask.TaskID,
+        //        //    //EmployeePK = employeePK,
+        //        //    Description = "סיווג עובד למשימה",
+        //        //    StartDate = DateTime.Today,
+        //        //    EndDate = DateTime.Today
+        //        //};
+
+        //        //db.Activity.Add(newActivity);
+        //        //db.SaveChanges();
+
+        //         return Ok("Task details and activity saved successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"Error saving Task details: {ex.Message}\nInner Exception: {ex.InnerException?.Message}");
+        //    }
+        //}
+
+
 
 
         //מקורית
@@ -397,6 +714,17 @@ namespace WebApplication1.Controllers
         //    }
         //}
 
+
+
+
+
+
+
+
+
+
+
+
         //מקורית בתוספת שם העובד
         [HttpGet]
         [Route("api/ListTasks/{employeeID}")]
@@ -419,8 +747,9 @@ namespace WebApplication1.Controllers
                             Deadline = (DateTime)(x.Deadline),
                             isDone = x.isDone,
                             isDeleted = x.isDeleted,
-                            CustomerName = x.Projects.Customers.CustomerName
-                            //EmployeeName = ""
+                            CustomerName = x.Projects.Customers.CustomerName,
+                            CustomerID = x.Projects.Customers.CustomerID,
+
                         }).ToList();
                     return Ok(MangerTasksList);
                 }
@@ -431,20 +760,25 @@ namespace WebApplication1.Controllers
                                  join e in db.Employees on tea.EmployeePK equals e.ID
                                  where tea.EmployeePK == employeeID && !t.isDeleted
                                  orderby t.InsertTaskDate descending
-                                 select new
+                                 select new TasksDTO
                                  {
-                                     t.TaskID,
-                                     t.TaskName,
-                                     t.ProjectID,
-                                     t.TaskType,
-                                     t.TaskDescription,
-                                     t.InsertTaskDate,
-                                     t.Deadline,
-                                     t.isDone,
-                                     t.isDeleted,
+                                     TaskID = t.TaskID,
+                                     TaskName = t.TaskName,
+                                     ProjectID = t.ProjectID,
+                                     TaskType = t.TaskType,
+                                     TaskDescription = t.TaskDescription,
+                                     InsertTaskDate = t.InsertTaskDate,
+                                     Deadline = (DateTime)t.Deadline,
+                                     isDone = t.isDone,
+                                     isDeleted = t.isDeleted,
                                      CustomerName = t.Projects.Customers.CustomerName,
-                                     EmployeeName = e.EmployeeName
+                                     EmployeeName = e.EmployeeName,
+                                     EmployeeEmail = e.EmployeeEmail, // Add the Employee Email
+                                     EmployeeID = e.EmployeeID, // Add the Employee ID
+                                     CustomerID = t.Projects.Customers.CustomerID,
+                                     ID = e.ID
                                  }).ToList();
+
 
                     if (tasks == null)
                     {
@@ -463,11 +797,41 @@ namespace WebApplication1.Controllers
                         isDone = x.isDone,
                         isDeleted = x.isDeleted,
                         CustomerName = x.CustomerName,
-                        EmployeeName = x.EmployeeName
+                        EmployeeName = x.EmployeeName,
+                        CustomerID = x.CustomerID,
+                        EmployeeEmail = x.EmployeeEmail,
+                        EmployeeID = x.EmployeeID,
+                        PriceQuoteTime = x.PriceQuoteTime,
+                        ID = x.ID
                     }).ToList();
 
                     return Ok(TasksList);
                 }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+        
+
+
+        //מתודה שמביאה כמות משימות פתוחות לכל עובד 
+        [HttpGet]
+        [Route("api/ListTasksForAllEmployee")]
+        public IHttpActionResult GetListTasksForAllEmployee()
+        {
+            try
+            {
+                var employeesOpenTasksCount = db.Employees
+                    .Select(e => new NumberOfTaskDTO
+                    {
+                        EmployeeName = e.EmployeeName,
+                        NumberOfOpenTasks = db.Tasks.Count(t => t.Task_Employee_Activity.Any(tea => tea.EmployeePK == e.ID) && !t.isDone && !t.isDeleted)
+                    })
+                    .ToList();
+
+                return Ok(employeesOpenTasksCount);
             }
             catch (Exception)
             {
@@ -981,6 +1345,7 @@ namespace WebApplication1.Controllers
 
         //        return Ok(result);
         //    }
+        //    
         //    catch (Exception ex)
         //    {
         //        return BadRequest(ex.Message);
@@ -990,7 +1355,7 @@ namespace WebApplication1.Controllers
 
         //תקבל סוג , שם משימה ושעות הצעת מחיר ותחזיר את סוג המשימה, הממצוע שעות שעבדו עליה, מזהה המשימה והאם סך השעות קטן או גדול
         [HttpGet]
-        [Route("api/TaskWorkedHour/{taskType}/{taskName}/{pqHours}")]       
+        [Route("api/TaskWorkedHour/{taskType}/{taskName}/{pqHours}")]
         public IHttpActionResult GetTaskWorkedHour(int taskType, string taskName, double pqHours)
         {
             try
@@ -1013,7 +1378,7 @@ namespace WebApplication1.Controllers
 
                     foreach (var activity in taskActivities)
                     {
-                       
+
                         TimeSpan? timeDifference = activity.EndDate - activity.StartDate;
                         totalWorkHours += timeDifference ?? TimeSpan.Zero;
                     }
@@ -1176,10 +1541,105 @@ namespace WebApplication1.Controllers
         }
 
 
+
+        ////אסתר לילה חדש
+        //[HttpGet]
+        //[Route("api/ListTasksNEW/{employeeID}")]
+        //public IHttpActionResult GetListTasksNEW(int employeeID)
+        //{
+        //    try
+        //    {
+        //        if (employeeID == 6)
+        //        {
+        //            var MangerTasksList = db.Tasks.Where(x => !x.isDeleted)
+        //                .OrderByDescending(x => x.InsertTaskDate)
+        //                .Select(x => new TasksDTO
+        //                {
+        //                    TaskID = x.TaskID,
+        //                    TaskName = x.TaskName,
+        //                    ProjectID = x.ProjectID,
+        //                    TaskType = x.TaskType,
+        //                    TaskDescription = x.TaskDescription,
+        //                    InsertTaskDate = x.InsertTaskDate,
+        //                    Deadline = (DateTime)(x.Deadline),
+        //                    isDone = x.isDone,
+        //                    isDeleted = x.isDeleted,
+        //                    CustomerName = x.Projects.Customers.CustomerName,
+        //                    CustomerID = x.Projects.Customers.CustomerID,
+
+        //                }).ToList();
+        //            return Ok(MangerTasksList);
+        //        }
+        //        else
+        //        {
+        //            var tasks = (from t in db.Tasks
+        //                         join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
+        //                         join e in db.Employees on tea.EmployeePK equals e.ID
+        //                         where tea.EmployeePK == employeeID && !t.isDeleted
+        //                         orderby t.InsertTaskDate descending
+        //                         select new TasksDTO
+        //                         {
+        //                             TaskID = t.TaskID,
+        //                             TaskName = t.TaskName,
+        //                             ProjectID = t.ProjectID,
+        //                             TaskType = t.TaskType,
+        //                             TaskDescription = t.TaskDescription,
+        //                             InsertTaskDate = t.InsertTaskDate,
+        //                             Deadline = (DateTime)t.Deadline,
+        //                             isDone = t.isDone,
+        //                             isDeleted = t.isDeleted,
+        //                             CustomerName = t.Projects.Customers.CustomerName,
+        //                             EmployeeName = e.EmployeeName,
+        //                             EmployeeEmail = e.EmployeeEmail, // Add the Employee Email
+        //                             EmployeeID = e.EmployeeID, // Add the Employee ID
+        //                             CustomerID = t.Projects.Customers.CustomerID,
+        //                             ID = e.ID
+        //                         }).ToList();
+
+
+        //            if (tasks == null)
+        //            {
+        //                return NotFound();
+        //            }
+
+        //            var TasksList = tasks.Select(x => new TasksDTO
+        //            {
+        //                TaskID = x.TaskID,
+        //                TaskName = x.TaskName,
+        //                ProjectID = x.ProjectID,
+        //                TaskType = x.TaskType,
+        //                TaskDescription = x.TaskDescription,
+        //                InsertTaskDate = x.InsertTaskDate,
+        //                Deadline = (DateTime)(x.Deadline),
+        //                isDone = x.isDone,
+        //                isDeleted = x.isDeleted,
+        //                CustomerName = x.CustomerName,
+        //                EmployeeName = x.EmployeeName,
+        //                CustomerID = x.CustomerID,
+        //                EmployeeEmail = x.EmployeeEmail,
+        //                EmployeeID = x.EmployeeID,
+        //                PriceQuoteTime = x.PriceQuoteTime,
+        //                ID = x.ID
+        //            }).ToList();
+
+        //            return Ok(TasksList);
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest("Error");
+        //    }
+        //}
+
+
+
     }
 
 
 }
+
+
+
 
 
 

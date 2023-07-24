@@ -184,6 +184,52 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //חדשהמזהה עובד
+        [HttpGet]
+        [Route("api/ProjectsAndTasks/{employeeID}")]
+        public IHttpActionResult GetProjectsAndTasks(int employeeID)
+        {
+            try
+            {
+                var projectsAndTasks = db.Projects
+                    .Where(p => !p.isDeleted)
+                    .Select(p => new
+                    {
+                        ProjectID = p.ProjectID,
+                        ProjectName = p.ProjectName,
+                        CustomerPK = p.CustomerPK,
+                        isDone = p.isDone,
+                        InsertDate = p.InsertDate,
+                        Description = p.Description,
+                        Deadline = (DateTime)(p.Deadline),
+                        Tasks = p.Tasks
+                            .Where(t => !t.isDeleted && t.Task_Employee_Activity.Any(tea => tea.EmployeePK == employeeID))
+                            .OrderBy(t => t.InsertTaskDate)
+                            .Select(t => new
+                            {
+                                t.TaskID,
+                                TaskName = t.TaskName,
+                                ProjectID = t.ProjectID,
+                                TaskType = t.TaskType,
+                                TaskDescription = t.TaskDescription,
+                                InsertTaskDate = t.InsertTaskDate,
+                                Deadline = (DateTime)(t.Deadline),
+                                isDone = t.isDone,
+                                isDeleted = t.isDeleted,
+                                EmployeeName = t.Task_Employee_Activity
+                                    .Where(tea => tea.TaskID == t.TaskID && tea.EmployeePK == employeeID)
+                                    .Select(tea => tea.Employees.EmployeeName)
+                                    .FirstOrDefault()
+                            }).ToList()
+                    }).ToList();
+
+                return Ok(projectsAndTasks);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 

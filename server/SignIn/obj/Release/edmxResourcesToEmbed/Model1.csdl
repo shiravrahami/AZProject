@@ -52,7 +52,7 @@
     <Property Name="EmployeeEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="EmployeePhone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="EmployeeTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="EmployeePassword" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="EmployeePassword" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="EmployeePhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="isDeleted" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Activity" Relationship="Self.FK_Activity_Employee" FromRole="Employees" ToRole="Activity" />

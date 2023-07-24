@@ -45,7 +45,7 @@
     <Property Name="EmployeeEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="EmployeePhone" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="EmployeeTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="EmployeePassword" Type="nchar" MaxLength="8" Nullable="false" />
+    <Property Name="EmployeePassword" Type="nchar" MaxLength="64" Nullable="false" />
     <Property Name="EmployeePhoto" Type="nvarchar" MaxLength="100" />
     <Property Name="isDeleted" Type="bit" Nullable="false" />
   </EntityType>

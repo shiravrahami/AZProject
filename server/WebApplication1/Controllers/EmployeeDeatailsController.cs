@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Data.Entity.Validation;
 
+
 public class EmployeeDetailsController : ApiController
 {
     igroup195_prodEntities db = new igroup195_prodEntities();
@@ -45,6 +46,9 @@ public class EmployeeDetailsController : ApiController
             return BadRequest(ex.Message);
         }
     }
+
+   
+
 
     //עדכון עובד קוד חדש
     [HttpPut]
@@ -226,73 +230,73 @@ public class EmployeeDetailsController : ApiController
 
 
     //מתודה המוסיפה עובד חדש למערכת ושולחת לו ססמא ראשונית במייל
-    [HttpPost]
-    [Route("api/InsertEmployeeSendMail")]
-    public IHttpActionResult InsertEmployeeSendMail([FromBody] EmployeeDeatailsDTO emp)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(emp.EmployeeEmail?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeeName?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeePassword?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeeID?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeeTitle?.ToString()) ||
-                string.IsNullOrEmpty(emp.EmployeePhone?.ToString()))
-            {
-                return BadRequest("One or more parameters are missing or empty");
-            }
+    //[HttpPost]
+    //[Route("api/InsertEmployeeSendMail")]
+    //public IHttpActionResult InsertEmployeeSendMail([FromBody] EmployeeDeatailsDTO emp)
+    //{
+    //    try
+    //    {
+    //        if (string.IsNullOrEmpty(emp.EmployeeEmail?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeeName?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeePassword?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeeID?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeeTitle?.ToString()) ||
+    //            string.IsNullOrEmpty(emp.EmployeePhone?.ToString()))
+    //        {
+    //            return BadRequest("One or more parameters are missing or empty");
+    //        }
 
-            string employeeEmail = emp.EmployeeEmail.ToString();
-            string employeeName = emp.EmployeeName.ToString();
-            string employeePassword = emp.EmployeePassword.ToString();
-            string employeeID = emp.EmployeeID.ToString();
-            string employeeTitle = emp.EmployeeTitle.ToString();
-            string employeePhone = emp.EmployeePhone.ToString();
-            string employeePhoto = emp.EmployeePhoto.ToString();
+    //        string employeeEmail = emp.EmployeeEmail.ToString();
+    //        string employeeName = emp.EmployeeName.ToString();
+    //        string employeePassword = emp.EmployeePassword.ToString();
+    //        string employeeID = emp.EmployeeID.ToString();
+    //        string employeeTitle = emp.EmployeeTitle.ToString();
+    //        string employeePhone = emp.EmployeePhone.ToString();
+    //        string employeePhoto = emp.EmployeePhoto.ToString();
 
-            Employees employee = new Employees();
-            employee.EmployeeEmail = employeeEmail;
-            employee.EmployeeName = employeeName;
-            employee.EmployeeID = employeeID;
-            employee.EmployeePhone = employeePhone;
-            employee.EmployeePhoto = employeePhoto;
-            employee.EmployeeTitle = employeeTitle;
-            employee.EmployeePassword = employeePassword;
+    //        Employees employee = new Employees();
+    //        employee.EmployeeEmail = employeeEmail;
+    //        employee.EmployeeName = employeeName;
+    //        employee.EmployeeID = employeeID;
+    //        employee.EmployeePhone = employeePhone;
+    //        employee.EmployeePhoto = employeePhoto;
+    //        employee.EmployeeTitle = employeeTitle;
+    //        employee.EmployeePassword = employeePassword;
 
-            db.Employees.Add(employee);
+    //        db.Employees.Add(employee);
 
-            db.SaveChanges();
+    //        db.SaveChanges();
 
-            string subject = "פרטי התחברות למערכת";
-            string body = $"שלום {employeeName} ,\n ברוך הבא למערכת שלנו ! \n הססמא הראשונית שלך היא {employeePassword}";
+    //        string subject = "פרטי התחברות למערכת";
+    //        string body = $"שלום {employeeName} ,\n ברוך הבא למערכת שלנו ! \n הססמא הראשונית שלך היא {employeePassword}";
 
-            SendEmail(employeeEmail, subject, body);
+    //        SendEmail(employeeEmail, subject, body);
 
-            return Ok("Employee details saved successfully");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error saving employee details: {ex.Message}");
-        }
-    }
+    //        return Ok("Employee details saved successfully");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return BadRequest($"Error saving employee details: {ex.Message}");
+    //    }
+    //}
 
-    private void SendEmail(string toMail, string subjects, string bodys)
-    {
-        Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
+    //private void SendEmail(string toMail, string subjects, string bodys)
+    //{
+    //    Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
 
-        MailMessage message = new MailMessage();
-        message.From = new MailAddress("remotlat@outlook.com");
-        message.To.Add(toMail);
-        message.Subject = subjects;
-        message.Body = bodys;
+    //    MailMessage message = new MailMessage();
+    //    message.From = new MailAddress("remotlat@outlook.com");
+    //    message.To.Add(toMail);
+    //    message.Subject = subjects;
+    //    message.Body = bodys;
 
-        SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
-        smtpClient.UseDefaultCredentials = false;
-        smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
-        smtpClient.EnableSsl = true;
+    //    SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
+    //    smtpClient.UseDefaultCredentials = false;
+    //    smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
+    //    smtpClient.EnableSsl = true;
 
-        smtpClient.Send(message);
-    }
+    //    smtpClient.Send(message);
+    //}
 
 
     //מחזירה את המזהה של העובד החדש ביותר
@@ -325,13 +329,81 @@ public class EmployeeDetailsController : ApiController
 
     ////יצירת עובד חדש עם הצפנה
 
+    //[HttpPost]
+    //[Route("api/InsertEmployeePassword")]
+    //public IHttpActionResult InsertEmployeePassword([FromBody] EmployeeDeatailsDTO emp)
+    //{
+    //    try
+    //    {
+    //        // בדיקה האם כל השדות מולאו
+    //        if (string.IsNullOrEmpty(emp.EmployeeEmail) ||
+    //            string.IsNullOrEmpty(emp.EmployeeName) ||
+    //            string.IsNullOrEmpty(emp.EmployeePassword) ||
+    //            string.IsNullOrEmpty(emp.EmployeeID) ||
+    //            string.IsNullOrEmpty(emp.EmployeeTitle) ||
+    //            string.IsNullOrEmpty(emp.EmployeePhone))
+    //        {
+    //            return BadRequest("One or more parameters are missing or empty");
+    //        }
+
+    //        // הצפנת הסיסמה
+    //        string encryptedPassword = EncryptPassword(emp.EmployeePassword);
+
+    //        // בדיקה האם כבר קיים עובד עם אותה ת"ז
+    //        var existingEmployee = db.Employees.FirstOrDefault(e => e.EmployeeID == emp.EmployeeID);
+    //        if (existingEmployee != null)
+    //        {
+    //            return BadRequest("An employee with this ID already exists");
+    //        }
+
+    //        Employees employee = new Employees();
+    //        employee.EmployeeID = emp.EmployeeID;
+    //        employee.EmployeeName = emp.EmployeeName;
+    //        employee.EmployeeEmail = emp.EmployeeEmail;
+    //        employee.EmployeePhone = emp.EmployeePhone;
+    //        employee.EmployeeTitle = emp.EmployeeTitle;
+    //        employee.EmployeePassword = encryptedPassword; // שמירת הסיסמה המוצפנת במסד הנתונים
+    //        employee.EmployeePhoto = emp.EmployeePhoto;
+    //        employee.isDeleted = emp.isDeleted;
+
+    //        db.Employees.Add(employee);
+    //        db.SaveChanges();
+
+    //        return Ok("Employee details saved successfully");
+    //    }
+    //    catch (Exception ex)
+    //    {
+
+    //        return BadRequest($"Error saving employee details: {ex.Message}");
+    //    }
+    //}
+    //private static string EncryptPassword(string password)
+    //{
+    //    using (SHA256 sha256Hash = SHA256.Create())
+    //    {
+    //        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+    //        StringBuilder builder = new StringBuilder();
+    //        for (int i = 0; i < bytes.Length; i++)
+    //        {
+    //            builder.Append(bytes[i].ToString("x2"));
+    //        }
+    //        return builder.ToString();
+    //    }
+
+    //}
+
+
+
+
+
+
+    //הסופי
     [HttpPost]
-    [Route("api/InsertEmployeePassword")]
-    public IHttpActionResult InsertEmployeePassword([FromBody] EmployeeDeatailsDTO emp)
+    [Route("api/InsertEmployee")]
+    public IHttpActionResult InsertEmployee([FromBody] EmployeeDeatailsDTO emp)
     {
         try
         {
-            // בדיקה האם כל השדות מולאו
             if (string.IsNullOrEmpty(emp.EmployeeEmail) ||
                 string.IsNullOrEmpty(emp.EmployeeName) ||
                 string.IsNullOrEmpty(emp.EmployeePassword) ||
@@ -342,10 +414,10 @@ public class EmployeeDetailsController : ApiController
                 return BadRequest("One or more parameters are missing or empty");
             }
 
-            // הצפנת הסיסמה
+            // Encrypt the password
             string encryptedPassword = EncryptPassword(emp.EmployeePassword);
 
-            // בדיקה האם כבר קיים עובד עם אותה ת"ז
+            // Check if an employee with the same ID already exists
             var existingEmployee = db.Employees.FirstOrDefault(e => e.EmployeeID == emp.EmployeeID);
             if (existingEmployee != null)
             {
@@ -358,21 +430,30 @@ public class EmployeeDetailsController : ApiController
             employee.EmployeeEmail = emp.EmployeeEmail;
             employee.EmployeePhone = emp.EmployeePhone;
             employee.EmployeeTitle = emp.EmployeeTitle;
-            employee.EmployeePassword = encryptedPassword; // שמירת הסיסמה המוצפנת במסד הנתונים
+            employee.EmployeePassword = encryptedPassword; // Save the encrypted password in the database
             employee.EmployeePhoto = emp.EmployeePhoto;
             employee.isDeleted = emp.isDeleted;
 
             db.Employees.Add(employee);
             db.SaveChanges();
 
+            // If the password is provided, send an email to the employee with the initial password
+            if (!string.IsNullOrEmpty(emp.EmployeePassword))
+            {
+                string subject = "פרטי התחברות למערכת";
+                string body = $"שלום {emp.EmployeeName} ,\n ברוך הבא למערכת שלנו ! \n הססמא הראשונית שלך היא {emp.EmployeePassword}";
+
+                SendEmail(emp.EmployeeEmail, subject, body);
+            }
+
             return Ok("Employee details saved successfully");
         }
         catch (Exception ex)
         {
-
             return BadRequest($"Error saving employee details: {ex.Message}");
         }
     }
+
     private static string EncryptPassword(string password)
     {
         using (SHA256 sha256Hash = SHA256.Create())
@@ -385,10 +466,25 @@ public class EmployeeDetailsController : ApiController
             }
             return builder.ToString();
         }
-
     }
 
+    private void SendEmail(string toMail, string subjects, string bodys)
+    {
+        Console.WriteLine($"Sending an email: {toMail}\nSubject: {subjects}\nBody: {bodys}");
 
+        MailMessage message = new MailMessage();
+        message.From = new MailAddress("remotlat@outlook.com");
+        message.To.Add(toMail);
+        message.Subject = subjects;
+        message.Body = bodys;
+
+        SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
+        smtpClient.UseDefaultCredentials = false;
+        smtpClient.Credentials = new NetworkCredential("remotlat@outlook.com", "1223OutlookWork");
+        smtpClient.EnableSsl = true;
+
+        smtpClient.Send(message);
+    }
 
 
 

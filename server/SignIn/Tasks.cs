@@ -43,5 +43,7 @@ namespace SignIn
         public virtual TaskType TaskType1 { get; set; }
         public string EmployeeName { get; set; }
         public string EmployeeEmail { get; set; }
+        public int EmployeeID { get; set; }
+        public string CustomerID { get; set; }
     }
 }

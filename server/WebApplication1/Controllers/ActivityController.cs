@@ -9,6 +9,7 @@ using System.Web.Http;
 using WebApplication1.DTO;
 using Newtonsoft.Json.Linq;
 using NLog;
+//using KMeansAlgorithm;
 
 
 namespace WebApplication1.Controllers
@@ -31,7 +32,7 @@ namespace WebApplication1.Controllers
                 {
                     TaskID = newActivity.TaskID,
                     EmployeePK = newActivity.EmployeePK,
-                    Description= newActivity.Description,
+                    Description = newActivity.Description,
                     StartDate = newActivity.StartDate,
                     EndDate = newActivity.EndDate
                 };
@@ -57,8 +58,8 @@ namespace WebApplication1.Controllers
 
 
         }
-           
-        
+
+
 
         //קוד נוסף למחיקת פעילות
         [HttpDelete]
@@ -109,7 +110,7 @@ namespace WebApplication1.Controllers
      .Select(a => new
      {
          StartDate = a.StartDate.Hour,
-         EndDate = a.EndDate.HasValue ? a.EndDate.Value.Hour :0
+         EndDate = a.EndDate.HasValue ? a.EndDate.Value.Hour : 0
      })
      .ToList();
 
@@ -215,53 +216,53 @@ namespace WebApplication1.Controllers
 
 
         //מביא את המערך של כל נקודות ההפרשים
-        [HttpGet]
-        [Route("api/TaskDetailsPrediction")]
-        public List<double> GetTaskDetailsPrediction()
-        {
-            try
-            {
-                var tasks = db.Tasks.ToList();
-                List<double> clusterPoints = new List<double>();
+        //[HttpGet]
+        //[Route("api/TaskDetailsPrediction")]
+        //public List<double> GetTaskDetailsPrediction()
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks.ToList();
+        //        List<double> clusterPoints = new List<double>();
 
-                foreach (var task in tasks)
-                {
-                    double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+        //        foreach (var task in tasks)
+        //        {
+        //            double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
 
-                    var activities = db.Activity
-                        .Where(a => a.TaskID == task.TaskID)
-                        .ToList();
+        //            var activities = db.Activity
+        //                .Where(a => a.TaskID == task.TaskID)
+        //                .ToList();
 
-                    TimeSpan totalWorkHours = TimeSpan.Zero;
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
 
-                    foreach (var activity in activities)
-                    {
-                        // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
-                        DateTime? startDate = activity.StartDate;
-                        DateTime? endDate = activity.EndDate;
+        //            foreach (var activity in activities)
+        //            {
+        //                // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
+        //                DateTime? startDate = activity.StartDate;
+        //                DateTime? endDate = activity.EndDate;
 
-                        if (startDate != null && endDate != null)
-                        {
-                            totalWorkHours += endDate.Value - startDate.Value;
-                        }
-                    }
+        //                if (startDate != null && endDate != null)
+        //                {
+        //                    totalWorkHours += endDate.Value - startDate.Value;
+        //                }
+        //            }
 
-                    double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+        //            double actualTime = totalWorkHours.TotalHours; // זמן בפועל
 
-                    double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+        //            double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
 
-                    clusterPoints.Add(timeDifference);
-                }
+        //            clusterPoints.Add(timeDifference);
+        //        }
 
-                return clusterPoints;
+        //        return clusterPoints;
 
-            }
-            catch (Exception ex)
-            {
-                // טיפול בשגיאות
-                throw new Exception("Error predicting cluster points.", ex);
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // טיפול בשגיאות
+        //        throw new Exception("Error predicting cluster points.", ex);
+        //    }
+        //}
 
 
         //מחזיר את הערך 6 כמו בקוד המקורי של ניר
@@ -372,20 +373,331 @@ namespace WebApplication1.Controllers
         //טווח קל החל ממינוס שתיים ומטה
         //טווח בינוני ממינוס אחד ומעלה
         //טווח קשה שתיים ומעלה
+        //[HttpGet]
+        //[Route("api/TaskDetailsPredictionWithDifficulty")]
+        //public Dictionary<string, List<double>> GetTaskDetailsPredictionWithDifficulty()
+        //{
+        //    try
+        //    {
+        //        List<double> easyTasks = new List<double>();
+        //        List<double> mediumTasks = new List<double>();
+        //        List<double> hardTasks = new List<double>();
+
+        //        var tasks = db.Tasks.ToList();
+
+        //        //if (tasks != null)
+        //        //{
+        //        //    // Return an empty dictionary immediately when activities is null
+        //        //    return new Dictionary<string, List<double>>()
+        //        //    {
+        //        //        { "Easy", easyTasks },
+        //        //        { "Medium", mediumTasks },
+        //        //        { "Hard", hardTasks }
+        //        //    };
+        //        //}
+
+
+
+        //        foreach (var task in tasks)
+        //        {
+        //            double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+        //            var activities = db.Activity
+        //                .Where(a => a.TaskID == task.TaskID)
+        //                .ToList();
+
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //            if (activities == null)
+        //            {
+        //                // Return an empty dictionary immediately when activities is null
+        //                return new Dictionary<string, List<double>>()
+        //        {
+        //            { "Easy", easyTasks },
+        //            { "Medium", mediumTasks },
+        //            { "Hard", hardTasks }
+        //        };
+        //            }
+
+        //            foreach (var activity in activities)
+        //            {
+        //                // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
+        //                DateTime? startDate = activity?.StartDate;
+        //                DateTime? endDate = activity?.EndDate;
+
+        //                if (startDate != null && endDate != null)
+        //                {
+        //                    totalWorkHours += endDate.Value - startDate.Value;
+        //                }
+        //            }
+
+        //            double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+        //            double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+        //            if (timeDifference < -1) // קטגוריה קלה (הפרש שלילי גדול מ-1)
+        //            {
+        //                easyTasks.Add(timeDifference);
+        //            }
+        //            else if (timeDifference >= -1 && timeDifference <= 1) // קטגוריה בינונית (הפרש בין -1 ל-1 כולל)
+        //            {
+        //                mediumTasks.Add(timeDifference);
+        //            }
+        //            else // קטגוריה קשה (הפרש חיובי גדול מ-1)
+        //            {
+        //                hardTasks.Add(timeDifference);
+        //            }
+        //        }
+
+
+        //        var result = new Dictionary<string, List<double>>()
+        //{
+        //    { "Easy", easyTasks },
+        //    { "Medium", mediumTasks },
+        //    { "Hard", hardTasks }
+        //};
+
+        //        return result;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // טיפול בשגיאות
+        //        throw new Exception("Error predicting task difficulties.", ex);
+        //    }
+        //}
+
+
+        ////חדש
+        //[HttpGet]
+        //[Route("api/TaskDetailsPredictionWithDifficulty")]
+        //public List<(string TaskName, int TaskID, double TimeDifference)> GetTaskDetailsPredictionWithDifficulty()
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks.ToList();
+
+        //        List<double> easyTasks = new List<double>();
+        //        List<double> mediumTasks = new List<double>();
+        //        List<double> hardTasks = new List<double>();
+
+        //        List<(string TaskName, int TaskID, double TimeDifference)> taskDetailsList = new List<(string, int, double)>();
+
+        //        foreach (var task in tasks)
+        //        {
+        //            if (task.PriceQuoteTime == null)
+        //            {
+        //                continue;
+        //            }
+        //            double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+        //            var activities = db.Activity
+        //                .Where(a => a.TaskID == task.TaskID)
+        //                .ToList();
+
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //            foreach (var activity in activities)
+        //            {
+
+        //                DateTime? startDate = activity?.StartDate;
+        //                DateTime? endDate = activity?.EndDate;
+
+        //                if (startDate != null && endDate != null)
+        //                {
+        //                    totalWorkHours += endDate.Value - startDate.Value;
+        //                }
+        //            }
+
+        //            double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+        //            double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+        //            taskDetailsList.Add((task.TaskName, task.TaskID, timeDifference));
+
+        //            if (timeDifference < -1) // קטגוריה קלה (הפרש שלילי גדול מ-1)
+        //            {
+        //                easyTasks.Add(timeDifference);
+        //            }
+        //            else if (timeDifference >= -1 && timeDifference <= 1) // קטגוריה בינונית (הפרש בין -1 ל-1 כולל)
+        //            {
+        //                mediumTasks.Add(timeDifference);
+        //            }
+        //            else // קטגוריה קשה (הפרש חיובי גדול מ-1)
+        //            {
+        //                hardTasks.Add(timeDifference);
+        //            }
+
+        //        }
+
+        //        return taskDetailsList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle errors
+        //        throw new Exception("Error predicting task difficulties.", ex);
+        //    }
+        //}
+
+
+        ////חדשחדש מהצאט
+        //[HttpGet]
+        //[Route("api/TaskDetailsPredictionWithDifficultyNEW")]
+        //public List<(string TaskName, int TaskID, double TimeDifference, int Cluster)> GetTaskDetailsPredictionWithDifficultyNEW()
+        //{
+        //    try
+        //    {
+        //        var tasks = db.Tasks.ToList();
+
+        //        List<double> timeDifferences = new List<double>();
+
+
+        //        foreach (var task in tasks)
+        //        {
+        //            if (task.PriceQuoteTime == null)
+        //            {
+        //                continue;
+        //            }
+        //            double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
+
+        //            var activities = db.Activity
+        //                .Where(a => a.TaskID == task.TaskID)
+        //                .ToList();
+
+        //            TimeSpan totalWorkHours = TimeSpan.Zero;
+
+        //            foreach (var activity in activities)
+        //            {
+        //                DateTime? startDate = activity?.StartDate;
+        //                DateTime? endDate = activity?.EndDate;
+
+        //                if (startDate != null && endDate != null)
+        //                {
+        //                    totalWorkHours += endDate.Value - startDate.Value;
+        //                }
+        //            }
+
+        //            double actualTime = totalWorkHours.TotalHours; // זמן בפועל
+
+        //            double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
+
+        //            timeDifferences.Add(timeDifference);
+        //        }
+
+
+        //        // Fix: Ensure timeDifferences has the same number of elements as tasks
+        //        while (timeDifferences.Count < tasks.Count)
+        //        {
+        //            // Add a default value (you can adjust this value based on your requirements)
+        //            timeDifferences.Add(0.0);
+        //        }
+
+        //        int k = 3;
+        //        List<List<(string TaskName, int TaskID, double TimeDifference)>> clusters = KMeansClustering(tasks, timeDifferences, k);
+
+        //        // Assign the cluster category to each item in the tasks list
+        //        List<(string TaskName, int TaskID, double TimeDifference, int Cluster)> clusteredTaskDetailsList = new List<(string, int, double, int)>();
+        //        for (int i = 0; i < clusters.Count; i++)
+        //        {
+        //            foreach (var item in clusters[i])
+        //            {
+        //                clusteredTaskDetailsList.Add((item.TaskName, item.TaskID, item.TimeDifference, i));
+        //            }
+        //        }
+
+        //        return clusteredTaskDetailsList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle errors
+        //        throw new Exception("Error predicting task difficulties.", ex);
+        //    }
+        //}
+        //// K-means clustering implementation
+        //private List<List<(string TaskName, int TaskID, double TimeDifference)>> KMeansClustering(List<Tasks> tasks, List<double> values, int k)
+        //{
+        //    List<List<(string TaskName, int TaskID, double TimeDifference)>> clusters = new List<List<(string, int, double)>>();
+
+        //    // Initialize random centroids
+        //    Random rand = new Random();
+        //    List<double> centroids = new List<double>();
+        //    for (int i = 0; i < k; i++)
+        //    {
+        //        int randomIndex = rand.Next(values.Count);
+        //        centroids.Add(values[randomIndex]);
+        //    }
+
+        //    bool changed = true;
+        //    while (changed)
+        //    {
+        //        // Assign data points to clusters
+        //        clusters = Enumerable.Range(0, k).Select(_ => new List<(string, int, double)>()).ToList();
+        //        for (int i = 0; i < tasks.Count; i++)
+        //        {
+        //            double value = values[i];
+        //            int clusterIndex = GetNearestCentroidIndex(value, centroids);
+        //            clusters[clusterIndex].Add((tasks[i].TaskName, tasks[i].TaskID, value));
+        //        }
+
+        //        // Update centroids
+        //        List<double> newCentroids = new List<double>();
+        //        for (int i = 0; i < k; i++)
+        //        {
+        //            if (clusters[i].Count > 0)
+        //            {
+        //                double newCentroid = clusters[i].Average(item => item.TimeDifference);
+        //                newCentroids.Add(newCentroid);
+        //            }
+        //            else
+        //            {
+        //                // If an empty cluster is encountered, reinitialize it with a random data point
+        //                int randomIndex = rand.Next(values.Count);
+        //                newCentroids.Add(values[randomIndex]);
+        //            }
+        //        }
+
+        //        // Check if centroids have changed
+        //        changed = !centroids.SequenceEqual(newCentroids);
+        //        centroids = newCentroids;
+        //    }
+
+        //    return clusters;
+        //}
+
+        //// Helper method to find the index of the nearest centroid for a data point
+        //private int GetNearestCentroidIndex(double value, List<double> centroids)
+        //{
+        //    int index = 0;
+        //    double minDistance = Math.Abs(value - centroids[0]);
+        //    for (int i = 1; i < centroids.Count; i++)
+        //    {
+        //        double distance = Math.Abs(value - centroids[i]);
+        //        if (distance < minDistance)
+        //        {
+        //            index = i;
+        //            minDistance = distance;
+        //        }
+        //    }
+        //    return index;
+        //}
+
+        ///////////////////////////////////////////////////////////////////סופי
         [HttpGet]
-        [Route("api/TaskDetailsPredictionWithDifficulty")]
-        public Dictionary<string, List<double>> GetTaskDetailsPredictionWithDifficulty()
+        [Route("api/TaskDetailsPredictionWithDifficultyNEW")]
+        public Dictionary<int, List<(string TaskName, int TaskID, double TimeDifference)>> GetTaskDetailsPredictionWithDifficultyNEW()
         {
             try
             {
                 var tasks = db.Tasks.ToList();
 
-                List<double> easyTasks = new List<double>();
-                List<double> mediumTasks = new List<double>();
-                List<double> hardTasks = new List<double>();
+                List<double> timeDifferences = new List<double>();
+
 
                 foreach (var task in tasks)
                 {
+                    if (task.PriceQuoteTime == null)
+                    {
+                        continue;
+                    }
                     double priceQuoteTime = (double)task.PriceQuoteTime; // זמן משוער מתוך טבלת TASKS
 
                     var activities = db.Activity
@@ -396,9 +708,8 @@ namespace WebApplication1.Controllers
 
                     foreach (var activity in activities)
                     {
-                        // Use the null-conditional operator (?.) and null-coalescing operator (??) to handle nullable DateTime
-                        DateTime? startDate = activity.StartDate;
-                        DateTime? endDate = activity.EndDate;
+                        DateTime? startDate = activity?.StartDate;
+                        DateTime? endDate = activity?.EndDate;
 
                         if (startDate != null && endDate != null)
                         {
@@ -410,39 +721,115 @@ namespace WebApplication1.Controllers
 
                     double timeDifference = priceQuoteTime - actualTime; // הפרש הזמן
 
-                    if (timeDifference < -1) // קטגוריה קלה (הפרש שלילי גדול מ-1)
-                    {
-                        easyTasks.Add(timeDifference);
-                    }
-                    else if (timeDifference >= -1 && timeDifference <= 1) // קטגוריה בינונית (הפרש בין -1 ל-1 כולל)
-                    {
-                        mediumTasks.Add(timeDifference);
-                    }
-                    else // קטגוריה קשה (הפרש חיובי גדול מ-1)
-                    {
-                        hardTasks.Add(timeDifference);
-                    }
+                    timeDifferences.Add(timeDifference);
                 }
 
-                var result = new Dictionary<string, List<double>>()
-{
-    { "Easy", easyTasks },
-    { "Medium", mediumTasks },
-    { "Hard", hardTasks }
-};
 
-                return result;
+                // Fix: Ensure timeDifferences has the same number of elements as tasks
+                while (timeDifferences.Count < tasks.Count)
+                {
+                    // Add a default value (you can adjust this value based on your requirements)
+                    timeDifferences.Add(0.0);
+                }
 
+                int k = 3;
+                List<List<(string TaskName, int TaskID, double TimeDifference)>> clusters = KMeansClustering(tasks, timeDifferences, k);
+
+                Dictionary<int, List<(string TaskName, int TaskID, double TimeDifference)>> clusteredTaskDetailsDict = new Dictionary<int, List<(string TaskName, int TaskID, double TimeDifference)>>();
+
+                for (int i = 0; i < clusters.Count; i++)
+                {
+                    // Create a new list for each cluster index
+                    List<(string TaskName, int TaskID, double TimeDifference)> clusterItems = new List<(string TaskName, int TaskID, double TimeDifference)>();
+
+                    // Add all items in the current cluster to the list
+                    foreach (var item in clusters[i])
+                    {
+                        clusterItems.Add((item.TaskName, item.TaskID, item.TimeDifference));
+                    }
+
+                    // Add the list to the dictionary with the cluster index as the key
+                    clusteredTaskDetailsDict.Add(i, clusterItems);
+                }
+
+                return clusteredTaskDetailsDict;
             }
             catch (Exception ex)
             {
-                // טיפול בשגיאות
+                // Handle errors
                 throw new Exception("Error predicting task difficulties.", ex);
             }
+        }
+        // K-means clustering implementation
+        private List<List<(string TaskName, int TaskID, double TimeDifference)>> KMeansClustering(List<Tasks> tasks, List<double> values, int k)
+        {
+            List<List<(string TaskName, int TaskID, double TimeDifference)>> clusters = new List<List<(string, int, double)>>();
+
+            // Initialize random centroids
+            Random rand = new Random();
+            List<double> centroids = new List<double>();
+            for (int i = 0; i < k; i++)
+            {
+                int randomIndex = rand.Next(values.Count);
+                centroids.Add(values[randomIndex]);
+            }
+
+            bool changed = true;
+            while (changed)
+            {
+                // Assign data points to clusters
+                clusters = Enumerable.Range(0, k).Select(_ => new List<(string, int, double)>()).ToList();
+                for (int i = 0; i < tasks.Count; i++)
+                {
+                    double value = values[i];
+                    int clusterIndex = GetNearestCentroidIndex(value, centroids);
+                    clusters[clusterIndex].Add((tasks[i].TaskName, tasks[i].TaskID, value));
+                }
+
+                // Update centroids
+                List<double> newCentroids = new List<double>();
+                for (int i = 0; i < k; i++)
+                {
+                    if (clusters[i].Count > 0)
+                    {
+                        double newCentroid = clusters[i].Average(item => item.TimeDifference);
+                        newCentroids.Add(newCentroid);
+                    }
+                    else
+                    {
+                        // If an empty cluster is encountered, reinitialize it with a random data point
+                        int randomIndex = rand.Next(values.Count);
+                        newCentroids.Add(values[randomIndex]);
+                    }
+                }
+
+                // Check if centroids have changed
+                changed = !centroids.SequenceEqual(newCentroids);
+                centroids = newCentroids;
+            }
+
+            return clusters;
+        }
+
+        // Helper method to find the index of the nearest centroid for a data point
+        private int GetNearestCentroidIndex(double value, List<double> centroids)
+        {
+            int index = 0;
+            double minDistance = Math.Abs(value - centroids[0]);
+            for (int i = 1; i < centroids.Count; i++)
+            {
+                double distance = Math.Abs(value - centroids[i]);
+                if (distance < minDistance)
+                {
+                    index = i;
+                    minDistance = distance;
+                }
+            }
+            return index;
         }
 
 
 
-
     }
+
 }

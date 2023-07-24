@@ -96,7 +96,7 @@ namespace WebApplication1.Controllers
                 var customerName = db.Customers.FirstOrDefault(c => c.ID == project.CustomerPK)?.CustomerName;
 
                 // מציאת כמות השעות הכוללת מטבלת PriceQuotes
-                var totalWorkHours = db.PriceQuotes.Where(pq => pq.ProjectID == id).Sum(pq => pq.TotalWorkHours);
+                //var totalWorkHours = db.PriceQuotes.Where(pq => pq.ProjectID == id).Sum(pq => pq.TotalWorkHours);
                 //לחבר עם יינר לטבלת פרויקטים
 
                 // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח וכמות השעות הכוללת
@@ -106,7 +106,8 @@ namespace WebApplication1.Controllers
                     Deadline = (DateTime)project.Deadline,
                     Description = project.Description,
                     CustomerName = customerName,
-                    TotalWorkHours = totalWorkHours
+                    PriceQuoteID= project.PriceQuoteID
+                    //TotalWorkHours = totalWorkHours
                 };
 
                 return Ok(projectDetails);

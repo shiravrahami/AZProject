@@ -21,6 +21,7 @@ namespace WebApplication1.DTO
         public string EmployeePhoto { get; set; }
 
        public bool isDeleted  {get; set; }//התווסף
-
+        public int TasksNotDoneCount { get; internal set; }
+        
     }
 }

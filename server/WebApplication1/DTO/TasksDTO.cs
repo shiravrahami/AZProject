@@ -16,7 +16,9 @@ namespace WebApplication1.DTO
         public int ProjectID { get; set; }
 
         public int TaskType { get; set; }
+        public int ID { get; set; }//מספר רץ של עובד
 
+        public int CustomerPK { get; set; }//מספר רץ לקוח
         public string TaskDescription { get; set; }
 
         public DateTime InsertTaskDate { get; set; }
@@ -34,6 +36,10 @@ namespace WebApplication1.DTO
 
         public double PriceQuoteTime { get; set; }
         public string EmployeeID { get; internal set; }
-       
+
+
+
+        public double Difficulty { get; set; }//חדש
+
     }
 }
