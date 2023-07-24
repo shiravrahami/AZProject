@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SunburstDiagram from './SunburstDiagram';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,14 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import { usePopper } from 'react-popper';
 import Form from 'react-bootstrap/Form';
 import '../Styles/Home.css';
-
+import { useUserContext } from './UserContext';
+import BarChart from './BarChart';
+import { Row, Col } from 'react-bootstrap';
+import DotChart from './DotChart';
 function HomeScreen() {
+  const { user } = useUserContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState('top-start');
   const [arrowElement, setArrowElement] = useState(null);
   const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
+
   const { styles, attributes } = usePopper(buttonRef.current, dropdownRef.current, {
     modifiers: [{ name: 'arrow', options: { element: arrowElement } }],
   });
@@ -35,6 +40,17 @@ function HomeScreen() {
   function newTask() {
     navigate('/newtask')
   }
+
+  // Function to conditionally show the last label "הוספת עובד" (Add Employee)
+  function renderAddEmployeeLabel() {
+    // Add your condition here, for example, check if the user is an admin
+    // For demonstration, I'll use a simple condition that returns true
+    if (user.EmployeeEmail === "anat@gmail.com") {
+      return <Form.Label className="hover-label" onClick={newEmployee}>הוספת עובד</Form.Label>;
+    }
+    return null; // Return null if the condition is not met
+  }
+
 
   return (
     <div>
@@ -58,10 +74,33 @@ function HomeScreen() {
           <Form.Label className="hover-label" onClick={newTask}>הוספת משימה</Form.Label><br />
           <Form.Label className="hover-label" onClick={newCustomer}>הוספת לקוח</Form.Label><br />
           <Form.Label className="hover-label" onClick={newProj}>הוספת פרויקט</Form.Label><br />
-          <Form.Label className="hover-label" onClick={newEmployee}>הוספת עובד</Form.Label><br />
+          {renderAddEmployeeLabel()} {/* Render the "הוספת עובד" (Add Employee) label based on the condition */}
         </div>
       )}
-      <SunburstDiagram />
+      <Row>
+        <Col>
+          התפלגות עומס בין עובדים
+        </Col>
+        <Col>
+        משימות פתוחות לפי רמת מורכבות
+        </Col>
+      </Row>
+      <Row>
+        <Col lg={6} className='barchart' style={{ border: '1px solid lightgrey',padding: '10px'}}>
+          <BarChart />
+        </Col>
+        <Col  lg={1}>
+        </Col>
+        <Col lg={5} className='dotchart'style={{ border: '1px solid lightgrey', padding: '10px' }}>
+          <DotChart />
+        </Col>
+      </Row>
+      <br/>
+      <Row>
+        <Col>
+          <SunburstDiagram />
+        </Col>
+      </Row>
     </div>
   );
 }

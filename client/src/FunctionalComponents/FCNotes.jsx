@@ -5,6 +5,8 @@ import { Box } from '@mui/material';
 import axios from 'axios';
 import '../Styles/Notes.css';
 import { useUserContext } from './UserContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function FCNotes() {
   const [notes, setNotes] = useState([]);
@@ -20,24 +22,24 @@ export default function FCNotes() {
   }, []);
 
   const onFormChange = (event) => {
-    const {name, value} = event.target;
-    const updatedForm = {...noteForm};
+    const { name, value } = event.target;
+    const updatedForm = { ...noteForm };
     updatedForm[name] = value;
     setNoteForm(updatedForm);
   };
 
   const UpsertNote = (e) => {
     e.preventDefault();
-    const {ID, EmployeePK, Title, Description} = noteForm;
+    const { ID, EmployeePK, Title, Description } = noteForm;
     if (Title && Description) {
-      const note = { 
+      const note = {
         "ID": ID ?? Math.floor(Math.random() * 100000),
         "EmployeePK": EmployeePK ?? Math.floor(Math.random() * 10),
         Title,
         Description
       };
-      if(ID) {
-        axios.put(`${path}Notes/${ID}`, {...note}).then((res) => {
+      if (ID) {
+        axios.put(`${path}Notes/${ID}`, { ...note }).then((res) => {
           const newNote = res.data;
           const updatedNotes = [...notes];
           const thisNote = updatedNotes.filter(note => note.ID === selectedNote)[0];
@@ -49,7 +51,7 @@ export default function FCNotes() {
           console.log(e);
         })
       } else {
-        axios.post(`${path}Notes`, {...note}).then((res) => {
+        axios.post(`${path}Notes`, { ...note }).then((res) => {
           setNotes(prev => [...prev, res.data]);
           toggleAddingNote();
         }).catch(e => {
@@ -61,7 +63,7 @@ export default function FCNotes() {
 
   const onEdit = () => {
     const note = notes.filter((note) => note.ID === selectedNote)[0];
-    setNoteForm({...note});
+    setNoteForm({ ...note });
     toggleAddingNote();
   };
 
@@ -70,7 +72,7 @@ export default function FCNotes() {
   }
 
   const onDelete = () => {
-    axios.delete(`/cgroup95/prod/api/Notes/${selectedNote}`).then(res => {
+    axios.delete(`${path}/Notes/${selectedNote}`).then(res => {
       let oldNotes = [...notes];
       oldNotes = oldNotes.filter((note) => note.ID !== selectedNote);
       setNotes(oldNotes);
@@ -79,7 +81,7 @@ export default function FCNotes() {
   }
 
   const toggleAddingNote = () => {
-    if(isAddingNote) {
+    if (isAddingNote) {
       setNoteForm({});
       setSelectedNote(undefined);
     }
@@ -88,17 +90,17 @@ export default function FCNotes() {
 
   return (
     <div className='fullpade'>
-      <div className="header" style={{ alignItems: 'left', fontSize: '20px' }}>
-         <h2>פתקים</h2>
+      <div className="NotesTitle" style={{ alignItems: 'left', fontSize: '20px' }}>
+        <h2>פתקים</h2>
       </div>
       <div>
         <div className='notes-wrapper'>
           {notes.map((note, idx) => (
-              <div className={`note-wrapper${selectedNote === note.ID ? ' selected':''}`} onClick={() => handleNoteClick(note.ID)} >
-                <h3>{note.Title}</h3>
-                <p>{note.Description}</p>
-              </div>
-            ))}
+            <div className={`note-wrapper${selectedNote === note.ID ? ' selected' : ''}`} onClick={() => handleNoteClick(note.ID)} >
+              <h3>{note.Title}</h3>
+              <p>{note.Description}</p>
+            </div>
+          ))}
         </div>
       </div>
       <div className='button'>
@@ -108,14 +110,13 @@ export default function FCNotes() {
         <button type="button" className="add-button" onClick={toggleAddingNote}>
           <FaPlus />
         </button>
-      
         <button type="button" className="trash-button" onClick={onDelete} disabled={!selectedNote}>
           <FaTrash />
         </button>
       </div>
       {isAddingNote && (
         <div className='popup-wrapper'>
-          <div className='popup-backdrop' onClick={toggleAddingNote}/>
+          <div className='popup-backdrop' onClick={toggleAddingNote} />
           <div className='popup-overlay'>
             <form className='add-note-form' onSubmit={UpsertNote}>
               <TextField
@@ -141,13 +142,13 @@ export default function FCNotes() {
                 type='submit'
                 onClick={UpsertNote}
               >{
-                noteForm.ID ? 'עדכן פתק':'הוסף פתק'
-              }</Button>
-              
+                  noteForm.ID ? 'עדכן פתק' : 'הוסף פתק'
+                }</Button>
+
             </form>
           </div>
         </div>
       )}
-    </div>
-  );
+    </div>
+  );
 }

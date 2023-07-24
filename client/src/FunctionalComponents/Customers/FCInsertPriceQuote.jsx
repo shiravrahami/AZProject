@@ -11,8 +11,10 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import '../../Styles/FCInsertPriceQuote.css';
 import { useUserContext } from '../UserContext';
 import html2pdf from 'html2pdf.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function FCInsertPriceQuote() {
+  const navigate = useNavigate();
   const { path } = useUserContext();
   const [setcustomer] = useState(null);
   const [CustomerIDInput, setCustomerIDInput] = useState();
@@ -43,21 +45,82 @@ export default function FCInsertPriceQuote() {
   // Add more state variables for additional rows if needed
   const [customerTypeSelect, setCustomerTypeSelect] = useState(1);
   const formRef = useRef(null);
-  
+  const [selectedCustomerName, setSelectedCustomerName] = useState("");
+  const [selectedCustomerID, setSelectedCustomerID] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [priceQuote, setPriceQuote] = useState(0);
+  const [averageWorkHours, setAverageWorkHours] = useState(0);
+  const [workedhours, setworkedhours] = useState(0);
+  const [tasktype, settasktype] = useState(0);
+  const [taskname, settaskname] = useState(0);
+  const [selectedTaskTypeID, setSelectedTaskTypeID] = useState(null);
+  const [pqhours, setpqhours] = useState(0);
+  const [hours, setHours] = useState(0);
+
+  const InsertPriceQuote = async () => {
+    const NewPriceQuote = {
+      CustomerPK: selectedCustomerID,
+      TotalWorkHours: calculateTotalSum(),
+      DiscoutPercent: persentDiscount,
+      TotalPrice: totalPrice,
+      PriceQuoteFile: ""
+    };
+    console.log(NewPriceQuote);
+
+    try {
+      const response = await fetch(`${path}InsertPriceQuote`, {
+        method: "POST",
+        body: JSON.stringify(NewPriceQuote),
+        headers: new Headers({
+          'Accept': 'application/json; charset=UTF-8',
+          'Content-type': 'application/json; charset=UTF-8'
+        })
+      });
+      const json = await response.json();
+      setPriceQuote(json);
+    } catch (error) {
+      console.log("error", error);
+    }
+    setShow(true);
+  };
+
+  async function fetchDataFromAPI() {
+    console.log("selectedTaskTypeID", selectedTaskTypeID, "taskDescription", taskDescription, "hours", hours);
+    try {
+      const response = await fetch(`${path}taskworkedhour/${selectedTaskTypeID}/${taskDescription}/${hours}`, {
+        method: "GET",
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      });
+      const json = await response.json();
+      setworkedhours(json || []);
+      console.log("workedhours", workedhours);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const handleDownloadPDF = () => {
     const formElement = formRef.current;
-  
+
     // Custom CSS styles for PDF export
     const pdfStyles = `
-      body {
-        font-size: 12px; /* Adjust the font size as needed for the PDF */
-        /* Add other CSS styles here to adjust the content appearance in the PDF */
-      }
-      .accordionCust {
-        /* Add any specific styles for the accordion elements in the PDF */
-      }
+    body {
+      font-size: 12px; /* Adjust the font size as needed for the PDF */
+      font-family: Arial, sans-serif; /* Specify the desired font family */
+      /* Add other CSS styles here to adjust the content appearance in the PDF */
+    }
+    
+    .accordionCust {
+      /* Add any specific styles for the accordion elements in the PDF */
+      margin-bottom: 10px; /* Example: Add some margin at the bottom of each accordion item */
+      border: 1px solid #ccc; /* Example: Add a border around the accordion items */
+      padding: 10px; /* Example: Add some padding inside the accordion items */
+    }
+    
     `;
-  
+
     // Generate the PDF with custom styles
     html2pdf()
       .set({
@@ -72,7 +135,7 @@ export default function FCInsertPriceQuote() {
       .from(formElement)
       .save();
   };
-    
+
   useEffect(() => {
     async function fetchCustomerNames() {
       try {
@@ -112,7 +175,7 @@ export default function FCInsertPriceQuote() {
 
   const InsertCustomer = async () => {
     if (customerTypeSelect === 1) {
-      console.log("isChecked",isChecked);
+      console.log("isChecked", isChecked);
       console.log("starting func");
       console.log(isPotentialInput);
       const NewCustomer = {
@@ -149,7 +212,12 @@ export default function FCInsertPriceQuote() {
           <Form.Group style={{ textAlign: 'right' }}>
             <Form.Label>פירוט משימה</Form.Label>
             <InputGroup>
-              <FormControl className='input' type="text" />
+              <FormControl
+                className='input'
+                type="text"
+                defaultValue={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+              />
             </InputGroup>
           </Form.Group>
         </Col>
@@ -158,8 +226,7 @@ export default function FCInsertPriceQuote() {
             <Form.Label>סוג משימה</Form.Label>
             <Form.Select style={{ fontSize: '20px', textAlign: 'right' }} ref={custTypeSelectRef}
               onChange={(e) => {
-                handleSelectChange(addedRows.length, e.target.value);
-                //calculateMul();
+                handleSelectChange(addedRows.length, e.target.value, e.target.id);
               }}>
               <option>בחר</option>
               {taskTypes.map(taskType => {
@@ -185,12 +252,14 @@ export default function FCInsertPriceQuote() {
                 type="text"
                 onChange={(e) => {
                   handleInputChange(addedRows.length, e.target.value);
-                  //calculateMul();
+                  const enteredHours = parseFloat(e.target.value);
+                  setHours(isNaN(enteredHours) ? 0 : enteredHours);
                 }}
-                defaultValue={"0"} />
+              // defaultValue={"0"}
+              />
             </InputGroup>
           </Form.Group>
-        </Col>
+        </Col >
       </Row >
     );
     setAddedRows(prevRows => [...prevRows, newRow]);
@@ -209,13 +278,23 @@ export default function FCInsertPriceQuote() {
     return sumOfInputValues;
   };
 
-  const handleSelectChange = (index, value) => {
+  const handleSelectChange = (index, value, id) => {
     setSelectedValues(prevValues => {
       const updatedValues = [...prevValues];
       updatedValues[index] = value;
+
+      // Find the selected taskType based on the selected value (ID)
+      const selectedTaskType = taskTypes.find(taskType => taskType.TaskTypeID === parseInt(id));
+
+      // Update the selectedTaskTypeID state with the ID of the selected option
+      if (selectedTaskType) {
+        setSelectedTaskTypeID(selectedTaskType.TaskTypeID);
+      }
+
       return updatedValues;
     });
   };
+
 
   useEffect(() => {
     const index = inputValues.length === 0 ? 1 : inputValues.length - 1;
@@ -234,6 +313,15 @@ export default function FCInsertPriceQuote() {
       const updatedMulPrice = [...prevMulPrice];
       const hours = parseFloat(inputValues[index] || 0);
       const result = hours * (selectedValues[index] || 0);
+      const tasktypeid = selectedValues[index];
+      if (tasktypeid === "100") {
+        setSelectedTaskTypeID(1);
+      } else if (tasktypeid === "250") {
+        setSelectedTaskTypeID(2);
+      } else if (tasktypeid === "150") {
+        setSelectedTaskTypeID(3);
+      }
+      console.log("setSelectedTaskTypeID", selectedTaskTypeID, "selectedValues[index]", selectedValues[index], "tasktypeid", tasktypeid);
       console.log("calculateMul: ", `Row ${index}: hours=${hours}, selectedValue=${selectedValues[index]}, result=${result}`);
       updatedMulPrice[index] = result;
 
@@ -296,6 +384,17 @@ export default function FCInsertPriceQuote() {
     setIsChecked(event.target.checked);
   };
 
+  const state = {
+    totalPrice,
+    totalResult,
+    selectedCustomerName,
+    taskDescription
+  }
+
+  const pdf = (event) => {
+    navigate('/pdfcontent', { state: state });
+  }
+
   return (
     <div>
       <Row>
@@ -308,7 +407,7 @@ export default function FCInsertPriceQuote() {
           </Toast>
         </Col>
       </Row>
-      <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px', width: '95%' }}ref={formRef}>
+      <Form className='taskclass' style={{ borderRadius: '20px ', margin: '20px', padding: '20px', width: '95%' }} ref={formRef}>
         <Accordion alwaysOpen className="accordionCust" style={{ alignItems: 'left', direction: 'rtl' }}>
           <Accordion.Item>
             <Accordion.Header style={{ alignItems: 'left', fontSize: '20px' }}>הצעת מחיר</Accordion.Header>
@@ -316,7 +415,13 @@ export default function FCInsertPriceQuote() {
               <Row>
                 <Form.Group style={{ textAlign: 'right' }} controlId="CustType">
                   <Form.Label>לקוח</Form.Label>
-                  <Form.Select style={{ fontSize: '20px', textAlign: 'right' }} onChange={handleCustomerTypeChange}>
+                  <Form.Select
+                    style={{ fontSize: '20px', textAlign: 'right' }}
+                    onChange={(e) => {
+                      setSelectedCustomerName(e.target.selectedOptions[0].text);
+                      setSelectedCustomerID(e.target.value);
+                    }}
+                  >
                     <option>בחר לקוח</option>
                     <option value={1}>+לקוח חדש</option>
                     {customersNames.map((customerName) => (
@@ -436,14 +541,31 @@ export default function FCInsertPriceQuote() {
                 </React.Fragment>
               ))}
               <Row style={{ paddingTop: "15px" }}>
-                <Col lg={1} style={{ textAlign: "left" }}>
-                  <Button onClick={contractButton} color={buttonColor} className='btn-contract' type="button">הוסף משימה</Button>
+                <Col lg={6} style={{ textAlign: "right" }}>
+                  <Button
+                    onClick={() => {
+                      contractButton();
+                    }}
+                    color={buttonColor} className='btn-contract' type="button">הוסף משימה</Button>
                   <input
                     type="file"
                     ref={contractFileInputRef}
                     style={{ display: 'none' }}
                     onChange={handleFileInputChange}
                   />
+                </Col>
+                <Col lg={5} style={{ textAlign: 'left' , fontSize:'25px'}} >
+                  {workedhours.AverageWorkHours !== null && !isNaN(workedhours.AverageWorkHours) && workedhours.AverageWorkHours !== 0 ? (
+                    <>ממוצע של משימות מסוג זה הוא {Math.floor(workedhours.AverageWorkHours)}</>
+                  ) : null}
+                </Col>
+                <Col lg={1} >
+                  <Button style={{  marginRight: "20px" }}
+                    className="trash"
+                    onClick={fetchDataFromAPI}
+                  >
+                    <FontAwesomeIcon icon={faCheck} />
+                  </Button>
                 </Col>
               </Row >
             </Accordion.Body>
@@ -455,6 +577,12 @@ export default function FCInsertPriceQuote() {
             <Accordion.Body >
               <Row>
                 <Form.Label style={{ fontWeight: 'bold' }}>סיכום הצעת מחיר</Form.Label>
+                {averageWorkHours > 0 && (
+                  <p>
+                    משימות אחרונות: ממוצע שעות עבודה{' '}
+                    {averageWorkHours}
+                  </p>
+                )}
               </Row>
               <Row style={{ justifyContent: 'space-between' }}>
                 <Col lg={2}>
@@ -492,7 +620,7 @@ export default function FCInsertPriceQuote() {
               </Row >
               <Row style={{ paddingTop: "15px" }}>
                 <Col lg={1} style={{ textAlign: "left" }}>
-                  <Button color={buttonColor} onClick={handleDownloadPDF} className='btn-contract' type="button">ייצוא לPDF</Button>
+                  <Button color={buttonColor} onClick={pdf} className='btn-contract' type="button">ייצוא לPDF</Button>
                   <input
                     type="file"
                     ref={contractFileInputRef}
@@ -502,7 +630,11 @@ export default function FCInsertPriceQuote() {
                 </Col>
               </Row >
               <Row style={{ display: 'flex', justifyContent: 'center' }}>
-                <Button className='btn-gradient-purple' type="button" onClick={InsertCustomer}>הוסף</Button>
+                <Button className='btn-gradient-purple' type="button" onClick={() => {
+                  InsertCustomer();
+                  InsertPriceQuote();
+                }}
+                >הוסף</Button>
               </Row>
             </Accordion.Body>
           </Accordion.Item>

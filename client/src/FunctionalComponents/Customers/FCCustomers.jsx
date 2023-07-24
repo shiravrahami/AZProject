@@ -160,8 +160,8 @@ export default function FCCustomers(actions) {
                     {switchon && customersNoTasks
                         .filter((customer) => customer.CustomerName.includes(searchValue))
                         .map((customer) => (
-                            <Row className="customer-row" key={customer.CustomerName}>
-                                <Col style={{ testAlign: 'right' }} lg={4} className="custname" onClick={() => passCust(customer)}>
+                            <Row className="customer-row" key={customer.CustomerName} style={{fontSize:'20px'}}>
+                                <Col style={{fontSize:'20px', testAlign: 'right' }} lg={4} className="custname" onClick={() => passCust(customer)}>
                                     {customer.CustomerName}
                                 </Col>
                                 <Col lg={4}>{customer.TotalopenCount}</Col>

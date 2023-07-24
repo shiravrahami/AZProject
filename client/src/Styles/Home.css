@@ -3,4 +3,6 @@
     color: #cecece ;
     cursor: pointer;
   }
-  
+  .barchart{
+    border: 2px black;
+  }

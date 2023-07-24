@@ -114,6 +114,7 @@ export default function FCemployees() {
                     </Form>
                 </Row>
                 <Row className='titles' style={{ textAlign: 'center' }}>
+                    <Col lg={1}></Col>
                     <Col style={{ textAlign: 'center' }} lg={2}>
                         שם העובד
                     </Col>
@@ -126,13 +127,13 @@ export default function FCemployees() {
                     <Col style={{ textAlign: 'center' }} lg={2}>
                         מס' טלפון
                     </Col>
-                    <Col style={{ textAlign: 'center', marginLeft: '5px' }} lg={1}>
+                    <Col style={{ textAlign: 'right', marginLeft: '5px' }} lg={2}>
                         תפקיד
                     </Col>
-                    <Col style={{ textAlign: 'center' }} lg={2}>
+                    {/* <Col style={{ textAlign: 'center' }} lg={2}>
                         סיסמה
-                    </Col>
-                    <Col style={{ textAlign: 'center' }} lg={1}>
+                    </Col> */}
+                    <Col style={{ textAlign: 'center' }} lg={2}>
                     </Col>
                 </Row>
                 <Row style={{ textAlign: 'right', marginRight: '10px' }}>
@@ -140,14 +141,15 @@ export default function FCemployees() {
                         .filter((employee) => employee.EmployeeName.includes(searchValue))
                         .map((employee) => (
                             <Row className="employee-row" key={employee.EmployeeName}>
+                                <Col lg={1}></Col>
                                 <Col className="empname employee-col" lg={2}>
                                     {employee.EmployeeName}
                                 </Col>
                                 <Col className="employee-col" lg={1}>{employee.EmployeeID}</Col>
-                                <Col className="employee-col" style={{ textAlign: 'left' }} lg={3}>{employee.EmployeeEmail}</Col>
+                                <Col className="employee-col" style={{ textAlign: 'center' }} lg={3}>{employee.EmployeeEmail}</Col>
                                 <Col className="employee-col" style={{ textAlign: 'center' }} lg={2}>{employee.EmployeePhone}</Col>
-                                <Col className="employee-col" lg={1}>{employee.EmployeeTitle}</Col>
-                                <Col className="employee-col" lg={2} style={{ marginLeft: '1px', width: '250px' }}>
+                                <Col className="employee-col" lg={2}>{employee.EmployeeTitle}</Col>
+                                {/* <Col className="employee-col" lg={2} style={{ marginLeft: '1px', width: '250px' }}>
                                     <Form.Group className="mb-3" controlId="formBasicPassword">
                                         <InputGroup style={{ textAlign: 'center' }}>
                                             <InputGroup.Text style={{ padding: '0px' }}>
@@ -164,7 +166,7 @@ export default function FCemployees() {
                                                 readOnly />
                                         </InputGroup>
                                     </Form.Group>
-                                </Col>
+                                </Col> */}
                                 <Col className="employee-col" lg={1}>
                                     <Button className="trash" onClick={() => {
                                         deleteemployees(employee.ID);

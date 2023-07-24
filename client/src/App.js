@@ -18,6 +18,8 @@ import FCInsertPriceQuote from './FunctionalComponents/Customers/FCInsertPriceQu
 import FCInsertEmployee from './FunctionalComponents/Employees/FCInsertEmployee';
 import FCInsertProject from './FunctionalComponents/Projects/FCInsertProject';
 import FCNotes from './FunctionalComponents/FCNotes';
+import PDFContent from './FunctionalComponents/Customers/PDFContent';
+
 //import Test from './FunctionalComponents/Customers/test';
 function App() {
   return (
@@ -40,11 +42,12 @@ function App() {
             <Route path="/newproject" element={<FCLayout><FCInsertProject /></FCLayout>} />
             <Route path="/newemployee" element={<FCLayout><FCInsertEmployee /></FCLayout>} />
             <Route path="/notes" element={<FCLayout><FCNotes /></FCLayout>} />
+            <Route path="/pdfcontent" element={<FCLayout><PDFContent /></FCLayout>} />
             {/* <Route path="/test" element={<FCLayout><Test /></FCLayout>} /> */}
           </Routes>
         </BrowserRouter>
       </UserProvider>
-
+      
     </div>
   );
 }

@@ -23,7 +23,6 @@ export default function FCCustomer() {
     const [isEditing, setIsEditing] = useState(false);
     const location = useLocation();
     const customerPK = location.state;
-    console.log("nevigate:" + customerPK);
     const [projectGet, setprojectGet] = useState([]);
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
@@ -180,16 +179,10 @@ export default function FCCustomer() {
 
                             </Row>
                             <Row>
-                                <Col>
-                                    <Button className='btn-contract' type="button">עותק חוזה</Button>
-                                </Col>
                                 <Col style={{ textalign: "center" }}>
                                     <Button className='btn-gradient-purple_Customer' type='button' onClick={handleClick} >
                                         {isEditing ? "שמירה" : "עריכה"}
                                     </Button>
-                                </Col>
-                                <Col style={{ textalign: 'left' }}>
-                                    <Button className='btn-price' type="button">עותק הצעת מחיר</Button>
                                 </Col>
                             </Row>
                         </Accordion.Body>

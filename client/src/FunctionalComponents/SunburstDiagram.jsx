@@ -4,6 +4,8 @@ import { useUserContext } from './UserContext';
 import { useNavigate } from 'react-router-dom';
 
 function SunburstDiagram() {
+    const { user } = useUserContext();
+    console.log(user);
     const chartRef = useRef(null);
     const [data, setData] = useState(null);
     const { path } = useUserContext();
@@ -108,7 +110,7 @@ function SunburstDiagram() {
     const renderSunburstDiagram = () => {
         cleanUpChart();
 
-        const width = 1000; // Adjust the width as per your requirement
+        const width =1000; // Adjust the width as per your requirement
         const height = 1000; // Adjust the height as per your requirement
 
         const radius = Math.min(width, height) / 2;
@@ -167,6 +169,7 @@ function SunburstDiagram() {
             .attr("text-anchor", "middle")
             .attr("font-size", 13)
             .attr("font-family", "calibri")
+            .attr('font-size', '15px')// Change the font size
             .selectAll("text")
             .data(root.descendants().filter(d => d.depth && (d.y0 + d.y1) / 2 * (d.x1 - d.x0) > 10))
             .join("text")
