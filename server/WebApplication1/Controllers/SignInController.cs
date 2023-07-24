@@ -70,39 +70,7 @@ namespace WebApplication1.Controllers
         }
 
 
-        //[HttpPost]
-        //[Route("api/signin")]
-        //public IHttpActionResult PostEmployeeSignIn([FromBody] EmployeeSignInDTO user)
-        //{
-        //    var employee = db.Employees.FirstOrDefault(emp => emp.EmployeeEmail == user.Email && emp.EmployeePassword == user.Password);
-        //    try
-        //    {
-        //        if (employee != null)
-        //        {
-        //            var employeeDetails = new EmployeeDeatailsDTO
-        //            {
-        //                EmployeeEmail = employee.EmployeeEmail,
-        //                EmployeeName = employee.EmployeeName,
-        //                EmployeeID = employee.EmployeeID,
-        //                EmployeePhone = employee.EmployeePhone,
-        //                ID = employee.ID,
-        //                EmployeeTitle = employee.EmployeeTitle,
-        //                EmployeePassword = employee.EmployeePassword,
-        //                EmployeePhoto = employee.EmployeePhoto
-        //            };
-
-        //            return Ok(employeeDetails);
-        //        }
-        //        else
-        //        {
-        //            return BadRequest("Invalid email or password.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest($"Error during login: {ex.Message}");
-        //    }
-        //}
+       
 
 
     }

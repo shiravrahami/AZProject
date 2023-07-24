@@ -11,8 +11,7 @@ namespace WebApplication1.DTO
 
         public int CustomerPK { get; set; }
 
-        //public int ProjectId { get; set; }
-
+        
         public int TotalWorkHours { get; set; }
 
         public int DiscoutPercent { get; set; }
@@ -23,6 +22,6 @@ namespace WebApplication1.DTO
         public string CustomerName { get; internal set; }
 
         public string CustomerEmail { get; set; }
-       // public double TotalWorkHours { get; set; }
+       
     }
 }

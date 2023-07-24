@@ -15,69 +15,7 @@ namespace WebApplication1.Controllers
     {
         igroup195_prodEntities db = new igroup195_prodEntities();
 
-        ////פרטי פרויקט ישן
-        //[HttpGet]
-        //[Route("api/ProjectDeatails/{id}")]
-        //public IHttpActionResult GetProject(int id)
-        //{
-        //    try
-        //    {
-        //        var project = db.Projects
-        //            .Where(p => p.ProjectID == id)
-        //            .Select(p => new ProjectsDTO
-        //            {
-        //                ProjectID = p.ProjectID,
-        //                ProjectName = p.ProjectName,
-        //                CustomerPK = p.CustomerPK,
-        //                isDone = p.isDone,
-        //                InsertDate = p.InsertDate,
-        //                Description = p.Description,
-        //                Deadline = (DateTime)(p.Deadline)
-
-        //            })
-        //            .FirstOrDefault();
-
-        //        return Ok(project);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-        //מציגה שם לקוח, דד ליין ותיאור
-        //מקורית
-        //[HttpGet]
-        //[Route("api/ProjectDetails/{id}")]
-        //public IHttpActionResult GetProject(int id)
-        //{
-        //    try
-        //    {
-        //        // מציאת הפרויקט לפי ה-ID שנשלח בבקשה
-        //        var project = db.Projects.FirstOrDefault(p => p.ProjectID == id);
-
-        //        if (project == null)
-        //            return NotFound(); // אם הפרויקט לא קיים, מחזירים תשובת 404
-
-        //        // מציאת שם הלקוח של הפרויקט
-        //        var customerName = db.Customers.FirstOrDefault(c => c.ID == project.CustomerPK)?.CustomerName;
-
-        //        // יצירת אובייקט של פרטי הפרויקט כולל שם הלקוח
-        //        var projectDetails = new
-        //        {
-        //            InsertDate = project.InsertDate,
-        //            Deadline = (DateTime)project.Deadline,
-        //            Description = project.Description,
-        //            CustomerName = customerName
-        //        };
-
-        //        return Ok(projectDetails);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        
 
         //אותה אחת כמו למעלה חדשה
         [HttpGet]
@@ -122,10 +60,6 @@ namespace WebApplication1.Controllers
 
 
 
-
-
-
-
         //עדכון פרויקט קוד חדש
         [HttpPut]
         [Route("api/ProjectUpdate/{projectId}")]
@@ -161,34 +95,6 @@ namespace WebApplication1.Controllers
 
 
 
-
-        //עדכון פרויקט קוד ישן
-        //[HttpPut]
-        //[Route("api/ProjectUpdate")]
-        //public IHttpActionResult UpdateProject([FromBody] ProjectsDTO updatedProject)
-        //{
-        //    try
-        //    {
-        //        var project = db.Projects.Find(updatedProject.ProjectID);
-        //        if (project == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        project.ProjectName = updatedProject.ProjectName;
-        //        project.Description = updatedProject.Description;
-        //        project.Deadline = updatedProject.Deadline;
-        //        project.isDone = updatedProject.isDone;
-
-        //        db.SaveChanges();
-
-        //        return Ok("good");
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
 
         //InsertProject
         [HttpPost]
@@ -341,72 +247,6 @@ namespace WebApplication1.Controllers
 
 
 
-
-        //המתודה המקורית
-        //כולל הוספת מיון
-        //ListProjects/{employeeID}
-        //[HttpGet]
-        //[Route("api/ListProjects/{employeeID}")]
-        //public IHttpActionResult GetListProjects(int employeeID)
-        //{
-        //    try
-        //    {
-        //        if (employeeID == 6)
-        //        {
-        //            var projects = db.Projects.ToList();
-        //            if (projects == null || projects.Count == 0)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            var projList = db.Projects
-        //                .Where(x => !x.isDeleted)
-        //                .OrderByDescending(x => x.InsertDate) // מיון לפי תאריך יורד
-        //                .Select(x => new ProjectsDTO
-        //                {
-        //                    ProjectID = x.ProjectID,
-        //                    ProjectName = x.ProjectName,
-        //                    CustomerPK = x.CustomerPK,
-        //                    Description = x.Description,
-        //                    InsertDate = x.InsertDate,
-        //                    Deadline = (DateTime)(x.Deadline),
-        //                    isDone = x.isDone,
-        //                    isDeleted = x.isDeleted
-        //                })
-        //                .ToList();
-
-        //            return Ok(projList);
-        //        }
-        //        else
-        //        {
-        //            var projects = (from p in db.Projects
-        //                            join t in db.Tasks on p.ProjectID equals t.ProjectID
-        //                            join tea in db.Task_Employee_Activity on t.TaskID equals tea.TaskID
-        //                            where tea.EmployeePK == employeeID
-        //                                && !t.isDeleted
-        //                            select new
-        //                            {
-        //                                p.ProjectID,
-        //                                p.ProjectName,
-        //                                p.CustomerPK,
-        //                                p.Description,
-        //                                p.InsertDate,
-        //                                p.Deadline,
-        //                                p.isDone,
-        //                                p.isDeleted
-        //                            })
-        //                            .OrderByDescending(x => x.InsertDate) // מיון לפי תאריך יורד
-        //                            .ToList();
-        //            return Ok(projects);
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return BadRequest("Error");
-        //    }
-        //}
-
-
         //ListProjects/{id}
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/ListProjects/{id}")]
@@ -455,30 +295,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //אותה מתודה כמו למעלה כולל שעות מטבלת הצעת מחיר
-        //[HttpGet]
-        //[Route("api/ProjectWorkHours")]
-        //public IHttpActionResult GetProjectWorkHours()
-        //{
-        //    try
-        //    {
-        //        var projectWorkHours = db.Projects
-        //            .Where(p => !p.isDeleted)
-        //            .Select(p => new
-        //            {
-        //                ProjectID = p.ProjectID,
-        //                ProjectName = p.ProjectName,
-        //                TotalWorkHours = p.PriceQuotes.Sum(pq => pq.TotalWorkHours)
-        //            }).ToList();
-
-        //        return Ok(projectWorkHours);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
+      
 
     }
 }

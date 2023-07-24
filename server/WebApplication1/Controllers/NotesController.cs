@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
     {
         igroup195_prodEntities db = new igroup195_prodEntities();
         //הצגה של כל הפתקים
-        //תקין בפוסטמן
+      
         [HttpGet]
         [Route("api/Notes")]
         public IHttpActionResult GetAllNotes()
@@ -45,7 +45,7 @@ namespace WebApplication1.Controllers
 
 
         //מחיקת פתק ספציפי
-        //תקין בפוסטמן
+        
         [HttpDelete]
         [Route("api/Notes/{id}")]
         public IHttpActionResult DeleteNoteByID(int id)
@@ -70,7 +70,7 @@ namespace WebApplication1.Controllers
         }
 
         //עריכת פתק ספציפי
-        //תקין בפוסטמן
+        
         [HttpPut]
         [Route("api/Notes/{id}")]
         public IHttpActionResult UpdateNoteByID(int id, [FromBody] NotesDTO updatedNote)
@@ -101,7 +101,7 @@ namespace WebApplication1.Controllers
         }
 
         //הוספת פתק חדש
-        //תקין בפוסטמן
+        
         [HttpPost]
         [Route("api/Notes")]
         public IHttpActionResult AddNewNote([FromBody] NotesDTO newNote)
@@ -131,7 +131,7 @@ namespace WebApplication1.Controllers
         }
 
         //מביא פתק ספציפי
-        //תקין בפוסטמן
+       
         [HttpGet]
         [Route("api/Notes/{id}")]
         public IHttpActionResult GetNoteById(int id)

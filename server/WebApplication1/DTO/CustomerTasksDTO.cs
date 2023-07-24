@@ -12,15 +12,9 @@ namespace WebApplication1.DTO
         public int TotalopenCount { get; set; }
         public int CountTasks { get; set; }
 
-        //public string TaskName { get; set; }
+        
     }
 
-    //public class CustomerSummaryDTO
-    //{
-    //    public string CustomerName { get; set; }
-    //    public string CustomerID { get; set; }
-    //    public int TotalTasks { get; set; }
-    //    public int OpenTasks { get; set; }
-    //}
+   
 
 }

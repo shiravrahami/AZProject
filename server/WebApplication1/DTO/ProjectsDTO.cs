@@ -26,7 +26,7 @@ namespace WebApplication1.DTO
         public bool isDeleted { get; set; }
 
        
-             public int PriceQuoteID { get; set; }
+        public int PriceQuoteID { get; set; }
 
 
 
