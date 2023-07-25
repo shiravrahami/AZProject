@@ -2,26 +2,20 @@ import './App.css';
 import SignInScreen from './FunctionalComponents/FCSignin';
 import { BrowserRouter, Routes, Route, Router } from 'react-router-dom';
 import FCHome from './FunctionalComponents/FCHome';
-import FCCustomer from './FunctionalComponents/Customers/FCCustomer';
-import FCCustomers from './FunctionalComponents/Customers/FCCustomers';
-import FCProfile from './FunctionalComponents/Employees/FCProfile';
-import FCLayout from './FunctionalComponents/Layout/FCLayout';
+import FCCustomer from './FunctionalComponents/FCCustomer';
+import FCCustomers from './FunctionalComponents/FCCustomers';
+import FCProfile from './FunctionalComponents/FCProfile';
+import FCLayout from './FunctionalComponents/FCLayout';
 import {UserProvider} from './FunctionalComponents/UserContext';
 import React, { useState } from 'react';
-import FCTasks from './FunctionalComponents/Tasks/FCTasks';
-import FCemployees from './FunctionalComponents/Employees/FCEmployees';
+import FCTasks from './FunctionalComponents/FCTasks';
+import FCemployees from './FunctionalComponents/FCEmployees';
 import FCTest from './FunctionalComponents/FCTest';
-import FCProjects from './FunctionalComponents/Projects/FCProjects';
-import FCProject from './FunctionalComponents/Projects/FCProject';
-import FCTask from './FunctionalComponents/Tasks/FCTask';
-import FCInsertPriceQuote from './FunctionalComponents/Customers/FCInsertPriceQuote';
-import FCInsertEmployee from './FunctionalComponents/Employees/FCInsertEmployee';
-import FCInsertProject from './FunctionalComponents/Projects/FCInsertProject';
-import FCNotes from './FunctionalComponents/FCNotes';
-import PDFContent from './FunctionalComponents/Customers/PDFContent';
-import FCInsertTask from './FunctionalComponents/Tasks/FCInsertTask';
+import FCProjects from './FunctionalComponents/FCProjects';
+import FCProject from './FunctionalComponents/FCProject';
+import FCTask from './FunctionalComponents/FCTask';
 
-//import Test from './FunctionalComponents/Customers/test';
+
 function App() {
   return (
     <div className="App">
@@ -37,17 +31,13 @@ function App() {
             <Route path="/task" element={<FCLayout><FCTask /></FCLayout>} />
             <Route path="/projects" element={<FCLayout><FCProjects /></FCLayout>} />
             <Route path="/employees" element={<FCLayout><FCemployees /></FCLayout>} />
+            <Route path="/test" element={<FCTest />} />
             <Route path="/project" element={<FCLayout><FCProject /></FCLayout>} />
-            <Route path="/newcustomer" element={<FCLayout><FCInsertPriceQuote /></FCLayout>} />
-            <Route path="/newproject" element={<FCLayout><FCInsertProject /></FCLayout>} />
-            <Route path="/newemployee" element={<FCLayout><FCInsertEmployee /></FCLayout>} />
-            <Route path="/notes" element={<FCLayout><FCNotes /></FCLayout>} />
-            <Route path="/pdfcontent" element={<FCLayout><PDFContent /></FCLayout>} />
-            <Route path="/newTask" element={<FCLayout><FCInsertTask /></FCLayout>} />            
+
           </Routes>
         </BrowserRouter>
       </UserProvider>
-      
+
     </div>
   );
 }
