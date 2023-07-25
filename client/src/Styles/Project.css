@@ -1,0 +1,321 @@
+.fccust {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(0, 0, 0);
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.imgLogo {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: rgb(0, 0, 0);
+}
+
+.form-label {
+    font-size: 20px;
+}
+
+.accordion {
+    text-align: right;
+}
+
+.input-group-text {
+    text-align: right;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #A827AB;
+    background: linear-gradient(270deg, #FFFFFF 0%, rgb(168, 39, 171, 0.24) 100%);
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+#CustType {
+    border: none;
+    border-bottom: 2px solid #00000050;
+    border-radius: 0;
+
+
+}
+
+#CustType.hover {
+    background-image: linear-gradient(to right, #8c228e 0%, #bfacc4 100%);
+    color: #fff;
+    border: none;
+}
+
+.projectclass {
+    border-radius: '50px';
+    padding: '20px';
+    background-color: rgb(247, 247, 247);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-price {
+    background-color: gray;
+    border: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.btn-price:hover {
+    background-color: rgb(103, 103, 103);
+    border: gray;
+}
+
+.btn-contract {
+    background-color: gray;
+    border: gray;
+    margin-top: 10px;
+
+}
+
+.btn-contract:hover {
+    background-color: rgb(103, 103, 103);
+    border: gray;
+}
+
+.btn-contract:active {
+    background-color: rgb(255, 0, 0);
+    border: gray;
+}
+
+.accordion-button {
+    font-size: 25px;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+
+}
+
+.accordion-button::after {
+    text-align: left;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+
+.accordionCust .accordion-button::after {
+    display: none;
+
+}
+
+.accordionCust .accordion-button {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-gradient-purple_Customer {
+    background-image: linear-gradient(to right, #A827AB 0%, #E6D0EE 100%);
+    color: #fff;
+    border: none;
+    width: 350px;
+    font-size: 20px;
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 80px;
+}
+
+.btn-gradient-purple_Customer:hover {
+    background-image: linear-gradient(to right, #8c228e 0%, #bfacc4 100%);
+    color: #fff;
+    border: none;
+}
+
+
+.trash,
+.trash:hover,
+.btn-link,
+.btn-link:hover {
+    background-color: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border: none;
+    color: rgb(53, 53, 53);
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+
+.project-row:hover {
+    background: linear-gradient(270deg, #FFFFFF 0%, rgb(168, 39, 171, 0.24) 100%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.project-row .trash {
+    display: none;
+}
+
+.project-row:hover .trash {
+    display: block;
+}
+
+
+.btn-file {
+    background-color: rgba(209, 209, 214, 0.53);
+    color: black;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-top: 10px;
+    height: inherit;
+}
+
+.btn-add-hour {
+    background-color: rgba(209, 209, 214, 0.53);
+    color: black;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 10px;
+    height: inherit;
+}
+
+.btn-file:hover,
+.btn-add-hour:hover {
+    background-color: rgba(159, 159, 160, 0.53);
+    border: none;
+    color: black;
+}
+
+.btn-play {
+    background: linear-gradient(270deg, #A827AB 16.15%, #E2B8F0 100%);
+    border-radius: 56px;
+    border: none;
+    margin: 2px;
+}
+
+.btn-play:hover {
+    background-image: linear-gradient(to right, #8c228e 0%, #bfacc4 100%);
+    color: #fff;
+    border: none;
+}
+
+.btn-gradient-purple {
+    background-image: linear-gradient(to right, #A827AB 0%, #E6D0EE 100%);
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-gradient-purple:hover {
+    background-image: linear-gradient(to right, #8c228e 0%, #bfacc4 100%);
+    color: #fff;
+    border: none;
+}
+
+.datePicker {
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid #00000050;
+    font-size: 20px;
+}
+
+.progBar {
+    direction: ltr;
+    background-color: #D1D1D6;
+    height: 25px;
+    font-size: 15px;
+}
+
+.progress-bar  {
+    background-color: #AA6DAB;
+
+}
+  
+.popup {
+    position: fixed;
+    margin-left: 400px;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-inner {
+    position: relative;
+    border: 5px solid #AA6DAB;
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  
+  .close-button-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-container {
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+  }
+  
+  .photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 2px;
+    font-size: 16px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .image-container:hover .delete-button {
+    opacity: 1;
+  }
+  
+  

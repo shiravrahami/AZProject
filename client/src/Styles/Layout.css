@@ -27,11 +27,22 @@
 .head-div{
   background: linear-gradient(270deg, #e0e0e0 0%, #FFFFFF 70%);
 }
+
 .item-content{
   text-align: right;
   margin-right:15px ;
 }
-.kkqKLc:hover{
+.kkqKLc:hover, .kkqKLc:focus{
   background: linear-gradient(270deg, #cecece 0%, #FFFFFF 70%);
 
+}
+.icon-suffix{
+  margin-top: 25px;
+}
+
+.gQjtXM .head-div{
+padding: 14px;
+}
+.head-text{
+  text-align: right;
 }
