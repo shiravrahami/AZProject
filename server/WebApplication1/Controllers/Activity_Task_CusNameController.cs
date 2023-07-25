@@ -12,11 +12,10 @@ using NLog;
 
 namespace WebApplication1.Controllers
 {
-    //מתודה חדשה ששיר ביקשה
+    
     public class Activity_Task_CusNameController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        igroup195_prodEntities db = new igroup195_prodEntities();
         [HttpGet]
         [Route("api/GetActivity_Task_CusName/{taskId}")]
         public IHttpActionResult GetActivity_Task_CusName(int taskId)
@@ -33,6 +32,7 @@ namespace WebApplication1.Controllers
                         TaskID = a.ActivityTask.Activity.TaskID,
                         EmployeePK = a.ActivityTask.Activity.EmployeePK,
                         StartDate = a.ActivityTask.Activity.StartDate,
+                        EndDate =(DateTime)a.ActivityTask.Activity.EndDate,
                         CustomerName = a.Customer.CustomerName
                     })
                     .ToList();
@@ -46,6 +46,6 @@ namespace WebApplication1.Controllers
         }
 
 
-
+        
     }
 }

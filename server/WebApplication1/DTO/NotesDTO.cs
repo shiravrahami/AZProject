@@ -7,11 +7,11 @@ namespace WebApplication1.DTO
 {
     public class NotesDTO
     {
-        public int ID_Notes { get; set; }
-        public int EmployeePK_Notes { get; set; }
+        public int ID { get; set; }
+        public int EmployeePK { get; set; }
 
-        public string Title_Notes { get; set; }
+        public string Title { get; set; }
 
-        public string Description_Notes { get; set; }
+        public string Description { get; set; }
     }
 }

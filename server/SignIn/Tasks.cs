@@ -31,6 +31,7 @@ namespace SignIn
         public Nullable<System.DateTime> Deadline { get; set; }
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
+        public Nullable<double> PriceQuoteTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Activity> Activity { get; set; }
@@ -40,8 +41,9 @@ namespace SignIn
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
         public virtual TaskType TaskType1 { get; set; }
-        public int ID { get; set; }
-        public object CustomerID { get; set; }
-        public object Customer { get; set; }
+        public string EmployeeName { get; set; }
+        public string EmployeeEmail { get; set; }
+        public int EmployeeID { get; set; }
+        public string CustomerID { get; set; }
     }
 }

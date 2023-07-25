@@ -14,18 +14,22 @@ namespace SignIn
     
     public partial class PriceQuotes
     {
-        //public int Customer_PK;
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PriceQuotes()
+        {
+            this.Projects = new HashSet<Projects>();
+        }
+    
         public int PriceQuoteID { get; set; }
         public int CustomerPK { get; set; }
-        public int ProjectID { get; set; }
         public int TotalWorkHours { get; set; }
         public int DiscoutPercent { get; set; }
         public int TotalPrice { get; set; }
         public string PriceQuoteFile { get; set; }
     
         public virtual Customers Customers { get; set; }
-        public virtual Projects Projects { get; set; }
-        public int Customer_PK { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Projects> Projects { get; set; }
+        public int ProjectID { get; set; }
     }
 }

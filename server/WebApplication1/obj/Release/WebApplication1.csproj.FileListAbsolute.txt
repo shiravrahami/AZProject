@@ -571,3 +571,14 @@ C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebAppli
 C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\NLog.config
 C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\NLog.dll
 C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\NLog.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.dll.config
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.MachineLearning.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.Math.Core.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.Math.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.Statistics.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.MachineLearning.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.Math.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.Math.Core.xml
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\WebApplication1\bin\Accord.Statistics.xml

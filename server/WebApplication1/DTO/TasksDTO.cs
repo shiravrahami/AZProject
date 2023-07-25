@@ -7,7 +7,7 @@ namespace WebApplication1.DTO
 {
     public class TasksDTO
     {
-        internal string CustomerName;
+        //internal string CustomerName;
 
         public int TaskID { get; set; }
 
@@ -16,7 +16,9 @@ namespace WebApplication1.DTO
         public int ProjectID { get; set; }
 
         public int TaskType { get; set; }
+        public int ID { get; set; }//מספר רץ של עובד
 
+        public int CustomerPK { get; set; }//מספר רץ לקוח
         public string TaskDescription { get; set; }
 
         public DateTime InsertTaskDate { get; set; }
@@ -25,7 +27,19 @@ namespace WebApplication1.DTO
 
         public bool isDone { get; set; }
         public bool isDeleted { get; set; }
-        public object EmployeeName { get; internal set; }
-        //public string CustomerName { get; internal set; }
+        public string EmployeeName { get;  set; }
+        public string CustomerName { get;  set; }
+        public string CustomerID { get; set; }
+
+       
+        public string EmployeeEmail { get; set; }
+
+        public double PriceQuoteTime { get; set; }
+        public string EmployeeID { get; internal set; }
+
+
+
+        public double Difficulty { get; set; }//חדש
+
     }
 }

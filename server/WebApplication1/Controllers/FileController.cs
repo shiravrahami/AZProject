@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
     //כל הקבצים
     public class FileController : ApiController
     {
-        igroup195_DB_Prod db = new igroup195_DB_Prod();
+        igroup195_prodEntities db = new igroup195_prodEntities();
 
         [HttpGet]
         [Route("api/File")]
@@ -39,43 +39,12 @@ namespace WebApplication1.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
+
+
+
         }
     }
 
-
-    //קובץ ספציפי
-    //public class FileController : ApiController
-    //{
-    //    igroup195_DB_Prod db = new igroup195_DB_Prod();
-
-    //    [HttpGet]
-    //    [Route("api/File/{id}")]
-    //    public IHttpActionResult GetFile(int id)
-    //    {
-    //        try
-    //        {
-    //            var file = db.Files
-    //                .Where(f => f.FileID == id)
-    //                .Select(f => new FileDTO
-    //                {
-    //                    FileID = f.FileID,
-    //                    Path = f.Path,
-    //                    Description = f.Description
-    //                })
-    //                .FirstOrDefault();
-
-    //            if (file == null)
-    //            {
-    //                return NotFound();
-    //            }
-
-    //            return Ok(file);
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            return BadRequest(ex.Message);
-    //        }
-    //    }
-    //}
 
 }

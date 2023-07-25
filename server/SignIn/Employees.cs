@@ -14,6 +14,8 @@ namespace SignIn
     
     public partial class Employees
     {
+        //public object Tasks;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employees()
         {
@@ -41,5 +43,6 @@ namespace SignIn
         public virtual ICollection<Notes> Notes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task_Employee_Activity> Task_Employee_Activity { get; set; }
+       // public object Tasks { get; set; }
     }
 }

@@ -22,12 +22,9 @@ namespace WebApplication1.DTO
 
         public bool CustomerIsDeleted { get; set; }
         
-        public string CustomerType { get; set; }//השדה החדש
+        public string CustomerType { get; set; }
 
-        //public static implicit operator CustomerDetailsDTO(Customers v)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        
     }
 
 
