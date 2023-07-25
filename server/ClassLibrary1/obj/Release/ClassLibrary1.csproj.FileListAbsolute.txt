@@ -1,0 +1,6 @@
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\ClassLibrary1\bin\Release\ClassLibrary1.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\ClassLibrary1\bin\Release\ClassLibrary1.pdb
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\ClassLibrary1\obj\Release\ClassLibrary1.csproj.AssemblyReference.cache
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\ClassLibrary1\obj\Release\ClassLibrary1.csproj.CoreCompileInputs.cache
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\ClassLibrary1\obj\Release\ClassLibrary1.dll
+C:\Users\שני סימן טוב\Desktop\a\targil3front\AZProject\server\ClassLibrary1\obj\Release\ClassLibrary1.pdb
