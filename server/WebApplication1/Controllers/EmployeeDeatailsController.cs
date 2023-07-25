@@ -69,7 +69,7 @@ public class EmployeeDetailsController : ApiController
             employee.EmployeeID = updatedDetails.EmployeeID;
             employee.EmployeePhone = updatedDetails.EmployeePhone;
             employee.EmployeeTitle = updatedDetails.EmployeeTitle;
-            employee.EmployeePassword = updatedDetails.EmployeePassword;
+            //employee.EmployeePassword = updatedDetails.EmployeePassword;
             employee.EmployeePhoto = updatedDetails.EmployeePhoto;
 
             db.SaveChanges();
